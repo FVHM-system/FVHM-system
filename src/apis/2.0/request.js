@@ -5,7 +5,7 @@ import { store } from '../../stores/index'
 
 // const baseUrl = 'http://115.157.195.222:8787'
 // const baseUrl = 'http://112.124.39.133:8080'
-const baseUrl = 'http://47.113.225.96:8080' //OUR
+const baseUrl = 'http://47.113.225.96:8080' //OUR？？？？？
 // const baseUrl = 'http://58.20.51.78:9292'
 // const baseUrl='http://192.168.202.43:8080'
 // const baseUrl='http://localhost:8080'
