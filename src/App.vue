@@ -1,29 +1,44 @@
 <template>
-  <div >
-    <title>界首市阀栓管理系统</title>
-    <el-container class="whole-container">
-      <el-header height="80px">
-        <layer-header></layer-header>
-      </el-header>
-
-      <el-container class="center-container">
-        <el-aside width="200px">
-          <layer-aside></layer-aside>
-        </el-aside>
-
-        <el-container>
-          <div class="scroll-out">
-            <el-scrollbar>
-              <el-main>
-                <router-view></router-view>
-              </el-main>
-            </el-scrollbar>
+  <div>
+    <div v-if="!user" class="startPage">
+      <section>
+        <div id="logo">
+          <div class="logo-box">
+            <img src="/src/assets/jieshou.png" />
+            <span>界首市城市供水网阀栓管理系统</span>
           </div>
+        </div>
+        <h1 align="center" class="illustrate"> 界首市城市供水网阀栓管理系统 </h1>
+        <login style="position:relative;top:230px"></login>
+      </section>
+    </div>
+
+    <div v-if="user">
+      <title>界首市阀栓管理系统</title>
+      <el-container class="whole-container">
+        <el-header height="80px">
+          <layer-header></layer-header>
+        </el-header>
+
+        <el-container class="center-container">
+          <el-aside width="200px">
+            <layer-aside></layer-aside>
+          </el-aside>
+
+          <el-container>
+            <div class="scroll-out">
+              <el-scrollbar>
+                <el-main>
+                  <router-view></router-view>
+                </el-main>
+              </el-scrollbar>
+            </div>
+          </el-container>
+
         </el-container>
 
       </el-container>
-
-    </el-container>
+    </div>
   </div>
 </template>
 
@@ -33,7 +48,12 @@ import LayerAside from '@/layers/aside.vue';
 import MapContent from '@/pages/Map/mapcontent.vue'
 import MapDetail from '@/pages/Map/mapdetail.vue'
 import MapLoader from '@/pages/Map/localMap.js'
+import login from '@/pages/login/login.vue'
+import { computed, onMounted, ref } from 'vue'
+import { useStore } from 'vuex'
 
+const store = useStore()
+const user = computed(() => store.state.user.user)
 </script>
 
 <style lang="scss">
@@ -47,30 +67,44 @@ import MapLoader from '@/pages/Map/localMap.js'
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 80px;
-  height: calc(100vh - 80px);
+  height: 100vh;
+  width: 100vw;
   position: relative;
   box-sizing: border-box;
+  overflow-y: hidden;
 }
+.startPage{
+  background: url('src/assets/header-bg.webp') center;
+  background-size: cover;
 
-.el-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: #F4F4F4;
-  width: 100%;
-  z-index: 2000;
-  border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+  position:relative;
+  overflow-y:hidden;
+  height:100vh;
 }
-.el-main{
-  background-color: #F8F8F8;
+.logo-box {
+  position: relative;
+  top: 10px;
+  left: 20px;
+  height: 30px;
+  width: 230px;
+  background: white;
+  display: flex;
+  align-items: center;
+  padding: 6px 14px 6px 10px;
+  border-radius: 20px;
+  img {
+    width: 28px;
+    height: 28px;
+  }
+  span {
+    margin-left: 6px;
+  }
+  font-size: 14px;
 }
-.scroll-out {
-  height: calc(100vh - 80px);
-  width: 100%;
-}
-.el-page-header {
-  padding-bottom: 20px;
-
+.illustrate{
+  position: relative;
+  top: 120px;
+  font-size: 50px;
+  color: white;
 }
 </style>

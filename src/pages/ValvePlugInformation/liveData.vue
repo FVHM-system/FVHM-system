@@ -6,17 +6,20 @@
         <div class="CardWaterSum">
           <el-date-picker
               v-model="value1"
-              type="datetimerange"
+              type="daterange"
               value-format="yyyy-MM-dd"
               range-separator="To"
               start-placeholder="Start date"
               end-placeholder="End date"
-              style="position:relative;left: -10px;margin-top: 15px"
           >
           </el-date-picker>
           <el-button type="primary" style="position:relative;left: 10px;margin-top: 15px">查询</el-button>
-          <h1 style="position:relative;margin-top:50px;font-size: 20px;color: #409eff">{{value1[0]}} 至 {{value1[1]}}阀栓用水量</h1>
-          <h1 style="position:relative;margin-top:150px;font-size: 100px;color: #409eff">0</h1>
+          <h1 style="position:relative;margin-top:50px;font-size: 20px;color: #409eff">
+            <el-tag>{{new Date(value1[0]).toLocaleString()}}</el-tag>
+            至
+            <el-tag>{{new Date(value1[1]).toLocaleString()}}</el-tag></h1>
+          <h1 style="position:relative;margin-top:20px;font-size: 20px;color: #409eff">阀栓用水量</h1>
+          <h1 style="position:relative;margin-top:100px;font-size: 100px;color: #409eff">0</h1>
           <h1 style="position:relative;margin-top:50px;font-size: 30px;color: #409eff">万m³</h1>
         </div>
       </el-tab-pane>
@@ -42,6 +45,8 @@
 
 <script>
 import VwaterConsum from "@/pages/ValvePlugInformation/VwaterConsum.vue";
+import moment from "moment";
+
 export default {
   data(){
     return{

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { store } from '../../stores/index'
-import Cookies from "js-cookie"
+
 // import request from '../../request'
 
 // const baseUrl = 'http://115.157.195.222:8787'
@@ -71,8 +71,8 @@ const request = {
         message: msg,
       })
       return needPackage
-        ? undefined
-        : {
+          ? undefined
+          : {
             code: 404,
             msg,
           }

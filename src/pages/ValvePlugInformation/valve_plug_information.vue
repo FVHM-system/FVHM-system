@@ -18,12 +18,14 @@
     </div>
     <el-scrollbar class="data-chart">
       <el-table
+          :key="Math.random()"
           :data=tableData
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
           style="width: 100%"
+          @row-click="getValveId"
       >
         <el-table-column fixed="left" label="阀栓编号" prop="valveCode" width="120px"/>
         <el-table-column label="阀栓类型" prop="valveType" :formatter="typeFormate" width="120px"/>
@@ -36,9 +38,8 @@
         <el-table-column label="通讯编号" prop="phone" width="200px"/>
         <el-table-column fixed="right" label="操作" width="360">
           <template #default="scope">
-            <valve-detail class="drawer"></valve-detail>
-            <el-button type="warning">停用</el-button>
-            <el-button>修改</el-button>
+            <valve-detail class="drawer" :valve_id="scope.row.valveId" ></valve-detail>
+            <el-button type="warning" @click="">停用</el-button>
             <el-button type="danger">删除</el-button>
           </template>
         </el-table-column>
@@ -60,6 +61,11 @@ let input1 = ref('')
 let input2 = ref('')
 let options = ref([])
 let tableData = ref([])
+let testnum=ref('')
+let valveChange=ref(false)
+const getValveId = function (row){
+  testnum=row.valveId
+}
 /* 阀栓代码与文本转换 */
 const typeFormate = function (row){
   const target = types.find(i => i.value === row.valveType)
@@ -69,12 +75,15 @@ const statusFormate = function (row){
   const targetStatus = statuss.find(i => i.value === row.status)
   return targetStatus.label;
 }
+
+
 /* 查询 */
 const dataFind = async function () {
   let res = await fetchFindData(input1.value)
   if (res.code === '200') {
     tableData.value = res.data;
   }
+  console.log(tableData.value)
 }
 /* 获取阀栓信息 */
 const dataRequire = async function(){
