@@ -71,8 +71,8 @@ const request = {
         message: msg,
       })
       return needPackage
-        ? undefined
-        : {
+          ? undefined
+          : {
             code: 404,
             msg,
           }

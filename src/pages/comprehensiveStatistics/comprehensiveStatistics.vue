@@ -207,11 +207,11 @@ const load=async(tree, treeNode, resolve)=>{
 }
 
 async function search(){
-  
+
   let city=[]
   city= await fetchCityList()
   console.log("city: ",city)
-  
+
   const res= await fetchMonthCity({
     month: dateTimeTrans(searchTime.value,searchTimeType.value),
     list: city.map(item=>{
@@ -236,7 +236,7 @@ async function search(){
 }
 onMounted(async()=>{
   search()
-  
+
 })
 </script>
 
@@ -247,10 +247,10 @@ onMounted(async()=>{
     top: 0px;
     right: -1000px;
     width: 150px;
-    
+
   }
   .search-btn {
     display: flex;
   }
-  
+
 </style>

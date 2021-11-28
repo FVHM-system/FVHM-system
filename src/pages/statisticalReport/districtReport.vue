@@ -194,7 +194,7 @@ const getList=async(type,zoneId)=>{
   return newplace;
 }
 const getNodes=async(val)=>{
-  
+
   if(!val){
     let rawcity=[];
     rawcity= await fetchCityList();

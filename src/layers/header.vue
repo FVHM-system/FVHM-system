@@ -4,14 +4,32 @@
       <img src='../assets/logo.png' alt='logo' />
       <p>水资源管理系统</p>
     </header>
+    <el-button class="boxConfirm" @click="logout">退出登录</el-button>
   </div>
 </template>
 
-<script setup>
-  import { useRouter, useRoute } from 'vue-router'
+<script>
+import { useRouter, useRoute } from 'vue-router'
 
-  const router = useRouter();
-  
+const router = useRouter();
+
+export default {
+  data () {
+    return {
+
+    };
+  },
+
+  methods: {
+
+    logout () {
+      alert('成功退出登录');
+      this.$router.push('/');
+      this.$store.dispatch('user/logout');
+    }
+  }
+};
+
 </script>
 
 <style lang="scss" scoped>

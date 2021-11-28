@@ -55,7 +55,7 @@ import {defineComponent, onMounted, ref,toRefs,reactive} from 'vue'
 import { fetchAlarmManage } from "@/pages/AlarmMgmt/alarmManage.js";
 import {mountedToArrPrototype} from "../../mock";
 import AddrSelect from '@/pages/ValvePlugInformation/addrSelect.vue'
-import { alarmType,alarmStatus } from "../../utils/transform";
+import { alarmType,alarmStatus } from "@/utils/transform";
 
 let input = ref('')
 let options = ref([])
@@ -75,6 +75,7 @@ onMounted(async () => {
   if (res.code === '200') {
     tableData.value = res.data;
   }
+  console.log(res.data)
 })
 
 </script>
