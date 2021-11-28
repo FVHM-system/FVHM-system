@@ -20,6 +20,14 @@ import TownManage from './pages/addrManage/townManage.vue';
 import VillageManage from './pages/addrManage/villageManage.vue';
 import RoadManage from './pages/addrManage/roadManage.vue';
 import waterConsumption from './pages/waterConsumption/waterConsumption.vue';
+import AcceptMange from '@/pages/SystemMgmt/acceptManage.vue'
+import AccountMgmt from '@/pages/SystemMgmt/AccountMgmt.vue'
+import AccountPostManage from '@/pages/SystemMgmt/accountPostManage.vue'
+import ApiMgmt from './pages/SystemMgmt/ApiMgmt.vue'
+import MenuMgmt from './pages/SystemMgmt/MenuMgmt.vue'
+import PermissionManage from './pages/SystemMgmt/permissionManage.vue'
+import PostMgmt from './pages/SystemMgmt/PostMgmt.vue'
+
  const configs = [
   {
     path: '/', // 路由地址，children 内路由地址 = 上一嵌套的路由地址（若无则为""） + 该path
@@ -143,22 +151,40 @@ import waterConsumption from './pages/waterConsumption/waterConsumption.vue';
       {
         path:'/user_anagement',
         label:'用户管理',
-        component: ""
+        component: AccountMgmt
       },
       {
         path:'/job_management',
-            label:'岗位管理',
-          component: ""
+        label:'岗位管理',
+        component: PostMgmt
+      },
+      {
+        path:'/permissionManage',
+        label:'菜单权限',
+        hide:true,
+        component: PermissionManage
+      },
+      {
+        path:'/accountPostManage',
+        label:'分配用户',
+        hide:true,
+        component: AccountPostManage
+      },
+      {
+        path:'/acceptMange',
+        label:'API权限',
+        hide:true,
+        component: AcceptMange
       },
       {
         path:'/menu_management',
         label:'菜单管理',
-        component: ""
+        component: MenuMgmt
       },
       {
         path:'/api_management',
         label:'API管理',
-        component: ""
+        component: ApiMgmt
       }
     ]
   },
