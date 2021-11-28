@@ -36,7 +36,7 @@
           <el-table-column fixed="left"  label="阀栓名称" prop="valveName" width="120px"/>
           <el-table-column label="所属道路" prop="roadName" width="200px"/>
           <el-table-column label="报警类型" prop="warnType" :formatter="typeFormate" width="200px"/>
-          <el-table-column label="状态" prop="status" :formatter="statusFormate" width="200px"/>
+          <el-table-column label="状态" prop="warnStatus" :formatter="statusFormate" width="200px"/>
           <el-table-column label="报警时间" prop="warnTime" width="200px"/>
           <el-table-column fixed="right" label="操作" width="360">
             <template #default="scope">
@@ -55,7 +55,7 @@ import {defineComponent, onMounted, ref,toRefs,reactive} from 'vue'
 import { fetchAlarmManage } from "@/pages/AlarmMgmt/alarmManage.js";
 import {mountedToArrPrototype} from "../../mock";
 import AddrSelect from '@/pages/ValvePlugInformation/addrSelect.vue'
-import { alarmType,alarmStatus } from "../../utils/transform";
+import { alarmType,alarmStatus } from "@/utils/transform";
 
 let input = ref('')
 let options = ref([])
@@ -66,7 +66,7 @@ const typeFormate = function (row){
   return targetType.label;
 }
 const statusFormate = function (row){
-  const targetStatus = alarmStatus.find(i => i.value === row.status)
+  const targetStatus = alarmStatus.find(j => j.value === row.warnStatus)
   return targetStatus.label;
 }
 onMounted(async () => {
@@ -75,6 +75,7 @@ onMounted(async () => {
   if (res.code === '200') {
     tableData.value = res.data;
   }
+  console.log(res.data)
 })
 
 </script>

@@ -201,15 +201,15 @@ const load=async(tree, treeNode, resolve)=>{
     console.log("r5: ",r5)
   }
   resolve([].concat(r1).concat(r2).concat(r3).concat(r4).concat(r5))
-  
+
 }
 
 async function search(){
-  
+
   let city=[]
   city= await fetchCityList()
   console.log("city: ",city)
-  
+
   const res= await fetchMonthCity({
     month: dateTimeTrans(searchTime.value),
     list: city.map(item=>{
@@ -230,11 +230,11 @@ async function search(){
   })
   console.log("r: ",r)
   data.value = r
-    
+
 }
 onMounted(async()=>{
   search()
-  
+
 })
 </script>
 
@@ -245,10 +245,10 @@ onMounted(async()=>{
     top: 0px;
     right: -1000px;
     width: 150px;
-    
+
   }
   .search-btn {
     display: flex;
   }
-  
+
 </style>

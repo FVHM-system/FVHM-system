@@ -3,11 +3,11 @@
         <div class="p-header">
             <p class="page-name">统计报表</p>
             <div class="op-flex">
-                   <el-cascader 
+                   <el-cascader
                    v-model="place"
-                   :options="options" 
+                   :options="options"
                    :props="myprops"
-                   ref="require" 
+                   ref="require"
                    placeholder="选择行政区域"
                    @expand-change="handleItemChange"
                    collapse-tags="true"
@@ -33,7 +33,7 @@ let options=ref([])
 let require=ref(null)
 let myprops=ref()
 let place =ref()
-const {proxy} = getCurrentInstance() 
+const {proxy} = getCurrentInstance()
 emits: ['handleItemChange']
 
 myprops={
@@ -109,7 +109,7 @@ const getList=async(type,zoneId)=>{
   return newplace;
 }
 const getNodes=async(val)=>{
-  
+
   if(!val){
     let rawcity=[];
     rawcity= await fetchCityList();
@@ -231,7 +231,7 @@ const handleItemChange=async(val)=> {
 
 onMounted(async()=>{
   getNodes()
- 
+
 })
 </script>
 
