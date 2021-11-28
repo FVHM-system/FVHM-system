@@ -9,7 +9,7 @@
           <basic-information :valve_id_end="valve_id"></basic-information>
         </el-tab-pane>
         <el-tab-pane label="实况数据">
-          <live-data></live-data>
+          <live-data :valve_id_end="valve_id" :valve_createTime_end="valve_createTime"></live-data>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -41,6 +41,7 @@ export default {
     valve_id: Number,
     valve_status: Number,
     valve_type: Number,
+    valve_createTime: Date
   },
   methods:{
     valveChangeClick(){
