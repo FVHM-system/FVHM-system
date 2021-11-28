@@ -489,11 +489,11 @@ onMounted(async()=>{
     width: 1000px;
     .margin-right {
       position: relative;
-      margin-left: 20 px;
+      margin-left: 20px;
     }
     .search {
       position: relative;
-      margin-left: 20 px;
+      margin-left: 20px;
       
     }
   }

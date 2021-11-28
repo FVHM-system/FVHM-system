@@ -18,6 +18,7 @@
     </div>
     <el-scrollbar class="data-chart">
       <el-table
+          v-loading="loading"
           :key="Math.random()"
           :data=tableData
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
@@ -33,12 +34,12 @@
         <el-table-column label="所属道路" prop="roadName" width="200px"/>
         <el-table-column label="地址" prop="address" width="200px"/>
         <el-table-column label="阀栓状态" prop="status" :formatter="statusFormate" width="200px"/>
-        <el-table-column label="阀栓设置时间" prop="createTime" width="200px"/>
+        <el-table-column label="阀栓设置时间"  :valve_createTime="this.prop" prop="createTime" width="200px"/>
         <el-table-column label="计量设备型号" prop="meterNum" width="200px"/>
         <el-table-column label="通讯编号" prop="phone" width="200px"/>
         <el-table-column fixed="right" label="操作" width="360">
           <template #default="scope">
-            <valve-detail class="drawer" :valve_id="scope.row.valveId" ></valve-detail>
+            <valve-detail class="drawer" :valve_id="scope.row.valveId" :valve_createTime="tableData.createTime"></valve-detail>
             <el-button type="warning" @click="">停用</el-button>
             <el-button type="danger">删除</el-button>
           </template>
@@ -79,7 +80,7 @@ const statusFormate = function (row){
 
 /* 查询 */
 const dataFind = async function () {
-  let res = await fetchFindData(input1.value)
+  let res = await fetchFindData(input1.value,input2.value)
   if (res.code === '200') {
     tableData.value = res.data;
   }
@@ -87,9 +88,8 @@ const dataFind = async function () {
 }
 /* 获取阀栓信息 */
 const dataRequire = async function(){
-  let res = await fetchVpinformation()
-  if (res.code === '200') {
-    tableData.value = res.data;
+  if(input1.value!=='' || input2.value!=='') {
+    location.reload()
   }
 }
 onMounted(async () => {

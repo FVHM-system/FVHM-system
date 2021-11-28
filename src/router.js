@@ -19,7 +19,7 @@ import AreaManage from './pages/addrManage/areaManage.vue';
 import TownManage from './pages/addrManage/townManage.vue';
 import VillageManage from './pages/addrManage/villageManage.vue';
 import RoadManage from './pages/addrManage/roadManage.vue';
-
+import WaterStatistics from "./pages/waterConsumptionStatistics/waterConsumptionStatistics.vue"
  const configs = [
   {
     path: '/', // 路由地址，children 内路由地址 = 上一嵌套的路由地址（若无则为""） + 该path
@@ -80,7 +80,7 @@ import RoadManage from './pages/addrManage/roadManage.vue';
     label: '用水统计',
     name: 'water_consumption',
     icon: '',
-    component: ""
+    component: WaterStatistics
   },
   {
     path: '/water_consumption_statistics',
