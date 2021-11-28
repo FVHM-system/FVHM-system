@@ -1,5 +1,9 @@
 import request from './request'
 
+export const fetchSuper = async () => {
+  return await request.Pget('/city/getalladdress')
+}
+
 // 仍在使用的旧接口
 export const fetchVillageInfo = async () => {
   return await request.Pget('/village/getvillagerelationship')
@@ -46,12 +50,12 @@ export const fetchRoadList=async()=>{
   return await request.Pget('/road/getroadinfo')
 }
 
-export const AddVillageInfoByConfig = async ({ townId, villageName, address }) => {
+export const AddVillageInfoByConfig = async ({ townId, villageId,villageName }) => {
   return await request.post('/village/insertvillageinfo', {
     data: {
-      villageName,
-      address,
       townId,
+      villageId,
+      villageName,
     },
   })
 }
@@ -66,10 +70,9 @@ export const editDistrictInfoByConfig = async ({ cityId, districtId, districtNam
   })
 }
 
-export const editVillageInfoByConfig = async ({ address, townId, villageId, villageName }) => {
+export const editVillageInfoByConfig = async ({ townId, villageId, villageName }) => {
   return await request.put('/village/updatevillageinfo', {
     data: {
-      address,
       townId,
       villageId,
       villageName,
@@ -183,3 +186,34 @@ export const deleteCityInfoById = async ({ id }) => {
     },
   })
 }
+
+
+export const deleteRoadInfoById = async ({ id }) => {
+  return await request.delete('/road/deleteroadinfo', {
+    params: {
+      roadId: id,
+    },
+  })
+}
+
+export const editRoadInfoByConfig = async ({  roadId, roadName ,villageId}) => {
+  return await request.put('/road/updateroadinfo', {
+    data: {
+      roadId,
+      roadName,
+      villageId,
+    },
+  })
+}
+
+export const AddRoadInfoByConfig = async ({  roadName ,villageId}) => {
+  return await request.post('/road/insertroadinfo', {
+    data: {
+      roadName,
+      villageId,
+    },
+  })
+}
+
+
+
