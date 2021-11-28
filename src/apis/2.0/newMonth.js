@@ -56,10 +56,3 @@ export const fetchMonthRoad = async({ month, list })=>{
       })
 }
 
-// export const fetchTest = async({ num })=>{
-//   return await request.Pget('/valveinfo/findvalveinfosbyconditions', {
-//       params: {
-//         valveCode:num,
-//       },
-//     })
-// }

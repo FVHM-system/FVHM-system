@@ -104,11 +104,12 @@ export const AddDistrictInfoByConfig = async ({ cityId, districtName }) => {
   })
 }
 
-export const AddAreaInfoByConfig = async ({ address, areaName }) => {
+export const AddAreaInfoByConfig = async ({ address, areaName ,cityId}) => {
   return await request.post('/area/insertareainfo', {
     data: {
       address,
       areaName,
+      cityId,
     },
   })
 }
@@ -132,12 +133,13 @@ export const editTownInfoByConfig = async ({ districtId, townId, townName }) => 
   })
 }
 
-export const editAreaInfoByConfig = async ({ address, areaId, areaName }) => {
+export const editAreaInfoByConfig = async ({ address, areaId, areaName ,cityId}) => {
   return await request.put('/area/updateareainfo', {
     data: {
       address,
       areaId,
       areaName,
+      cityId,
     },
   })
 }

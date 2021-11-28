@@ -13,7 +13,12 @@ import async from "async";
 import EditFunction from '@/pages/EditFunction.vue';
 import Manage from '@/pages/manage.vue';
 import DistrictReport from '@/pages/statisticalReport/districtReport.vue';
-
+import CityManage from './pages/addrmanage/cityManage.vue';
+import DistrictManage from './pages/addrManage/districtManage.vue';
+import AreaManage from './pages/addrManage/areaManage.vue';
+import TownManage from './pages/addrManage/townManage.vue';
+import VillageManage from './pages/addrManage/villageManage.vue';
+import RoadManage from './pages/addrManage/roadManage.vue';
 
  const configs = [
   {
@@ -85,11 +90,49 @@ import DistrictReport from '@/pages/statisticalReport/districtReport.vue';
     component: DistrictReport
   },
   {
-    path: '/road_management',
-    label: '道路管理',
-    name: 'road_management',
-    icon: '',
-    component:''
+    path: '/addr_management',
+    label: '地址管理',
+    name: 'addr_management',
+    icon: 'el-icon-office-building',
+    expanded:false,
+    children:[
+      {
+        path:'/city',
+        label:'城市管理',
+        name:'page-addr-city',
+        component: CityManage,
+      },
+      {
+        path:'/district',
+        label:'区县管理',
+        name:'page-addr-district',
+        component: DistrictManage,
+      },
+      {
+        path:'/area',
+        label:'工业区管理',
+        name:'page-addr-area',
+        component: AreaManage,
+      },
+      {
+        path:'/town',
+        label:'乡镇管理',
+        name:'page-addr-town',
+        component: TownManage,
+      },
+      {
+        path:'/village',
+        label:'村庄管理',
+        name:'page-addr-village',
+        component: VillageManage,
+      },
+      {
+        path:'/road',
+        label:'道路管理',
+        name:'page-addr-road',
+        component: RoadManage,
+      },
+    ]
   },
   {
     path: '/system_management',
