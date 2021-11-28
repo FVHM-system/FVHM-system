@@ -2,7 +2,6 @@
   <div class="home">
     <div class="home-top">
       <div class="home-top-title">阀门分布</div>
-      
     </div>
     <div class="home-body" id="water-bar"></div>
   </div>

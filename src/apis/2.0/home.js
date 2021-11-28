@@ -1,5 +1,14 @@
 import request from './request'
 
+export const fetchConsume = async ({type,currentTime}) => {
+  return await request.get('/statistical/getroadstatistical',{
+    params:{
+      type,
+      currentTime,
+    },
+  })
+}
+
 export const fetchWellInstalled = async () => {
   return await request.get('/home/getwellStatusCounts')
 }
