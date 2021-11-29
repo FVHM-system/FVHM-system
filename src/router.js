@@ -146,7 +146,7 @@ import PostMgmt from './pages/SystemMgmt/PostMgmt.vue'
     path: '/system_management',
     label: '系统管理',
     name: 'system_management',
-    icon: '',
+    icon: 'el-icon-setting',
     children: [
       {
         path:'/user_anagement',
