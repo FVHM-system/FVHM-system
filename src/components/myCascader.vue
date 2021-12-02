@@ -33,7 +33,6 @@ myprops={
 
 onMounted(async()=>{
   const temp=await fetchSuper()
-  console.log("啊啊啊啊",temp)
   options.value=temp
 })
 </script>

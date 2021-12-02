@@ -76,7 +76,7 @@
           </div>
 
         </el-tab-pane>
-        <el-tab-pane label="近三年用水趋势">
+        <el-tab-pane label="近三年用水趋势" @click="waterTrandGet">
           <div class="CardWaterSum">
           <div class="waterTrend">
             <div class="waterTrend-top">

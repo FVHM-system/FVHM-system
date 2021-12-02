@@ -45,7 +45,7 @@ export default {
       } else {
         axios.request({
           method: 'post',
-          url: 'http://47.113.225.96:8080/login',
+          url: 'http://121.37.66.218:8080/login',
           data: _this.loginForm
         }).then(res => {
           this.$store.dispatch('user/login', _this.loginForm);

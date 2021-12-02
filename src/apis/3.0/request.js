@@ -1,11 +1,11 @@
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
-import { store } from '../../stores/index'
+import {ElMessage} from 'element-plus'
+import {store} from '../../stores/index'
 
 // import request from '../../request'
 
 // const baseUrl = 'http://115.157.195.222:8787'
-const baseUrl = 'http://47.113.225.96:8080'
+const baseUrl = 'http://121.37.66.218:8080'
 // const baseUrl = 'http://58.20.51.78:9292'
 
 // axios.defaults.paramsSerializer = params => {
@@ -46,9 +46,10 @@ const request = {
     return this._normal('delete', url, options, true)
   },
   async _normal(method, url, options, needPackage) {
-    const { headers, ...others } = options || {}
+    const {headers, ...others} = options || {}
     let res
-    const mergeUrl = url.startsWith('http://') || url.startsWith('https://') ? url : baseUrl + url
+    const mergeUrl = url.startsWith('http://') || url.startsWith('https://')
+        ? url : baseUrl + url
     try {
       res = await axios.request({
         url: mergeUrl,
@@ -86,6 +87,18 @@ const request = {
       })
     }
     return needPackage ? res.data.data : res.data
+  },
+  async postJSON(url,data) {
+    let res = await axios({
+      method: 'post',
+      url: baseUrl+url,
+      headers: {
+        'Authorization': store.getters['user/token'],
+        'Content-Type': 'application/json'
+      },
+      data: data
+    })
+    return res.data
   },
 }
 
