@@ -98,6 +98,7 @@
       ]
       counts.value = r
       linePic(counts.value)
+      console.log(counts.value)
     }
   }
 

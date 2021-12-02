@@ -20,6 +20,7 @@ import TownManage from './pages/addrManage/townManage.vue';
 import VillageManage from './pages/addrManage/villageManage.vue';
 import RoadManage from './pages/addrManage/roadManage.vue';
 import waterConsumption from './pages/waterConsumption/waterConsumption.vue';
+import valveCheck from './pages/valveCheck/valveCheck.vue';
  const configs = [
   {
     path: '/', // 路由地址，children 内路由地址 = 上一嵌套的路由地址（若无则为""） + 该path
@@ -161,6 +162,13 @@ import waterConsumption from './pages/waterConsumption/waterConsumption.vue';
         component: ""
       }
     ]
+  },
+  {
+    path: '/valve_check',
+    label: '阀栓巡视',
+    name: 'valve_check',
+    icon: 'el-icon-s-opportunity',
+    component: valveCheck
   },
 
 ];

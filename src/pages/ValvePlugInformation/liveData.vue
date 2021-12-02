@@ -107,7 +107,7 @@ import {fetFindVolumebyTime,
   fetFindvolumebyyear,
   fetFindvolumebyday,
   fetFindmonthvolumebyyear} from "./util/vpinformation";
-import {onMounted, ref, defineProps} from "vue";
+import {onMounted, ref, defineProps,onUnmounted} from "vue";
 import { dateTimeTrans } from "../../utils/mrWang";
 
 const timeTypes = [
@@ -134,9 +134,10 @@ let waterData = ref(0)
 let waterDataYear = ref(0)
 let waterDataTotal = ref(0)
 let value3 = ref(new Date())
-let waterYearData
+let waterYearData=[]
 let myChart
-let BarPic = function () {
+
+let BarPic = function (test) {
   let chartDom = document.getElementById('water-line')
   myChart = echarts.init(chartDom)
   let option = {
@@ -163,7 +164,7 @@ let BarPic = function () {
     },
     series: [
       {
-        data: waterYearData,
+        data: test,
         type: 'line'
       }
     ]
@@ -216,17 +217,24 @@ const getWaterTotal = async function(){
   console.log(res.data)
 }
 const waterTrandGet = async function (){
-  let time = new Date(value3).getFullYear()
+  let time = new Date(value3.value).getFullYear()
   let res = await fetFindmonthvolumebyyear(props.valve_id_end,time)
-  if(res.code==='200'){
-    waterYearData=res.data.map(item=>item.volume)
-  }
+  waterYearData=res.data.map(item=>item.volume)
   console.log(waterYearData)
+  console.log(props.valve_id_end)
+  console.log(time)
+  BarPic(waterYearData)
+  
 }
 onMounted(async () => {
   await getTimeWaterDataYear()
-  BarPic()
+  waterTrandGet()
 })
+onUnmounted(() => {
+    if (myChart) {
+      myChart.dispose()
+    }
+  })
 </script>
 
 <style lang="scss" scoped>

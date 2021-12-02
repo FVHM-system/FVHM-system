@@ -477,7 +477,7 @@ function exportCSV() {
   }
 onMounted(async()=>{
   // getNodes()
-  // init()
+  init()
   const temp=await fetchSuper()
   console.log("啊啊啊啊",temp)
   options.value=temp
