@@ -1,4 +1,5 @@
 import request from "../../../apis/3.0/request";
+import axios from "axios";
 
 export const fetchVpinformation = async () => {
   return await request.get('/valveinfo/getvalveinfos', {
@@ -36,4 +37,7 @@ export const fetFindmonthvolumebyyear= async (valveId,year) => {
       year:year
     }
   })
+}
+export const fetInsertValveInfo = async (data) => {
+  return await request.postJSON('/valveinfo/insertvalveinfo',data)
 }

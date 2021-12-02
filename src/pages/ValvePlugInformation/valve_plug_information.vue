@@ -2,21 +2,30 @@
   <div class="p-page">
     <div class="p-header">
       <p class="page-name">阀栓信息</p>
-      <addr-select class="addrSelect"></addr-select>
+      <el-cascader
+          v-model="place"
+          :options="options"
+          :props="myprops"
+          ref="require"
+          placeholder="选择道路"
+          :show-all-levels="false"
+          style="margin-left: -145px;top:3px"
+          clearable></el-cascader>
       <el-col :span="8">
-      <el-input class="device-id"  v-model="input1" placeholder="请输入阀栓编号"/>
+        <el-input class="device-id" v-model="input1" placeholder="请输入阀栓编号"/>
       </el-col>
       <el-col :span="8">
-      <el-input class="device-name" v-model="input2" placeholder="请输入阀栓名称"/>
+        <el-input class="device-name" v-model="input2" placeholder="请输入阀栓名称"/>
       </el-col>
       <div class="button">
-      <el-button v-model="search" type="primary" @click="dataFind">查询</el-button>
-      <el-button type="info" @click="dataRequire">重置</el-button>
-      <el-button type="success" >添加</el-button>
-      <el-button type="primary">导出</el-button>
+        <el-button v-model="search" type="primary" @click="dataFind">查询</el-button>
+        <el-button type="info" @click="dataRequire">重置</el-button>
+        <add-valve-plug></add-valve-plug>
+        <el-button type="primary">导出</el-button>
       </div>
+
     </div>
-    <el-scrollbar class="data-chart">
+    <div class="data-chart">
       <el-table
           v-loading="loading"
           :key="Math.random()"
@@ -26,77 +35,103 @@
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
           style="width: 100%"
+          height="520"
           @row-click="getValveId"
       >
         <el-table-column fixed="left" label="阀栓编号" prop="valveCode" width="120px"/>
         <el-table-column label="阀栓类型" prop="valveType" :formatter="typeFormate" width="120px"/>
         <el-table-column label="阀栓名称" prop="valveName" width="120px"/>
-        <el-table-column label="所属道路" prop="roadName" width="200px"/>
-        <el-table-column label="地址" prop="address" width="200px"/>
+        <el-table-column label="所属道路" prop="address" width="200px"/>
         <el-table-column label="阀栓状态" prop="status" :formatter="statusFormate" width="200px"/>
-        <el-table-column label="阀栓设置时间"  :valve_createTime="this.prop" prop="createTime" width="200px"/>
-        <el-table-column label="计量设备型号" prop="meterNum" width="200px"/>
-        <el-table-column label="通讯编号" prop="phone" width="200px"/>
+        <el-table-column label="阀栓设置时间" :valve_createTime="this.prop" prop="createTime"
+                         width="200px"/>
+        <el-table-column label="计量设备型号" prop="meterCode" width="200px"/>
+        <el-table-column label="通讯编号" prop="comNumber" width="200px"/>
         <el-table-column fixed="right" label="操作" width="360">
           <template #default="scope">
-            <valve-detail class="drawer" :valve_id="scope.row.valveId" :valve_createTime="tableData.createTime"></valve-detail>
+            <valve-detail class="drawer" :valve_id="scope.row.valveId"
+                          :valve_createTime="tableData.createTime"></valve-detail>
             <el-button type="warning" @click="">停用</el-button>
             <el-button type="danger">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-    </el-scrollbar>
+    </div>
+
   </div>
 </template>
 <script setup>
-import {defineComponent, onMounted, ref} from 'vue'
-import { fetchVpinformation} from "./util/vpinformation";
-import { fetchFindData } from "./util/dataSearch";
+import {defineComponent, onMounted, ref, getCurrentInstance} from 'vue'
+import {fetchVpinformation} from "./util/vpinformation";
+import {fetchFindData} from "./util/dataSearch";
 import {mountedToArrPrototype} from "../../mock";
-import AddrSelect from '@/pages/ValvePlugInformation/addrSelect.vue';
-import { types,statuss } from '@/utils/transform.js'
+import {types, statuss} from '@/utils/transform.js'
 import ValveDetail from "@/pages/ValvePlugInformation/valveDetail.vue";
+import AddValvePlug from "@/pages/ValvePlugInformation/addValvePlug.vue";
 import {router} from "../../router";
+import {fetchSuper} from '@/apis/2.0/addr'
+import {multiply} from 'lodash'
+import {ElMessage} from 'element-plus'
 
 let input1 = ref('')
 let input2 = ref('')
 let options = ref([])
+let addressOptions = ref([])
 let tableData = ref([])
-let testnum=ref('')
-let valveChange=ref(false)
-const getValveId = function (row){
-  testnum=row.valveId
+let testnum = ref('')
+let require = ref(null)
+let myprops = ref()
+let dialogVisible = ref(false)
+myprops = {
+  label: 'name',
+  value: 'message',
+  children: 'child',
+  checkStrictly: true
+}
+let place = ref()
+const getValveId = function (row) {
+  testnum = row.valveId
 }
 /* 阀栓代码与文本转换 */
-const typeFormate = function (row){
+const typeFormate = function (row) {
   const target = types.find(i => i.value === row.valveType)
   return target.label;
 }
-const statusFormate = function (row){
+const statusFormate = function (row) {
   const targetStatus = statuss.find(i => i.value === row.status)
   return targetStatus.label;
 }
 
-
 /* 查询 */
 const dataFind = async function () {
-  let res = await fetchFindData(input1.value,input2.value)
+  let address = ref('')
+  if(place.value.length>0) {
+    for (let i = place.value.length - 1; i >= 0; i--) {
+      address.value = place.value[i].name + address.value
+    }
+  }
+  console.log(input2.value)
+  let res = await fetchFindData(input1.value, input2.value, address.value)
   if (res.code === '200') {
+    ElMessage({
+      type: 'success',
+      message: '查询成功！',
+    })
     tableData.value = res.data;
   }
   console.log(tableData.value)
+  console.log(address.value)
 }
 /* 获取阀栓信息 */
-const dataRequire = async function(){
-  if(input1.value!=='' || input2.value!=='') {
-    location.reload()
-  }
+const dataRequire = async function () {
+  location.reload()
 }
 onMounted(async () => {
   let res = await fetchVpinformation()
   if (res.code === '200') {
     tableData.value = res.data;
   }
+  options.value = await fetchSuper()
 })
 
 </script>
@@ -142,7 +177,8 @@ onMounted(async () => {
   top: 3px;
   left: 510px;
 }
-.button{
+
+.button {
   position: relative;
   top: -37px;
   left: 950px;
@@ -151,7 +187,28 @@ onMounted(async () => {
 .data-chart {
   position: relative;
   top: 10px;
-  always: true;
   overflow-y: hidden;
 }
+
+::-webkit-scrollbar {
+  width: 0px;
+  height: 8px;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgray;
+  border-radius: 4px;
+}
+/*/deep/ .el-table__body-wrapper::-webkit-scrollbar {*/
+/*  width: 6px;*/
+/*  height: 6px;*/
+/*}*/
+
+/*/deep/ .el-table__body-wrapper::-webkit-scrollbar-thumb {*/
+/*  background-color: #ddd;*/
+/*  border-radius: 3px;*/
+/*}*/
+
+
 </style>

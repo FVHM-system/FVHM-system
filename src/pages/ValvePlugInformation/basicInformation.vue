@@ -97,7 +97,6 @@ import {fetchUpdateData} from "./util/updateData";
 import {ElMessage,ElLoading} from 'element-plus'
 
 
-let value1 = 13;
 let formData = ref([]);
 let options = ref([
   {
@@ -132,7 +131,7 @@ onMounted(async () => {
   if (res.code === '200') {
     formData.value = res.data;
   }
-  // console.log(formData.value)
+  console.log(formData.value)
 })
 let valveInfo = {}
 const updateInfo = async function () {
