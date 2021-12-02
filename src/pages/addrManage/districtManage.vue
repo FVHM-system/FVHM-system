@@ -17,7 +17,12 @@
             </div>
         </div>
         <div class="p-body">
-            <el-table :data="districtList" style="width: 100%" size="medium" stripe>
+            <el-table
+                :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
+          color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
+                :cell-style="{'text-align':'center'}"
+                :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
+                :data="districtList" style="margin-top10px;width: 100%" size="medium" stripe>
                 <el-table-column prop="district" label="区县名" min-width="150"> </el-table-column>
                 <el-table-column prop="city" sortable label="所属城市" min-width="150"> </el-table-column>
                 <el-table-column fixed="right" label="操作" width="230">

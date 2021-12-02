@@ -41,3 +41,10 @@ export const fetFindmonthvolumebyyear= async (valveId,year) => {
 export const fetInsertValveInfo = async (data) => {
   return await request.postJSON('/valveinfo/insertvalveinfo',data)
 }
+export const fetDeleteValveInfo = async ({valveId}) => {
+  return await request.delete('/valveinfo/deletevalveinfo',{
+    params:{
+      valveId:valveId
+    }
+  })
+}

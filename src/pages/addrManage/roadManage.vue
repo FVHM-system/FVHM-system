@@ -17,7 +17,12 @@
             </div>
         </div>
         <div class="p-body">
-            <el-table :data="roadList" style="width: 100%" size="medium" stripe>
+            <el-table
+                :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
+          color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
+                :cell-style="{'text-align':'center'}"
+                :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
+                :data="roadList" style="margin-top:10px;width: 100%" size="medium" stripe>
                 <el-table-column prop="road" label="道路名" min-width="150"> </el-table-column>
                 <!-- <el-table-column prop="address" sortable label="地址" min-width="150"> </el-table-column> -->
                 <el-table-column prop="village" sortable label="所属村庄" min-width="150"> </el-table-column>

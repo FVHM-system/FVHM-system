@@ -10,7 +10,6 @@ export const fetchApplicantStatisticsByTime = async ({ type, currentTime }) => {
 }
 
 // 工业园区用水统计
-// http://115.157.195.222:3000/project/16/interface/api/58
 export const fetchAreaVolumeByTime = async ({ type, currentTime }) => {
   return await request.get('/areareport/getareareport', {
     params: {
@@ -21,7 +20,6 @@ export const fetchAreaVolumeByTime = async ({ type, currentTime }) => {
 }
 
 // 区域用水统计
-// http://115.157.195.222:3000/project/16/interface/api/58
 export const fetchDistrictVolumeByTime = async ({ type, currentTime }) => {
   return await request.get('/districtreport/getdistrictreport', {
     params: {
@@ -32,8 +30,6 @@ export const fetchDistrictVolumeByTime = async ({ type, currentTime }) => {
 }
 
 // 乡镇用水统计
-// http://115.157.195.222:3000/project/16/interface/api/55
-// http://115.157.195.222:3000/project/16/interface/api/57
 export const fetchTownVolumeByTime = async ({ type, currentTime }) => {
   return await request.get('/townreport/gettownreport', {
     params: {
@@ -44,7 +40,6 @@ export const fetchTownVolumeByTime = async ({ type, currentTime }) => {
 }
 
 // 村庄用水统计
-// http://115.157.195.222:3000/project/16/interface/api/58
 export const fetchVillageVolumeByTime = async ({ type, currentTime }) => {
   return await request.get('/villagereport/getvillagereport', {
     params: {
@@ -55,7 +50,6 @@ export const fetchVillageVolumeByTime = async ({ type, currentTime }) => {
 }
 
 // 阀门用水统计
-// http://115.157.195.222:3000/project/16/interface/api/59
 export const fetchWellVolumeByTime = async ({ type, time, well_name }) => {
   return await request.get('/wellvolume/findbyconditions', {
     params: {
@@ -67,7 +61,6 @@ export const fetchWellVolumeByTime = async ({ type, time, well_name }) => {
 }
 
 // 特定阀门用水统计
-// http://115.157.195.222:3000/project/16/interface/api/59
 export const fetchSpecificWellVolumeByTime = async ({ type, time, id }) => {
   return await request.get('/wellinfo/findvolumebyday', {
     params: {
@@ -79,7 +72,6 @@ export const fetchSpecificWellVolumeByTime = async ({ type, time, id }) => {
 }
 
 // 阀门用水统计
-// http://115.157.195.222:3000/project/16/interface/api/59
 export const fetchWellDataByConfig = async ({ id, start, end }) => {
   return await request.get('/wellinfo/findvolumebytime', {
     params: {

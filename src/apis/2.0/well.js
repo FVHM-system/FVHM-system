@@ -1,7 +1,6 @@
 import request from './request'
 
 // 阀门信息
-// http://115.157.195.222:3000/project/16/interface/api/60
 export const fetchWellInfoByConfig = async ({ wellCode, wellName, address, applicantName, wellId }) => {
   return await request.get('/wellinfo/findwellinfosbyconditions', {
     params: {

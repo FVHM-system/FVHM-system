@@ -1,4 +1,4 @@
-export default function MapLoader () {
+export default function MapLoader() {
   return new Promise((resolve, reject) => {
     if (window.AMap) {
       resolve(window.AMap)

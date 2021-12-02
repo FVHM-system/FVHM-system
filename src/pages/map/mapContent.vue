@@ -3,7 +3,7 @@
     <div id="map-container" class="layer"></div>
     <div id="panel"></div> 
   </div>
-  <div class="layer box" point-over:none>
+  <div class="layer box">
     <map-tip></map-tip>
     <el-radio-group
         v-model="radio"
@@ -45,7 +45,7 @@
 import MapLoader from '@/pages/Map/localMap.js';
 import {ref,onMounted} from 'vue'
 import { fetchValveInfos } from '../../apis/2.0/newMap';
-import MapTip from '../../components/MapTip.vue'
+import MapTip from '../../components/mapTip.vue'
 let radio=ref()
 let satelliteObject = ref()
 let chart
@@ -115,13 +115,7 @@ async function loadMap(){
         startLngLat=[]
         endLngLat=[]
         clicklocation.value=[]
-        // startLngLat.push(e.data.value[0])
-        // startLngLat.push(e.data.value[1])
-        // clicklocation.value.push(e.data)
-        // console.log("新起点",startLngLat)
-        // console.log("点列表",clicklocation.value)
         clicked.value=true
-        // showNav.value=false
         state.value=false
       }
     }

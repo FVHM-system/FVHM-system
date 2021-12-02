@@ -17,7 +17,12 @@
             </div>
         </div>
         <div class="p-body">
-            <el-table :data="cityList" style="width: 100%" size="medium" stripe>
+            <el-table
+                :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
+          color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
+                :cell-style="{'text-align':'center'}"
+                :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
+                :data="cityList" style="margin-top:10px;width: 100%" size="medium" stripe>
                 <el-table-column prop="city" label="城市名" min-width="150"> </el-table-column>
                 <el-table-column fixed="right" label="操作" width="230">
                 <template #default="scope">
@@ -190,11 +195,11 @@
     width: 1000px;
     .margin-right {
       position: relative;
-      margin-left: 20 px;
+      margin-left: 20px;
     }
     .search {
       position: relative;
-      margin-left: 20 px;
+      margin-left: 20px;
       
     }
   }.page2-name {

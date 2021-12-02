@@ -21,7 +21,7 @@
         <el-button v-model="search" type="primary" @click="dataFind">查询</el-button>
         <el-button type="info" @click="dataRequire">重置</el-button>
         <add-valve-plug></add-valve-plug>
-        <el-button type="primary">导出</el-button>
+        <el-button type="primary" @click="exportCSV">导出</el-button>
       </div>
 
     </div>
@@ -52,7 +52,7 @@
             <valve-detail class="drawer" :valve_id="scope.row.valveId"
                           :valve_createTime="tableData.createTime"></valve-detail>
             <el-button type="warning" @click="">停用</el-button>
-            <el-button type="danger">删除</el-button>
+            <el-button type="danger" @click = "deleteValve(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -61,23 +61,21 @@
   </div>
 </template>
 <script setup>
-import {defineComponent, onMounted, ref, getCurrentInstance} from 'vue'
-import {fetchVpinformation} from "./util/vpinformation";
+import { onMounted, ref, getCurrentInstance} from 'vue'
+import {fetchVpinformation,fetDeleteValveInfo} from "./util/vpinformation";
 import {fetchFindData} from "./util/dataSearch";
-import {mountedToArrPrototype} from "../../mock";
 import {types, statuss} from '@/utils/transform.js'
 import ValveDetail from "@/pages/ValvePlugInformation/valveDetail.vue";
 import AddValvePlug from "@/pages/ValvePlugInformation/addValvePlug.vue";
-import {router} from "../../router";
 import {fetchSuper} from '@/apis/2.0/addr'
-import {multiply} from 'lodash'
+import { exportExcel } from '../../utils/exportExcel'
 import {ElMessage} from 'element-plus'
 
 let input1 = ref('')
 let input2 = ref('')
 let options = ref([])
-let addressOptions = ref([])
 let tableData = ref([])
+let excelData = ref([])
 let testnum = ref('')
 let require = ref(null)
 let myprops = ref()
@@ -105,7 +103,7 @@ const statusFormate = function (row) {
 /* 查询 */
 const dataFind = async function () {
   let address = ref('')
-  if(place.value.length>0) {
+  if(place.value) {
     for (let i = place.value.length - 1; i >= 0; i--) {
       address.value = place.value[i].name + address.value
     }
@@ -125,6 +123,67 @@ const dataFind = async function () {
 /* 获取阀栓信息 */
 const dataRequire = async function () {
   location.reload()
+}
+const deleteValve = async function(row){
+  let res = await fetDeleteValveInfo({valveId:row.valveId})
+  console.log(row.valveId)
+  if(res.code === '200'){
+    ElMessage({
+      type: 'success',
+      message: '删除成功！',
+    })
+    location.reload()
+  }
+}
+/* 导出 */
+function exportCSV() {
+  excelData.value = tableData.value
+  let status
+  let type
+  for (let j = 0; j < excelData.value.length; j++) {
+    status = statuss.find(i => i.value === excelData.value[j].status)
+    type = types.find(i => i.value === excelData.value[j].valveType)
+    console.log(status.label)
+  }
+  console.log((statuss.find(i => i.value === excelData.value[4].status)).label)
+  const excel = {}
+  excel.props = [
+    {
+      label: '阀栓编号',
+      name: 'valveCode',
+    },
+    {
+      label: '阀栓类型',
+      name: 'valveType',
+    },
+    {
+      label: '阀栓名称',
+      name: 'valveName',
+    },
+    {
+      label: '所属道路',
+      name: 'address',
+    },
+    {
+      label: '阀栓状态',
+      name: "status",
+    },
+    {
+      label: '阀栓设置时间',
+      name: 'createTime',
+    },
+    {
+      label: '计量设备编号',
+      name: 'meterCode',
+    },
+    {
+      label: '通讯编号',
+      name: 'comNumber',
+    },
+  ]
+  excel.body = excelData.value
+  excel.fileName = '阀栓信息表'
+  exportExcel(excel)
 }
 onMounted(async () => {
   let res = await fetchVpinformation()

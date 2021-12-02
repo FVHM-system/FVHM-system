@@ -1,11 +1,7 @@
 import { fetchCityInfo, fetchDistrictInfo, fetchTownInfo, fetchVillageInfo, fetchAreaInfo } from '../apis/2.0/addr'
-import { fetchApplicantByName } from '../apis/3.0/applicant'
 import { fetchDepartmentsByNone } from '../apis/3.0/department'
 import { getMeterTypes } from '../apis/3.0/meter'
 import { cloneDeep } from 'lodash'
-import { cityGenerator, countryGenerator, genList, idGenerator, rateGeneratorFactory } from '../mock'
-//import { fixHeight } from '../utils/fixHeight'
-import { init } from 'echarts'
 
 export const utils = {
   namespaced: true,

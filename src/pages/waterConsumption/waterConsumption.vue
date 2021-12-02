@@ -8,7 +8,7 @@
                 placeholder="选择时间段"
                 @change="handleChange"
                 class="margin-right"
-                style="width: 70px"
+                style="margin-left:220px;width: 70px"
                 >
                 <el-option v-for="(item, index) in timeTypes" :key="index" :value="item.value">
                 {{ item.lable }}
@@ -45,8 +45,10 @@
             </div>
         </div>
     </div>
+  <div class="e-chart-C">
     <div class="p-body" style="height:520px" id="water-bar">
     </div>
+  </div>
 </div>
 </template>
 
@@ -211,6 +213,15 @@ const timeTypes = [
   }
 .search{
     position: relative;
-    margin-left: 50px;
+    margin-left: 10px;
+}
+.p-body{
+  margin-left: 40px;
+}
+.e-chart-C{
+  margin-top: 10px;
+  background-color: white;
+  height: 100%;
+  width: 100%;
 }
 </style>

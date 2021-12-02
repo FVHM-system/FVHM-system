@@ -12,14 +12,14 @@
                       placeholder="选择行政区域"
                       @expand-change="handleItemChange"
                       collapse-tags="true"
-                      style="width: 200px"
+                      style="left: 390px;width: 200px"
                       clearable/>
                    <el-select
                       v-model="searchTimeType"
                       placeholder="选择时间段"
                       @change="handleChange"
                       class="margin-right"
-                      style="width: 70px"
+                      style="left:380px;width: 70px"
                    >
                       <el-option v-for="(item, index) in timeTypes" :key="index" :value="item.value">
                         {{ item.lable }}
@@ -31,7 +31,7 @@
                         type="date"
                         placeholder="选择某天"
                         class="search"
-                        style="width: 200px"
+                        style="left:390px;width: 200px"
                         v-if="timeActive === '日'"
                       ></el-date-picker>
                       <el-date-picker
@@ -39,7 +39,7 @@
                         type="month"
                         placeholder="选择某月"
                         class="search"
-                        style="width: 200px"
+                        style="left:390px;width: 200px"
                         v-if="timeActive === '月'"
                       ></el-date-picker>
                       <el-date-picker
@@ -47,7 +47,7 @@
                         type="year"
                         placeholder="选择某年"
                         class="search"
-                        style="width: 200px"
+                        style="left:390px;width: 200px"
                         v-if="timeActive === '年'"
                       ></el-date-picker>
                    </div>
@@ -60,6 +60,10 @@
           :data="data"
           height="70vh"
           border
+          :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
+          color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
+          :cell-style="{'text-align':'center'}"
+          :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
           stripe
           style="width: 100%"
           >
@@ -504,5 +508,8 @@ onMounted(async()=>{
   .search-btn {
     display: flex;
     margin-left: 400px;
+  }
+  .p-body{
+    margin-top: 10px;
   }
 </style>

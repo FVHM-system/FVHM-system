@@ -13,9 +13,6 @@ export const saveAccount2PostByList = async ({ id, list }) => {
     params: {
       roleId: id,
     },
-    // data: {
-    //   sysRoleAndPermissionVos: list,
-    // },
     data: list,
   })
 }

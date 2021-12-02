@@ -25,9 +25,6 @@ export const saveApiByList = async ({ id, list }) => {
     params: {
       roleId: id,
     },
-    // data: {
-    //   sysRoleAndPermissionVos: list,
-    // },
     data: list,
   })
 }

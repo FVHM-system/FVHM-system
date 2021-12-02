@@ -19,12 +19,17 @@
       <div class="p-body">
       <el-scrollbar>
       <el-table
+          border
+          highlight-current-row
         :data="data"
-        height="500"
+        :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
+          color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
+        :cell-style="{'text-align':'center'}"
+        :row-style="{fontSize:'17px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
         style="width: 100%"
+        height="520"
         row-key="id"
         :key="fresh"
-        stripe
         lazy
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
         :load="load"
@@ -65,26 +70,6 @@ import{dateTimeTrans} from '../../utils/mrWang'
 let searchTime=ref(new Date())
 let searchTimeType=ref('月')
 let data=ref([])
-
-
-// const genTwoLengthNumberString = n => (n >= 10 ? n : '0' + n)
-//   function dateTimeTrans(d) {
-//     if (!d) {
-//       return ''
-//     }
-//     let yy = d.getFullYear()
-//     let MM = genTwoLengthNumberString(d.getMonth() + 1)
-//     let dd = genTwoLengthNumberString(d.getDate())
-//     if (searchTimeType.value === '日') {
-//       return yy + '-' + MM + '-' + dd
-//     }
-//     if (searchTimeType.value === '月') {
-//       return yy + '-' + MM
-//     }
-//     if (searchTimeType.value === '年') {
-//       return yy
-//     }
-//   }
 
 const load=async(tree, treeNode, resolve)=>{
   let r1=[],r2=[],r3=[],r4=[],r5=[]
@@ -251,6 +236,9 @@ onMounted(async()=>{
   }
   .search-btn {
     display: flex;
+    margin-left: 10px;
   }
-
+.p-body{
+  margin-top: 10px;
+}
 </style>

@@ -2,20 +2,7 @@ import axios from 'axios'
 import {ElMessage} from 'element-plus'
 import {store} from '../../stores/index'
 
-// import request from '../../request'
-
-// const baseUrl = 'http://115.157.195.222:8787'
 const baseUrl = 'http://121.37.66.218:8080'
-// const baseUrl = 'http://58.20.51.78:9292'
-
-// axios.defaults.paramsSerializer = params => {
-//   // Sample implementation of query string building
-//   let result = ''
-//   Object.keys(params).forEach(key => {
-//     result += `${key}=${encodeURIComponent(params[key])}&`
-//   })
-//   return result.substr(0, result.length - 1)
-// }
 /**
  * P 开头方法只返回内容，无内容时返回 undefined ：： data
  * 非 P 开头方法返回原内容（保证有对象返回） ：： { msg, code, data }

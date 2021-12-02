@@ -1,17 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import homepage from '@/pages/homePage/homepage.vue';
+import homepage from '@/pages/homePage/homePage.vue';
 import comprehensiveStatistics from '@/pages/comprehensiveStatistics/comprehensiveStatistics.vue'
-import Example3 from '@/pages/example3.vue';
-import Example4 from '@/pages/example4.vue';
-import Example5 from '@/pages/example5.vue';
-import MapContent from '@/pages/Map/mapcontent.vue';
-import MapDetail from '@/pages/Map/mapdetail.vue';
+import MapContent from '@/pages/Map/mapContent.vue';
+import MapDetail from '@/pages/Map/mapDetail.vue';
 import AlarmMgmt from '@/pages/AlarmMgmt/alarmMgmt.vue'
-import VPInformation from '@/pages/ValvePlugInformation/valve_plug_information.vue'
+import VPInformation from '@/pages/ValvePlugInformation/valvePlugInformation.vue'
 import ValveDetail from '@/pages/ValvePlugInformation/valveDetail.vue'
-import async from "async";
-import EditFunction from '@/pages/EditFunction.vue';
-import Manage from '@/pages/manage.vue';
 import DistrictReport from '@/pages/statisticalReport/districtReport.vue';
 import CityManage from './pages/addrmanage/cityManage.vue';
 import DistrictManage from './pages/addrManage/districtManage.vue';
@@ -22,12 +16,12 @@ import RoadManage from './pages/addrManage/roadManage.vue';
 import waterConsumption from './pages/waterConsumption/waterConsumption.vue';
 import valveCheck from './pages/valveCheck/valveCheck.vue';
 import AcceptMange from '@/pages/SystemMgmt/acceptManage.vue'
-import AccountMgmt from '@/pages/SystemMgmt/AccountMgmt.vue'
+import AccountMgmt from '@/pages/SystemMgmt/accountMgmt.vue'
 import AccountPostManage from '@/pages/SystemMgmt/accountPostManage.vue'
-import ApiMgmt from './pages/SystemMgmt/ApiMgmt.vue'
-import MenuMgmt from './pages/SystemMgmt/MenuMgmt.vue'
-import PermissionManage from './pages/SystemMgmt/permissionManage.vue'
-import PostMgmt from './pages/SystemMgmt/PostMgmt.vue'
+import ApiMgmt from './pages/systemMgmt/apiMgmt.vue'
+import MenuMgmt from './pages/systemMgmt/menuMgmt.vue'
+import PermissionManage from './pages/systemMgmt/permissionManage.vue'
+import PostMgmt from './pages/systemMgmt/postMgmt.vue'
 
  const configs = [
   {
@@ -77,6 +71,13 @@ import PostMgmt from './pages/SystemMgmt/PostMgmt.vue'
     icon: 'el-icon-message-solid',
     component: AlarmMgmt
   },
+   {
+     path: '/valve_check',
+     label: '阀栓巡视',
+     name: 'valve_check',
+     icon: 'el-icon-s-opportunity',
+     component: valveCheck
+   },
   {
     path: '/comprehensive_statistics',
     label: '综合统计',
@@ -188,13 +189,6 @@ import PostMgmt from './pages/SystemMgmt/PostMgmt.vue'
         component: ApiMgmt
       }
     ]
-  },
-  {
-    path: '/valve_check',
-    label: '阀栓巡视',
-    name: 'valve_check',
-    icon: 'el-icon-s-opportunity',
-    component: valveCheck
   },
 
 ];
