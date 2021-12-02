@@ -20,9 +20,7 @@ import TownManage from './pages/addrManage/townManage.vue';
 import VillageManage from './pages/addrManage/villageManage.vue';
 import RoadManage from './pages/addrManage/roadManage.vue';
 import waterConsumption from './pages/waterConsumption/waterConsumption.vue';
-<<<<<<< HEAD
 import valveCheck from './pages/valveCheck/valveCheck.vue';
-=======
 import AcceptMange from '@/pages/SystemMgmt/acceptManage.vue'
 import AccountMgmt from '@/pages/SystemMgmt/AccountMgmt.vue'
 import AccountPostManage from '@/pages/SystemMgmt/accountPostManage.vue'
@@ -31,7 +29,6 @@ import MenuMgmt from './pages/SystemMgmt/MenuMgmt.vue'
 import PermissionManage from './pages/SystemMgmt/permissionManage.vue'
 import PostMgmt from './pages/SystemMgmt/PostMgmt.vue'
 
->>>>>>> 7f1e072f5a298d75d6c1728a407431b346485d09
  const configs = [
   {
     path: '/', // 路由地址，children 内路由地址 = 上一嵌套的路由地址（若无则为""） + 该path
