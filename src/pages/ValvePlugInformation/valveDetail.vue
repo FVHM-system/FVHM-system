@@ -9,7 +9,7 @@
           <basic-information :valve_id_end="valve_id"></basic-information>
         </el-tab-pane>
         <el-tab-pane label="实况数据">
-          <live-data :valve_id_end="valve_id" :valve_createTime_end="valve_createTime"></live-data>
+          <live-data  :valve_id_end="valve_id" :valve_createTime_end="valve_createTime"></live-data>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -48,6 +48,9 @@ export default {
       this.drawer=true;
       this.valve_test=true;
     }
+  },
+  unmounted() {
+
   }
 }
 </script>

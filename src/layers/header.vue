@@ -2,9 +2,9 @@
   <div class="header">
     <header>
       <img src='../assets/logo.png' alt='logo' />
-      <p>水资源管理系统</p>
+      <h1>界首市阀栓管理系统</h1>
     </header>
-    <el-button class="boxConfirm" @click="logout">退出登录</el-button>
+    <el-button class="boxConfirm" @click="logout">登出</el-button>
   </div>
 </template>
 

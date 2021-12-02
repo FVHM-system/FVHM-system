@@ -99,7 +99,6 @@ const user = computed(() => store.state.user.user)
 .startPage {
   background: url('src/assets/header-bg.webp') center;
   background-size: cover;
-
   position: relative;
   overflow-y: hidden;
   height: 100vh;
