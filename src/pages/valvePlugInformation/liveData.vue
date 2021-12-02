@@ -68,29 +68,31 @@
                 style="width: 200px;margin-left: 10px"
                 v-if="timeActive === '年'"
             ></el-date-picker>
-            <el-button type="primary" style="margin-left: 10px;margin-top: 20px" @click="getWaterTotal" >查询</el-button>
+            <el-button type="primary" style="margin-left: 10px;margin-top: 20px"
+                       @click="getWaterTotal">查询
+            </el-button>
             <h1 style="position:relative;top:70px;font-size: 30px;color: #409eff">阀栓累计用水量</h1>
             <h1 style="position:relative;top:160px;font-size: 100px;color: #409eff">
-              {{ waterDataTotal}}</h1>
+              {{ waterDataTotal }}</h1>
             <h1 style="position:relative;top:220px;font-size: 30px;color: #409eff">万m³</h1>
           </div>
 
         </el-tab-pane>
         <el-tab-pane label="近三年用水趋势" @click="waterTrandGet">
           <div class="CardWaterSum">
-          <div class="waterTrend">
-            <div class="waterTrend-top">
-              <h1 style="position:relative;top:0px;font-size: 25px;color: #409eff">阀栓近三年用水趋势</h1>
-              <el-date-picker
-                  v-model="value3" type="year"
-                  placeholder="Pick a year"
-                  style="top: -10px;left:-30px"
-                  @change="waterTrandGet"
-                  :disabled-date="disableDate">
-              </el-date-picker>
+            <div class="waterTrend">
+              <div class="waterTrend-top">
+                <h1 style="position:relative;top:0px;font-size: 25px;color: #409eff">阀栓近三年用水趋势</h1>
+                <el-date-picker
+                    v-model="value3" type="year"
+                    placeholder="Pick a year"
+                    style="top: -10px;left:-30px"
+                    @change="waterTrandGet"
+                    :disabled-date="disableDate">
+                </el-date-picker>
+              </div>
+              <div class="waterTrend-body" id="water-line"></div>
             </div>
-            <div class="waterTrend-body" id="water-line"></div>
-          </div>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -103,12 +105,14 @@ import VwaterConsum from "@/pages/ValvePlugInformation/valveWaterConsum.vue";
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import moment from "moment";
 import * as echarts from 'echarts'
-import {fetFindVolumebyTime,
+import {
+  fetFindVolumebyTime,
   fetFindvolumebyyear,
   fetFindvolumebyday,
-  fetFindmonthvolumebyyear} from "./util/vpinformation";
-import {onMounted,onUnmounted, ref, defineProps} from "vue";
-import { dateTimeTrans } from "../../utils/mrWang";
+  fetFindmonthvolumebyyear
+} from "./util/vpinformation";
+import {onMounted, onUnmounted, ref, defineProps} from "vue";
+import {dateTimeTrans} from "../../utils/mrWang";
 
 const timeTypes = [
   {
@@ -124,7 +128,7 @@ const timeTypes = [
     lable: '年',
   },
 ]
-let searchTimeType=ref('日')
+let searchTimeType = ref('日')
 let searchTime = ref(new Date())
 let timeActive = ref('日')
 let typeSelect = ref("")
@@ -134,7 +138,7 @@ let waterData = ref(0)
 let waterDataYear = ref(0)
 let waterDataTotal = ref(0)
 let value3 = ref(new Date())
-let waterYearData =ref([])
+let waterYearData = ref([])
 let myChart
 let BarPic = function (test) {
   let chartDom = document.getElementById('water-line')
@@ -156,7 +160,7 @@ let BarPic = function (test) {
     },
     xAxis: {
       type: 'category',
-      data: ['1月', '2月', '3月', '4月', '6月', '6月', '7月','8月','9月','10月','11月','12月']
+      data: ['1月', '2月', '3月', '4月', '6月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
     },
     yAxis: {
       type: 'value'
@@ -171,7 +175,8 @@ let BarPic = function (test) {
   myChart.setOption(option)
 }
 const disableDate = d => {
-  return d.getFullYear() < new Date().getFullYear() -2 || d.getFullYear() > new Date().getFullYear()
+  return d.getFullYear() < new Date().getFullYear() - 2 || d.getFullYear()
+      > new Date().getFullYear()
 }
 const getTimeWaterData = async function () {
   let res = await fetFindVolumebyTime(props.valve_id_end,
@@ -193,33 +198,35 @@ const props = defineProps({
   valve_id_end: Number,
   valve_createTime_end: Date,
 })
+
 function handleChange() {
   timeActive.value = searchTimeType.value
 }
-const getWaterTotal = async function(){
-  let time = dateTimeTrans(searchTime.value,searchTimeType.value)
-  let type =ref('')
-  if(searchTimeType.value==='日'){
-    type='day'
+
+const getWaterTotal = async function () {
+  let time = dateTimeTrans(searchTime.value, searchTimeType.value)
+  let type = ref('')
+  if (searchTimeType.value === '日') {
+    type = 'day'
   }
-  if(searchTimeType.value==='月'){
-    type='month'
+  if (searchTimeType.value === '月') {
+    type = 'month'
   }
-  if(searchTimeType.value==='年'){
-    type='year'
+  if (searchTimeType.value === '年') {
+    type = 'year'
   }
-  let res = await fetFindvolumebyday(props.valve_id_end,type,time)
+  let res = await fetFindvolumebyday(props.valve_id_end, type, time)
   if (res.code === '200') {
     waterDataTotal.value = res.data
   }
-  console.log(props.valve_id_end,type,time)
+  console.log(props.valve_id_end, type, time)
   console.log(res.data)
 }
-const waterTrandGet = async function (){
+const waterTrandGet = async function () {
   let time = new Date(value3.value).getFullYear()
-  let res = await fetFindmonthvolumebyyear(props.valve_id_end,time)
-  if(res.code==='200'){
-    waterYearData=res.data.map(item=>item.volume)
+  let res = await fetFindmonthvolumebyyear(props.valve_id_end, time)
+  if (res.code === '200') {
+    waterYearData = res.data.map(item => item.volume)
   }
   BarPic(waterYearData)
   console.log(props.valve_id_end)
@@ -227,7 +234,7 @@ const waterTrandGet = async function (){
   console.log(props.valve_id_end)
   console.log(time)
   BarPic(waterYearData)
-  
+
 }
 onMounted(async () => {
   await getTimeWaterDataYear()
@@ -239,10 +246,10 @@ onUnmounted(() => {
   }
 })
 onUnmounted(() => {
-    if (myChart) {
-      myChart.dispose()
-    }
-  })
+  if (myChart) {
+    myChart.dispose()
+  }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -272,28 +279,30 @@ onUnmounted(() => {
   height: 60vh;
   border-radius: 10px;
 }
+
 .waterTrend {
   position: relative;
   top: 30px;
-  left:16px;
+  left: 16px;
   padding: 10px;
   display: flex;
   flex-direction: column;
-&-top {
-   display: flex;
-   justify-content: space-between;
 
-&-title {
-   font-weight: 700;
-   font-size: 22px;
- }
-}
+  &-top {
+    display: flex;
+    justify-content: space-between;
 
-&-body {
-   position: relative;
-   flex-grow: 1;
-   height: 360px;
-   width: 34vw;
- }
+    &-title {
+      font-weight: 700;
+      font-size: 22px;
+    }
+  }
+
+  &-body {
+    position: relative;
+    flex-grow: 1;
+    height: 360px;
+    width: 34vw;
+  }
 }
 </style>

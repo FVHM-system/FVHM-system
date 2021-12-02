@@ -1,10 +1,12 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import {createRouter, createWebHistory} from 'vue-router';
 import homepage from '@/pages/homePage/homePage.vue';
-import comprehensiveStatistics from '@/pages/comprehensiveStatistics/comprehensiveStatistics.vue'
+import comprehensiveStatistics
+  from '@/pages/comprehensiveStatistics/comprehensiveStatistics.vue'
 import MapContent from '@/pages/Map/mapContent.vue';
 import MapDetail from '@/pages/Map/mapDetail.vue';
 import AlarmMgmt from '@/pages/AlarmMgmt/alarmMgmt.vue'
-import VPInformation from '@/pages/ValvePlugInformation/valvePlugInformation.vue'
+import VPInformation
+  from '@/pages/ValvePlugInformation/valvePlugInformation.vue'
 import ValveDetail from '@/pages/ValvePlugInformation/valveDetail.vue'
 import DistrictReport from '@/pages/statisticalReport/districtReport.vue';
 import CityManage from './pages/addrmanage/cityManage.vue';
@@ -23,7 +25,7 @@ import MenuMgmt from './pages/systemMgmt/menuMgmt.vue'
 import PermissionManage from './pages/systemMgmt/permissionManage.vue'
 import PostMgmt from './pages/systemMgmt/postMgmt.vue'
 
- const configs = [
+const configs = [
   {
     path: '/', // 路由地址，children 内路由地址 = 上一嵌套的路由地址（若无则为""） + 该path
     label: '首页', // 【必选】显示在菜单栏里的名字
@@ -36,15 +38,15 @@ import PostMgmt from './pages/systemMgmt/postMgmt.vue'
     label: '一张图',
     icon: 'el-icon-s-opportunity',
     name: 'map',
-    children:[
+    children: [
       {
-        path:'/content',
-        label:'内容',
+        path: '/content',
+        label: '内容',
         component: MapContent
       },
       {
-        path:'/detail',
-        label:'详情',
+        path: '/detail',
+        label: '详情',
         component: MapDetail
       }
     ]
@@ -56,14 +58,14 @@ import PostMgmt from './pages/systemMgmt/postMgmt.vue'
     icon: 'el-icon-document',
     component: VPInformation
   },
-   {
-     path: '/valve_plug_information/valveDetail',
-     label: '阀栓信息',
-     name: 'valveDetail',
-     icon: 'el-icon-document',
-     hide: true,
-     component: ValveDetail
-   },
+  {
+    path: '/valve_plug_information/valveDetail',
+    label: '阀栓信息',
+    name: 'valveDetail',
+    icon: 'el-icon-document',
+    hide: true,
+    component: ValveDetail
+  },
   {
     path: '/alarm_management',
     label: '报警管理',
@@ -71,13 +73,13 @@ import PostMgmt from './pages/systemMgmt/postMgmt.vue'
     icon: 'el-icon-message-solid',
     component: AlarmMgmt
   },
-   {
-     path: '/valve_check',
-     label: '阀栓巡视',
-     name: 'valve_check',
-     icon: 'el-icon-s-opportunity',
-     component: valveCheck
-   },
+  {
+    path: '/valve_check',
+    label: '阀栓巡视',
+    name: 'valve_check',
+    icon: 'el-icon-s-opportunity',
+    component: valveCheck
+  },
   {
     path: '/comprehensive_statistics',
     label: '综合统计',
@@ -104,42 +106,42 @@ import PostMgmt from './pages/systemMgmt/postMgmt.vue'
     label: '地址管理',
     name: 'addr_management',
     icon: 'el-icon-office-building',
-    expanded:false,
-    children:[
+    expanded: false,
+    children: [
       {
-        path:'/city',
-        label:'城市管理',
-        name:'page-addr-city',
+        path: '/city',
+        label: '城市管理',
+        name: 'page-addr-city',
         component: CityManage,
       },
       {
-        path:'/district',
-        label:'区县管理',
-        name:'page-addr-district',
+        path: '/district',
+        label: '区县管理',
+        name: 'page-addr-district',
         component: DistrictManage,
       },
       {
-        path:'/area',
-        label:'工业区管理',
-        name:'page-addr-area',
+        path: '/area',
+        label: '工业区管理',
+        name: 'page-addr-area',
         component: AreaManage,
       },
       {
-        path:'/town',
-        label:'乡镇管理',
-        name:'page-addr-town',
+        path: '/town',
+        label: '乡镇管理',
+        name: 'page-addr-town',
         component: TownManage,
       },
       {
-        path:'/village',
-        label:'村庄管理',
-        name:'page-addr-village',
+        path: '/village',
+        label: '村庄管理',
+        name: 'page-addr-village',
         component: VillageManage,
       },
       {
-        path:'/road',
-        label:'道路管理',
-        name:'page-addr-road',
+        path: '/road',
+        label: '道路管理',
+        name: 'page-addr-road',
         component: RoadManage,
       },
     ]
@@ -151,41 +153,41 @@ import PostMgmt from './pages/systemMgmt/postMgmt.vue'
     icon: 'el-icon-setting',
     children: [
       {
-        path:'/user_anagement',
-        label:'用户管理',
+        path: '/user_anagement',
+        label: '用户管理',
         component: AccountMgmt
       },
       {
-        path:'/job_management',
-        label:'岗位管理',
+        path: '/job_management',
+        label: '岗位管理',
         component: PostMgmt
       },
       {
-        path:'/permissionManage',
-        label:'菜单权限',
-        hide:true,
+        path: '/permissionManage',
+        label: '菜单权限',
+        hide: true,
         component: PermissionManage
       },
       {
-        path:'/accountPostManage',
-        label:'分配用户',
-        hide:true,
+        path: '/accountPostManage',
+        label: '分配用户',
+        hide: true,
         component: AccountPostManage
       },
       {
-        path:'/acceptMange',
-        label:'API权限',
-        hide:true,
+        path: '/acceptMange',
+        label: 'API权限',
+        hide: true,
         component: AcceptMange
       },
       {
-        path:'/menu_management',
-        label:'菜单管理',
+        path: '/menu_management',
+        label: '菜单管理',
         component: MenuMgmt
       },
       {
-        path:'/api_management',
-        label:'API管理',
+        path: '/api_management',
+        label: 'API管理',
         component: ApiMgmt
       }
     ]
@@ -193,7 +195,7 @@ import PostMgmt from './pages/systemMgmt/postMgmt.vue'
 
 ];
 
-const generateRouterConfigsFunc = (res, configs, { rootPath = '' }) => {
+const generateRouterConfigsFunc = (res, configs, {rootPath = ''}) => {
   configs.forEach(item => {
     const path = rootPath + (item.path || '');
     if (item.component && (!item.children || item.children.length === 0)) {
@@ -204,12 +206,12 @@ const generateRouterConfigsFunc = (res, configs, { rootPath = '' }) => {
       });
     }
     if (item.children && item.children.length > 0) {
-      generateRouterConfigsFunc(res, item.children, { rootPath: path });
+      generateRouterConfigsFunc(res, item.children, {rootPath: path});
     }
   })
 }
 
-const generateMenuConfigsFunc = (res, configs, { rootPath = '' }) => {
+const generateMenuConfigsFunc = (res, configs, {rootPath = ''}) => {
   configs.forEach(item => {
     const path = rootPath + (item.path || '');
     if (!item.hide) {
@@ -261,10 +263,14 @@ const generate = (configs, genFunc) => {
   return res;
 };
 
-export const generateRouterConfigs = (configs) => generate(configs, generateRouterConfigsFunc);
-export const generateMenuConfigs = (configs) => generate(configs, generateMenuConfigsFunc);
-export const generateMenuExpandedConfigs = (configs) => generate(configs, generateMenuExpandedConfigsFunc);
-export const generateFuncListConfigs = (configs) => generate(configs, generateFuncListFunc);
+export const generateRouterConfigs = (configs) => generate(configs,
+    generateRouterConfigsFunc);
+export const generateMenuConfigs = (configs) => generate(configs,
+    generateMenuConfigsFunc);
+export const generateMenuExpandedConfigs = (configs) => generate(configs,
+    generateMenuExpandedConfigsFunc);
+export const generateFuncListConfigs = (configs) => generate(configs,
+    generateFuncListFunc);
 
 export const routerConfigs = generateRouterConfigs(configs)
 export const menuConfigs = generateMenuConfigs(configs)

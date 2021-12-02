@@ -101,7 +101,7 @@
         >确认添加</el-button
         >
       </span>
-      <p style="font-size: 3px;color: red" >(注：除备注外其他项均不可为空)</p>
+      <p style="font-size: 3px;color: red">(注：除备注外其他项均不可为空)</p>
     </template>
   </el-dialog>
 </template>
@@ -160,25 +160,24 @@ let valveInfo
 const stringJudge = function (input) {
   if (!input) {
     return ''
-  }
-  else {
+  } else {
     return input.toString()
   }
 }
 const genTwoLengthNumberString = n => (n >= 10 ? n : '0' + n)
 const timeSolve = function (time) {
   let timeString = ref('')
-  timeString.value = timeString.value + time.getFullYear()+ '-'
-  timeString.value = timeString.value +  genTwoLengthNumberString(time.getMonth()) + '-'
-  timeString.value = timeString.value +  genTwoLengthNumberString(time.getDay()) + ' '
+  timeString.value = timeString.value + time.getFullYear() + '-'
+  timeString.value = timeString.value + genTwoLengthNumberString(time.getMonth()) + '-'
+  timeString.value = timeString.value + genTwoLengthNumberString(time.getDay()) + ' '
   timeString.value = timeString.value + time.toString().split(' ')[4]
   return timeString.value
 }
 const confirm = async function () {
-  if(formData.value.comNumber&&formData.value.createTime&&formData.value.latitude
-      &&formData.value.longitude &&formData.value.meterCode&&formData.value.applicantName
-      &&formData.value.status&&formData.value.valveCode&&formData.value.valveName
-      &&formData.value.valveType&&place.value.length>0) {
+  if (formData.value.comNumber && formData.value.createTime && formData.value.latitude
+      && formData.value.longitude && formData.value.meterCode && formData.value.applicantName
+      && formData.value.status && formData.value.valveCode && formData.value.valveName
+      && formData.value.valveType && place.value.length > 0) {
     valveInfo = {}
     valveInfo.zoneId = place.value[4].zoneId
     valveInfo.applicantName = stringJudge(formData.value.applicantName)
@@ -209,8 +208,7 @@ const confirm = async function () {
       dialogVisible.value = false
       location.reload()
     }
-  }
-  else {
+  } else {
     ElMessage({
       type: 'error',
       message: '未填写完整数据！',
@@ -236,13 +234,13 @@ const handleClose = (done) => {
     // catch error
   })
 }
-onMounted(async ()=>{
+onMounted(async () => {
   optionss.value = await fetchSuper()
 })
 </script>
 
 <style scoped>
-.red{
+.red {
   position: relative;
   color: red;
   font-size: 10px;

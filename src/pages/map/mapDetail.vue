@@ -1,17 +1,17 @@
 <template>
-  <div id="container" ></div>
+  <div id="container"></div>
 </template>
 
 <script>
 import MapLoader from '@/pages/Map/localMap.js';
 
 export default {
-  data () {
+  data() {
     return {
       map: null
     }
   },
-  mounted () {
+  mounted() {
     let that = this
     MapLoader().then(AMap => {
       console.log('地图加载成功')
@@ -20,18 +20,18 @@ export default {
         zoom: 11
       })
     }, e => {
-      console.log('地图加载失败' ,e)
+      console.log('地图加载失败', e)
     })
   }
 }
 </script>
 
 <style>
-#container{
+#container {
   position: absolute;
   margin-top: -40px;
   left: 0;
   width: 100%;
-  height:100vw;
+  height: 100vw;
 }
 </style>

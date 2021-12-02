@@ -13,7 +13,7 @@ export const authority = {
     }
   },
   mutations: {
-    setCapacity(state, { id, capacity }) {
+    setCapacity(state, {id, capacity}) {
       const authority = state.authority.find(item => item.id === id)
       if (authority) {
         authority.capacity = capacity
@@ -21,6 +21,7 @@ export const authority = {
     },
   },
   actions: {
-    async fetchAuthority(context) {},
+    async fetchAuthority(context) {
+    },
   },
 }

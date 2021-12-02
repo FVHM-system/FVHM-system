@@ -1,7 +1,13 @@
-import { fetchCityInfo, fetchDistrictInfo, fetchTownInfo, fetchVillageInfo, fetchAreaInfo } from '../apis/2.0/addr'
-import { fetchDepartmentsByNone } from '../apis/3.0/department'
-import { getMeterTypes } from '../apis/3.0/meter'
-import { cloneDeep } from 'lodash'
+import {
+  fetchCityInfo,
+  fetchDistrictInfo,
+  fetchTownInfo,
+  fetchVillageInfo,
+  fetchAreaInfo
+} from '../apis/2.0/addr'
+import {fetchDepartmentsByNone} from '../apis/3.0/department'
+import {getMeterTypes} from '../apis/3.0/meter'
+import {cloneDeep} from 'lodash'
 
 export const utils = {
   namespaced: true,

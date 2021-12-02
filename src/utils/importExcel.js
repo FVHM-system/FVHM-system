@@ -1,6 +1,6 @@
 import ExcelJS from 'exceljs'
 import WorkbookReader from 'exceljs'
-import { findIndex } from 'lodash-es'
+import {findIndex} from 'lodash-es'
 
 let numFunc
 let errorList
@@ -288,7 +288,8 @@ export const readFile = async opt => {
       // 校验值
       let hasError = false
       config.forEach(item => {
-        const valid = item.validator(row[item.name].item, row[item.name].origin, row)
+        const valid = item.validator(row[item.name].item, row[item.name].origin,
+            row)
         if (!valid) {
           hasError = true
           result.errorList.push({
@@ -309,10 +310,12 @@ export const readFile = async opt => {
       }
       if (c === 1000) {
         c = 0
-        numFunc && numFunc(rowNumber, result.successList.length, result.errorList.length)
+        numFunc && numFunc(rowNumber, result.successList.length,
+            result.errorList.length)
         await sleep(20)
       }
     }
-    numFunc && numFunc(rowNumber, result.successList.length, result.errorList.length, result.errorList)
+    numFunc && numFunc(rowNumber, result.successList.length,
+        result.errorList.length, result.errorList)
   }
 }

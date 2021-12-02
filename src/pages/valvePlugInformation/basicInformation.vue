@@ -1,7 +1,7 @@
 <template>
   <div class="basicInformation">
     <div class="BInfo">
-      <el-form  ref="form" :model="formData" label-width="120px">
+      <el-form ref="form" :model="formData" label-width="120px">
         <el-form-item label="阀栓名称" prop="valveName"
                       style="position:relative; left:-10px; top: 60px">
           <el-col :span="9">
@@ -94,8 +94,7 @@
 import {ref, defineProps, onMounted} from 'vue'
 import {fetchDetailData} from "./util/detailData";
 import {fetchUpdateData} from "./util/updateData";
-import {ElMessage,ElLoading} from 'element-plus'
-
+import {ElMessage, ElLoading} from 'element-plus'
 
 let formData = ref([]);
 let options = ref([

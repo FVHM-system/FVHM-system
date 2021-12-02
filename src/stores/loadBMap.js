@@ -1,10 +1,10 @@
 export default function loadBMap(key) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     if (typeof AMap !== 'undefined') {
       resolve(AMap)
       return true
     }
-    window.onBMapCallback = function() {
+    window.onBMapCallback = function () {
       resolve(AMap)
     }
     let script = document.createElement('script')

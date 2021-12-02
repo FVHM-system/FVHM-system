@@ -52,7 +52,7 @@
             <valve-detail class="drawer" :valve_id="scope.row.valveId"
                           :valve_createTime="tableData.createTime"></valve-detail>
             <el-button type="warning" @click="">停用</el-button>
-            <el-button type="danger" @click = "deleteValve(scope.row)">删除</el-button>
+            <el-button type="danger" @click="deleteValve(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -61,14 +61,14 @@
   </div>
 </template>
 <script setup>
-import { onMounted, ref, getCurrentInstance} from 'vue'
-import {fetchVpinformation,fetDeleteValveInfo} from "./util/vpinformation";
+import {onMounted, ref, getCurrentInstance} from 'vue'
+import {fetchVpinformation, fetDeleteValveInfo} from "./util/vpinformation";
 import {fetchFindData} from "./util/dataSearch";
 import {types, statuss} from '@/utils/transform.js'
 import ValveDetail from "@/pages/ValvePlugInformation/valveDetail.vue";
 import AddValvePlug from "@/pages/ValvePlugInformation/addValvePlug.vue";
 import {fetchSuper} from '@/apis/2.0/addr'
-import { exportExcel } from '../../utils/exportExcel'
+import {exportExcel} from '../../utils/exportExcel'
 import {ElMessage} from 'element-plus'
 
 let input1 = ref('')
@@ -103,7 +103,7 @@ const statusFormate = function (row) {
 /* 查询 */
 const dataFind = async function () {
   let address = ref('')
-  if(place.value) {
+  if (place.value) {
     for (let i = place.value.length - 1; i >= 0; i--) {
       address.value = place.value[i].name + address.value
     }
@@ -124,10 +124,10 @@ const dataFind = async function () {
 const dataRequire = async function () {
   location.reload()
 }
-const deleteValve = async function(row){
-  let res = await fetDeleteValveInfo({valveId:row.valveId})
+const deleteValve = async function (row) {
+  let res = await fetDeleteValveInfo({valveId: row.valveId})
   console.log(row.valveId)
-  if(res.code === '200'){
+  if (res.code === '200') {
     ElMessage({
       type: 'success',
       message: '删除成功！',
@@ -135,6 +135,7 @@ const deleteValve = async function(row){
     location.reload()
   }
 }
+
 /* 导出 */
 function exportCSV() {
   excelData.value = tableData.value
@@ -185,6 +186,7 @@ function exportCSV() {
   excel.fileName = '阀栓信息表'
   exportExcel(excel)
 }
+
 onMounted(async () => {
   let res = await fetchVpinformation()
   if (res.code === '200') {
@@ -259,6 +261,7 @@ onMounted(async () => {
   background-color: darkgray;
   border-radius: 4px;
 }
+
 /*/deep/ .el-table__body-wrapper::-webkit-scrollbar {*/
 /*  width: 6px;*/
 /*  height: 6px;*/
