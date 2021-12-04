@@ -9,15 +9,11 @@
       width="50%"
       :before-close="handleClose">
     <el-form ref="form" :model="formData" label-width="120px">
-      <el-form-item label="阀栓名称">
-        <el-col :span="9">
+      <el-form-item label="阀栓名称" required>
           <el-input v-model="formData.valveName" style="width: 190px"></el-input>
-        </el-col>
       </el-form-item>
-      <el-form-item label="阀栓编号" style="margin-left: 350px;margin-top: -70px">
-        <el-col :span="10">
+      <el-form-item label="阀栓编号" style="margin-left: 350px;margin-top: -70px" required>
           <el-input v-model="formData.valveCode" style="width: 190px"></el-input>
-        </el-col>
       </el-form-item>
       <el-form-item label="所在位置">
         <el-cascader
@@ -41,19 +37,13 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item label="经度">
-        <el-col :span="9">
           <el-input v-model="formData.longitude" style=" width: 150px"></el-input>
-        </el-col>
       </el-form-item>
       <el-form-item label="通讯编号" style="margin-left: 350px;margin-top: -60px">
-        <el-col :span="9">
           <el-input v-model="formData.comNumber" style="width: 190px"></el-input>
-        </el-col>
       </el-form-item>
       <el-form-item label="纬度">
-        <el-col :span="9">
           <el-input v-model="formData.latitude" style=" width: 150px"></el-input>
-        </el-col>
       </el-form-item>
       <el-form-item label="阀栓类型" style="margin-left: 350px;margin-top: -60px">
         <el-select v-model="formData.valveType" placeholder="Select" style="width: 120px">
@@ -78,19 +68,13 @@
         </el-select>
       </el-form-item>
       <el-form-item label="负责部门" style="margin-left: 350px;margin-top: -60px">
-        <el-col :span="9">
           <el-input v-model="formData.applicantName" style="width: 190px"></el-input>
-        </el-col>
       </el-form-item>
       <el-form-item label="监测设备编号">
-        <el-col :span="9">
           <el-input v-model="formData.meterCode" style=" width: 150px"></el-input>
-        </el-col>
       </el-form-item>
       <el-form-item label="备注" style="margin-left: 350px;margin-top: -60px">
-        <el-col :span="9">
           <el-input v-model="formData.remark" style="width: 190px"></el-input>
-        </el-col>
       </el-form-item>
     </el-form>
     <template #footer>

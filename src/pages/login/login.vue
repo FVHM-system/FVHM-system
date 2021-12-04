@@ -51,7 +51,7 @@ export default {
           data: _this.loginForm
         }).then(res => {
           this.$store.dispatch('user/login', _this.loginForm);
-          if (res.data.data.code == '200') {
+          if (res.data.data.code === '200') {
             alert('登陆成功');
           }
         }).catch(error => {
