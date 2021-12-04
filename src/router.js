@@ -9,7 +9,7 @@ import VPInformation
   from '@/pages/ValvePlugInformation/valvePlugInformation.vue'
 import ValveDetail from '@/pages/ValvePlugInformation/valveDetail.vue'
 import DistrictReport from '@/pages/statisticalReport/districtReport.vue';
-import CityManage from './pages/addrmanage/cityManage.vue';
+import CityManage from './pages/addrManage/cityManage.vue';
 import DistrictManage from './pages/addrManage/districtManage.vue';
 import AreaManage from './pages/addrManage/areaManage.vue';
 import TownManage from './pages/addrManage/townManage.vue';
@@ -24,6 +24,9 @@ import ApiMgmt from './pages/systemMgmt/apiMgmt.vue'
 import MenuMgmt from './pages/systemMgmt/menuMgmt.vue'
 import PermissionManage from './pages/systemMgmt/permissionManage.vue'
 import PostMgmt from './pages/systemMgmt/postMgmt.vue'
+import LicenseMgmt from '@/pages/licenseMgmt/licenseMgmt.vue'
+import { genType, mergeListConfigs, mergeMapConfigs } from './authority'
+import { cloneDeep } from 'lodash-es'
 
 const configs = [
   {
@@ -59,14 +62,6 @@ const configs = [
     component: VPInformation
   },
   {
-    path: '/valve_plug_information/valveDetail',
-    label: '阀栓信息',
-    name: 'valveDetail',
-    icon: 'el-icon-document',
-    hide: true,
-    component: ValveDetail
-  },
-  {
     path: '/alarm_management',
     label: '报警管理',
     name: 'alarm_management',
@@ -80,6 +75,20 @@ const configs = [
     icon: 'el-icon-s-opportunity',
     component: valveCheck
   },
+  {
+    path: '/licenseMgmt',
+    label: '许可证管理',
+    name: 'LicenseMgmt',
+    icon: 'el-icon-s-claim',
+    component: LicenseMgmt
+  },
+  // {
+  //   path: '/test',
+  //   label: 'TEST',
+  //   name: 'test',
+  //   icon: 'el-icon-s-claim',
+  //   component: TESTPAGE
+  // },
   {
     path: '/comprehensive_statistics',
     label: '综合统计',
@@ -195,39 +204,41 @@ const configs = [
 
 ];
 
-const generateRouterConfigsFunc = (res, configs, {rootPath = ''}) => {
+const generateRouterConfigsFunc = (res, configs, { rootPath = '' }) => {
   configs.forEach(item => {
-    const path = rootPath + (item.path || '');
-    if (item.component && (!item.children || item.children.length === 0)) {
+    const path = rootPath + (item.path || '')
+    if (!item.children || item.children.length === 0) {
       res.push({
         name: item.name,
         path,
         component: item.component,
-      });
+        redirect: item.redirect,
+      })
     }
     if (item.children && item.children.length > 0) {
-      generateRouterConfigsFunc(res, item.children, {rootPath: path});
+      generateRouterConfigsFunc(res, item.children, { rootPath: path })
     }
   })
 }
 
-const generateMenuConfigsFunc = (res, configs, {rootPath = ''}) => {
+const generateMenuConfigsFunc = (res, configs, { rootPath = '' }) => {
   configs.forEach(item => {
-    const path = rootPath + (item.path || '');
+    const path = rootPath + (item.path || '')
     if (!item.hide) {
-      const children = [];
+      const children = []
       if (item.children && item.children.length > 0) {
         generateMenuConfigsFunc(children, item.children, {
-          rootPath: path
-        });
+          rootPath: path,
+        })
       }
       res.push({
         name: item.name,
         label: item.label,
         icon: item.icon,
+        force: item.force,
         children,
         index: path,
-      });
+      })
     }
   })
 }
@@ -238,46 +249,82 @@ const generateMenuExpandedConfigsFunc = (res, configs) => {
       res.push(item.name)
     }
     if (item.children && item.children.length > 0) {
-      generateMenuExpandedConfigsFunc(res, item.children);
+      generateMenuExpandedConfigsFunc(res, item.children)
     }
   })
 }
 
-const generateFuncListFunc = (res, configs) => {
+const generateFuncListFunc = (res, configs, { pre = '' }) => {
   configs.forEach(item => {
     if (item.component) {
       res.push({
         name: item.name,
-        label: item.label
+        label: pre + item.label,
+        link: item.path,
       })
     }
     if (!item.component && item.children && item.children.length > 0) {
-      generateFuncListFunc(res, item.children);
+      generateFuncListFunc(res, item.children, { pre: item.label + '-' })
+    }
+  })
+}
+
+const generateTitleConfigsFunc = (res, configs) => {
+  configs.forEach(item => {
+    if (item.title === true) {
+      res.push({
+        name: item.name,
+        label: item.label,
+      })
+    }
+    if (!item.component && item.children && item.children.length > 0) {
+      generateTitleConfigsFunc(res, item.children)
+    }
+  })
+}
+
+const generateMenuListConfigsFunc = (res, configs, { pre = '' }) => {
+  configs.forEach(item => {
+    if (item.component) {
+      res.push({
+        name: item.name,
+        label: item.label,
+        path: item.path,
+        force: item.force,
+      })
+    }
+    if (!item.component && item.children && item.children.length > 0) {
+      generateMenuListConfigsFunc(res, item.children, { pre: item.path })
     }
   })
 }
 
 const generate = (configs, genFunc) => {
-  const res = [];
-  genFunc(res, configs, {});
-  return res;
-};
+  const res = []
+  genFunc(res, configs, {})
+  return res
+}
 
-export const generateRouterConfigs = (configs) => generate(configs,
-    generateRouterConfigsFunc);
-export const generateMenuConfigs = (configs) => generate(configs,
-    generateMenuConfigsFunc);
-export const generateMenuExpandedConfigs = (configs) => generate(configs,
-    generateMenuExpandedConfigsFunc);
-export const generateFuncListConfigs = (configs) => generate(configs,
-    generateFuncListFunc);
+export const generateRouterConfigs = configs => generate(configs, generateRouterConfigsFunc)
+export const generateMenuConfigs = configs => generate(configs, generateMenuConfigsFunc)
+export const generateMenuExpandedConfigs = configs => generate(configs, generateMenuExpandedConfigsFunc)
+export const generateFuncListConfigs = configs => generate(configs, generateFuncListFunc)
+export const generateTitleConfigs = configs => generate(configs, generateTitleConfigsFunc)
+export const generateMenuListConfigs = configs => generate(configs, generateMenuListConfigsFunc)
 
 export const routerConfigs = generateRouterConfigs(configs)
 export const menuConfigs = generateMenuConfigs(configs)
 export const menuExpandedConfigs = generateMenuExpandedConfigs(configs)
+export const menuListConfigs = generateMenuListConfigs(configs)
 export const funcListConfigs = generateFuncListConfigs(configs)
+export const titleConfigs = generateTitleConfigs(configs)
 
+export const funcList = mergeListConfigs(funcListConfigs)
+export const funcMap = mergeMapConfigs(genType('page', cloneDeep(funcListConfigs)))
+
+console.log(routerConfigs)
 export const router = createRouter({
   history: createWebHistory(),
   routes: routerConfigs,
-});
+  linkActiveClass: 'active',
+})
