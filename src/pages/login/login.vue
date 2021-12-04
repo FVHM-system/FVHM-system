@@ -153,7 +153,7 @@ export default {
   height: 360px;
   width: 500px;
   font-size: inherit;
-  background-image: url("src/assets/loginback.png");
+  background-image: url("../../assets/loginback.png");
   background-size: cover;
   background-position: left;
   // animation: 0.3s ease-in 0s 1 normal none running fadeUp;

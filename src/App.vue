@@ -4,7 +4,7 @@
       <section>
         <div id="logo">
           <div class="logo-box">
-            <img src="/src/assets/jieshou.png"/>
+            <img src="./assets/jieshou.png"/>
             <span>界首市城市供水网阀栓管理系统</span>
           </div>
         </div>
@@ -97,7 +97,7 @@ const user = computed(() => store.state.user.user)
 }
 
 .startPage {
-  background: url('src/assets/header-bg.webp') center;
+  background: url('./assets/header-bg.webp') center;
   background-size: cover;
   position: relative;
   overflow-y: hidden;
