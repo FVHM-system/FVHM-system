@@ -38,7 +38,6 @@ export default {
       }
     };
   },
-
   methods: {
     login() {
       let _this = this;
