@@ -1,11 +1,12 @@
-import request from "./request"
+
+import request from "../3.0/request";
 
 export const fetchCheckInfo=async()=>{
-    return await request.Pget('/inspect/getinspectinfos')
+    return await request.get('/inspect/getinspectinfos')
 }
 
 export const fetchCheckInfoByConfig=async({roadId,status,people,startTime,endTime,complete})=>{
-    return await request.Pget('/inspect/findinspectinfo',{
+    return await request.get('/inspect/findinspectinfo',{
         params:{
             roadId,
             status,
@@ -34,14 +35,30 @@ export const deleteCheck=async({inspectId})=>{
     })
 }
 
-export const addCheck=async({inspectInfo})=>{
-    return await request.put('/inspect/insertinpectinfo',{
-        data:inspectInfo,
+export const addCheck=async({id,zoneId,people,phone,time,complete,remark})=>{
+    return await request.post('/inspect/insertinspectinfo',{
+        data:{
+            id,
+            zoneId,
+            people,
+            phone,
+            time,
+            complete,
+            remark
+        },
     })
 }
 
-export const updateCheck=async({inspectInfo})=>{
+export const updateCheck=async({id,zoneId,people,phone,time,complete,remark})=>{
     return await request.put('/inspect/updateinspectinfo',{
-        data:inspectInfo,
+        data:{
+            id,
+            zoneId,
+            people,
+            phone,
+            time,
+            complete,
+            remark
+        },
     })
 }

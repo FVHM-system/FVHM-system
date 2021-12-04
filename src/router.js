@@ -156,6 +156,13 @@ const configs = [
     ]
   },
   {
+    path: '/valve_check',
+    label: '阀栓巡视',
+    name: 'valve_check',
+    icon: 'el-icon-s-opportunity',
+    component: valveCheck
+  },
+  {
     path: '/system_management',
     label: '系统管理',
     name: 'system_management',
@@ -201,7 +208,6 @@ const configs = [
       }
     ]
   },
-
 ];
 
 const generateRouterConfigsFunc = (res, configs, { rootPath = '' }) => {
