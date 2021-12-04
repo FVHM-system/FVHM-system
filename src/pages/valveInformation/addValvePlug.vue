@@ -9,10 +9,10 @@
       width="50%"
       :before-close="handleClose">
     <el-form ref="form" :model="formData" label-width="120px">
-      <el-form-item label="阀栓名称" required>
+      <el-form-item label="阀栓名称" >
           <el-input v-model="formData.valveName" style="width: 190px"></el-input>
       </el-form-item>
-      <el-form-item label="阀栓编号" style="margin-left: 350px;margin-top: -70px" required>
+      <el-form-item label="阀栓编号" style="margin-left: 350px;margin-top: -70px">
           <el-input v-model="formData.valveCode" style="width: 190px"></el-input>
       </el-form-item>
       <el-form-item label="所在位置">

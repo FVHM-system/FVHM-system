@@ -5,9 +5,8 @@ import comprehensiveStatistics
 import MapContent from '@/pages/Map/mapContent.vue';
 import MapDetail from '@/pages/Map/mapDetail.vue';
 import AlarmMgmt from '@/pages/AlarmMgmt/alarmMgmt.vue'
-import VPInformation
-  from '@/pages/ValvePlugInformation/valvePlugInformation.vue'
-import ValveDetail from '@/pages/ValvePlugInformation/valveDetail.vue'
+import  ValveInformation
+  from './pages/valveInformation/valvePlugInformation.vue'
 import DistrictReport from '@/pages/statisticalReport/districtReport.vue';
 import CityManage from './pages/addrManage/cityManage.vue';
 import DistrictManage from './pages/addrManage/districtManage.vue';
@@ -55,11 +54,11 @@ const configs = [
     ]
   },
   {
-    path: '/valve_plug_information',
+    path: '/valvePlugInformation',
     label: '阀栓信息',
-    name: 'valve_plug_information',
+    name: 'valvePlugInformation',
     icon: 'el-icon-document',
-    component: VPInformation
+    component: ValveInformation
   },
   {
     path: '/alarm_management',

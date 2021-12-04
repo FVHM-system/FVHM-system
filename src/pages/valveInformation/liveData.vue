@@ -101,7 +101,7 @@
 </template>
 
 <script setup>
-import VwaterConsum from "@/pages/ValvePlugInformation/valveWaterConsum.vue";
+import VwaterConsum from "@/pages/valveInformation/valveWaterConsum.vue";
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import moment from "moment";
 import * as echarts from 'echarts'
