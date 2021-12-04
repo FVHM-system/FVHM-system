@@ -1,19 +1,15 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import homepage from '@/pages/homePage/homepage.vue';
-import comprehensiveStatistics from '@/pages/comprehensiveStatistics/comprehensiveStatistics.vue'
-import Example3 from '@/pages/example3.vue';
-import Example4 from '@/pages/example4.vue';
-import Example5 from '@/pages/example5.vue';
-import MapContent from '@/pages/Map/mapcontent.vue';
-import MapDetail from '@/pages/Map/mapdetail.vue';
+import {createRouter, createWebHistory} from 'vue-router';
+import homepage from '@/pages/homePage/homePage.vue';
+import comprehensiveStatistics
+  from '@/pages/comprehensiveStatistics/comprehensiveStatistics.vue'
+import MapContent from '@/pages/Map/mapContent.vue';
+import MapDetail from '@/pages/Map/mapDetail.vue';
 import AlarmMgmt from '@/pages/AlarmMgmt/alarmMgmt.vue'
-import VPInformation from '@/pages/ValvePlugInformation/valve_plug_information.vue'
+import VPInformation
+  from '@/pages/ValvePlugInformation/valvePlugInformation.vue'
 import ValveDetail from '@/pages/ValvePlugInformation/valveDetail.vue'
-import async from "async";
-import EditFunction from '@/pages/EditFunction.vue';
-import Manage from '@/pages/manage.vue';
 import DistrictReport from '@/pages/statisticalReport/districtReport.vue';
-import CityManage from './pages/addrmanage/cityManage.vue';
+import CityManage from './pages/addrManage/cityManage.vue';
 import DistrictManage from './pages/addrManage/districtManage.vue';
 import AreaManage from './pages/addrManage/areaManage.vue';
 import TownManage from './pages/addrManage/townManage.vue';
@@ -22,14 +18,17 @@ import RoadManage from './pages/addrManage/roadManage.vue';
 import waterConsumption from './pages/waterConsumption/waterConsumption.vue';
 import valveCheck from './pages/valveCheck/valveCheck.vue';
 import AcceptMange from '@/pages/SystemMgmt/acceptManage.vue'
-import AccountMgmt from '@/pages/SystemMgmt/AccountMgmt.vue'
+import AccountMgmt from '@/pages/SystemMgmt/accountMgmt.vue'
 import AccountPostManage from '@/pages/SystemMgmt/accountPostManage.vue'
-import ApiMgmt from './pages/SystemMgmt/ApiMgmt.vue'
-import MenuMgmt from './pages/SystemMgmt/MenuMgmt.vue'
-import PermissionManage from './pages/SystemMgmt/permissionManage.vue'
-import PostMgmt from './pages/SystemMgmt/PostMgmt.vue'
+import ApiMgmt from './pages/systemMgmt/apiMgmt.vue'
+import MenuMgmt from './pages/systemMgmt/menuMgmt.vue'
+import PermissionManage from './pages/systemMgmt/permissionManage.vue'
+import PostMgmt from './pages/systemMgmt/postMgmt.vue'
+import LicenseMgmt from '@/pages/licenseMgmt/licenseMgmt.vue'
+import { genType, mergeListConfigs, mergeMapConfigs } from './authority'
+import { cloneDeep } from 'lodash-es'
 
- const configs = [
+const configs = [
   {
     path: '/', // 路由地址，children 内路由地址 = 上一嵌套的路由地址（若无则为""） + 该path
     label: '首页', // 【必选】显示在菜单栏里的名字
@@ -42,15 +41,15 @@ import PostMgmt from './pages/SystemMgmt/PostMgmt.vue'
     label: '一张图',
     icon: 'el-icon-s-opportunity',
     name: 'map',
-    children:[
+    children: [
       {
-        path:'/content',
-        label:'内容',
+        path: '/content',
+        label: '内容',
         component: MapContent
       },
       {
-        path:'/detail',
-        label:'详情',
+        path: '/detail',
+        label: '详情',
         component: MapDetail
       }
     ]
@@ -62,14 +61,6 @@ import PostMgmt from './pages/SystemMgmt/PostMgmt.vue'
     icon: 'el-icon-document',
     component: VPInformation
   },
-   {
-     path: '/valve_plug_information/valveDetail',
-     label: '阀栓信息',
-     name: 'valveDetail',
-     icon: 'el-icon-document',
-     hide: true,
-     component: ValveDetail
-   },
   {
     path: '/alarm_management',
     label: '报警管理',
@@ -77,6 +68,27 @@ import PostMgmt from './pages/SystemMgmt/PostMgmt.vue'
     icon: 'el-icon-message-solid',
     component: AlarmMgmt
   },
+  {
+    path: '/valve_check',
+    label: '阀栓巡视',
+    name: 'valve_check',
+    icon: 'el-icon-s-opportunity',
+    component: valveCheck
+  },
+  {
+    path: '/licenseMgmt',
+    label: '许可证管理',
+    name: 'LicenseMgmt',
+    icon: 'el-icon-s-claim',
+    component: LicenseMgmt
+  },
+  // {
+  //   path: '/test',
+  //   label: 'TEST',
+  //   name: 'test',
+  //   icon: 'el-icon-s-claim',
+  //   component: TESTPAGE
+  // },
   {
     path: '/comprehensive_statistics',
     label: '综合统计',
@@ -103,42 +115,42 @@ import PostMgmt from './pages/SystemMgmt/PostMgmt.vue'
     label: '地址管理',
     name: 'addr_management',
     icon: 'el-icon-office-building',
-    expanded:false,
-    children:[
+    expanded: false,
+    children: [
       {
-        path:'/city',
-        label:'城市管理',
-        name:'page-addr-city',
+        path: '/city',
+        label: '城市管理',
+        name: 'page-addr-city',
         component: CityManage,
       },
       {
-        path:'/district',
-        label:'区县管理',
-        name:'page-addr-district',
+        path: '/district',
+        label: '区县管理',
+        name: 'page-addr-district',
         component: DistrictManage,
       },
       {
-        path:'/area',
-        label:'工业区管理',
-        name:'page-addr-area',
+        path: '/area',
+        label: '工业区管理',
+        name: 'page-addr-area',
         component: AreaManage,
       },
       {
-        path:'/town',
-        label:'乡镇管理',
-        name:'page-addr-town',
+        path: '/town',
+        label: '乡镇管理',
+        name: 'page-addr-town',
         component: TownManage,
       },
       {
-        path:'/village',
-        label:'村庄管理',
-        name:'page-addr-village',
+        path: '/village',
+        label: '村庄管理',
+        name: 'page-addr-village',
         component: VillageManage,
       },
       {
-        path:'/road',
-        label:'道路管理',
-        name:'page-addr-road',
+        path: '/road',
+        label: '道路管理',
+        name: 'page-addr-road',
         component: RoadManage,
       },
     ]
@@ -157,41 +169,41 @@ import PostMgmt from './pages/SystemMgmt/PostMgmt.vue'
     icon: 'el-icon-setting',
     children: [
       {
-        path:'/user_anagement',
-        label:'用户管理',
+        path: '/user_anagement',
+        label: '用户管理',
         component: AccountMgmt
       },
       {
-        path:'/job_management',
-        label:'岗位管理',
+        path: '/job_management',
+        label: '岗位管理',
         component: PostMgmt
       },
       {
-        path:'/permissionManage',
-        label:'菜单权限',
-        hide:true,
+        path: '/permissionManage',
+        label: '菜单权限',
+        hide: true,
         component: PermissionManage
       },
       {
-        path:'/accountPostManage',
-        label:'分配用户',
-        hide:true,
+        path: '/accountPostManage',
+        label: '分配用户',
+        hide: true,
         component: AccountPostManage
       },
       {
-        path:'/acceptMange',
-        label:'API权限',
-        hide:true,
+        path: '/acceptMange',
+        label: 'API权限',
+        hide: true,
         component: AcceptMange
       },
       {
-        path:'/menu_management',
-        label:'菜单管理',
+        path: '/menu_management',
+        label: '菜单管理',
         component: MenuMgmt
       },
       {
-        path:'/api_management',
-        label:'API管理',
+        path: '/api_management',
+        label: 'API管理',
         component: ApiMgmt
       }
     ]
@@ -200,37 +212,39 @@ import PostMgmt from './pages/SystemMgmt/PostMgmt.vue'
 
 const generateRouterConfigsFunc = (res, configs, { rootPath = '' }) => {
   configs.forEach(item => {
-    const path = rootPath + (item.path || '');
-    if (item.component && (!item.children || item.children.length === 0)) {
+    const path = rootPath + (item.path || '')
+    if (!item.children || item.children.length === 0) {
       res.push({
         name: item.name,
         path,
         component: item.component,
-      });
+        redirect: item.redirect,
+      })
     }
     if (item.children && item.children.length > 0) {
-      generateRouterConfigsFunc(res, item.children, { rootPath: path });
+      generateRouterConfigsFunc(res, item.children, { rootPath: path })
     }
   })
 }
 
 const generateMenuConfigsFunc = (res, configs, { rootPath = '' }) => {
   configs.forEach(item => {
-    const path = rootPath + (item.path || '');
+    const path = rootPath + (item.path || '')
     if (!item.hide) {
-      const children = [];
+      const children = []
       if (item.children && item.children.length > 0) {
         generateMenuConfigsFunc(children, item.children, {
-          rootPath: path
-        });
+          rootPath: path,
+        })
       }
       res.push({
         name: item.name,
         label: item.label,
         icon: item.icon,
+        force: item.force,
         children,
         index: path,
-      });
+      })
     }
   })
 }
@@ -241,42 +255,82 @@ const generateMenuExpandedConfigsFunc = (res, configs) => {
       res.push(item.name)
     }
     if (item.children && item.children.length > 0) {
-      generateMenuExpandedConfigsFunc(res, item.children);
+      generateMenuExpandedConfigsFunc(res, item.children)
     }
   })
 }
 
-const generateFuncListFunc = (res, configs) => {
+const generateFuncListFunc = (res, configs, { pre = '' }) => {
   configs.forEach(item => {
     if (item.component) {
       res.push({
         name: item.name,
-        label: item.label
+        label: pre + item.label,
+        link: item.path,
       })
     }
     if (!item.component && item.children && item.children.length > 0) {
-      generateFuncListFunc(res, item.children);
+      generateFuncListFunc(res, item.children, { pre: item.label + '-' })
+    }
+  })
+}
+
+const generateTitleConfigsFunc = (res, configs) => {
+  configs.forEach(item => {
+    if (item.title === true) {
+      res.push({
+        name: item.name,
+        label: item.label,
+      })
+    }
+    if (!item.component && item.children && item.children.length > 0) {
+      generateTitleConfigsFunc(res, item.children)
+    }
+  })
+}
+
+const generateMenuListConfigsFunc = (res, configs, { pre = '' }) => {
+  configs.forEach(item => {
+    if (item.component) {
+      res.push({
+        name: item.name,
+        label: item.label,
+        path: item.path,
+        force: item.force,
+      })
+    }
+    if (!item.component && item.children && item.children.length > 0) {
+      generateMenuListConfigsFunc(res, item.children, { pre: item.path })
     }
   })
 }
 
 const generate = (configs, genFunc) => {
-  const res = [];
-  genFunc(res, configs, {});
-  return res;
-};
+  const res = []
+  genFunc(res, configs, {})
+  return res
+}
 
-export const generateRouterConfigs = (configs) => generate(configs, generateRouterConfigsFunc);
-export const generateMenuConfigs = (configs) => generate(configs, generateMenuConfigsFunc);
-export const generateMenuExpandedConfigs = (configs) => generate(configs, generateMenuExpandedConfigsFunc);
-export const generateFuncListConfigs = (configs) => generate(configs, generateFuncListFunc);
+export const generateRouterConfigs = configs => generate(configs, generateRouterConfigsFunc)
+export const generateMenuConfigs = configs => generate(configs, generateMenuConfigsFunc)
+export const generateMenuExpandedConfigs = configs => generate(configs, generateMenuExpandedConfigsFunc)
+export const generateFuncListConfigs = configs => generate(configs, generateFuncListFunc)
+export const generateTitleConfigs = configs => generate(configs, generateTitleConfigsFunc)
+export const generateMenuListConfigs = configs => generate(configs, generateMenuListConfigsFunc)
 
 export const routerConfigs = generateRouterConfigs(configs)
 export const menuConfigs = generateMenuConfigs(configs)
 export const menuExpandedConfigs = generateMenuExpandedConfigs(configs)
+export const menuListConfigs = generateMenuListConfigs(configs)
 export const funcListConfigs = generateFuncListConfigs(configs)
+export const titleConfigs = generateTitleConfigs(configs)
 
+export const funcList = mergeListConfigs(funcListConfigs)
+export const funcMap = mergeMapConfigs(genType('page', cloneDeep(funcListConfigs)))
+
+console.log(routerConfigs)
 export const router = createRouter({
   history: createWebHistory(),
   routes: routerConfigs,
-});
+  linkActiveClass: 'active',
+})

@@ -28,7 +28,7 @@ function exportE() {
   link.click()
 }
 
-export function exportExcel({ props, body, fileName }) {
+export function exportExcel({props, body, fileName}) {
   //   exportE()
   //   return
   console.log('in exportExcel')
@@ -41,7 +41,8 @@ export function exportExcel({ props, body, fileName }) {
   body.forEach(item => {
     props.forEach(it => {
       str +=
-        ((it.render ? it.render(item[it.name]) : item[it.name]) || (it.default === undefined ? '' : it.default)) + '\t,'
+          ((it.render ? it.render(item[it.name]) : item[it.name]) || (it.default
+          === undefined ? '' : it.default)) + '\t,'
     })
     str += '\n'
   })
@@ -59,17 +60,17 @@ export function exportExcel({ props, body, fileName }) {
   const minute = myDate.getMinutes()
   const second = myDate.getSeconds()
   const now =
-    year +
-    '-' +
-    fillZero(month) +
-    '-' +
-    fillZero(date) +
-    ' ' +
-    fillZero(hour) +
-    '-' +
-    fillZero(minute) +
-    '-' +
-    fillZero(second)
+      year +
+      '-' +
+      fillZero(month) +
+      '-' +
+      fillZero(date) +
+      ' ' +
+      fillZero(hour) +
+      '-' +
+      fillZero(minute) +
+      '-' +
+      fillZero(second)
   fileName += now
   console.log(fileName)
 

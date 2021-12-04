@@ -1,4 +1,4 @@
-import { loginAccount } from '../apis/account'
+import {loginAccount} from '../apis/account'
 
 export const user = {
   namespaced: true,
@@ -23,27 +23,27 @@ export const user = {
       }
       const menus = state.user.menus
       menus &&
-        menus.forEach(item => {
-          !item.pid &&
-            res.push({
+      menus.forEach(item => {
+        !item.pid &&
+        res.push({
+          id: item.frontendMenuId,
+          label: item.frontendMenuName,
+          path: item.frontendMenuUrl,
+        })
+      })
+      menus &&
+      menus.forEach(item => {
+        if (item.pid) {
+          const it = res.find(it => it.id === item.pid)
+          if (it) {
+            it.children = (it.children || []).concat({
               id: item.frontendMenuId,
               label: item.frontendMenuName,
-              path: item.frontendMenuUrl,
+              path: it.path + item.frontendMenuUrl,
             })
-        })
-      menus &&
-        menus.forEach(item => {
-          if (item.pid) {
-            const it = res.find(it => it.id === item.pid)
-            if (it) {
-              it.children = (it.children || []).concat({
-                id: item.frontendMenuId,
-                label: item.frontendMenuName,
-                path: it.path + item.frontendMenuUrl,
-              })
-            }
           }
-        })
+        }
+      })
       return res
     },
     username(state) {
@@ -56,7 +56,8 @@ export const user = {
       return state.user?.post
     },
     support() {
-      return ['func-well-add', 'func-well-export', 'func-well-file', 'func-well-edit', 'func-well-delete']
+      return ['func-well-add', 'func-well-export', 'func-well-file',
+        'func-well-edit', 'func-well-delete']
     },
   },
   mutations: {
@@ -65,14 +66,14 @@ export const user = {
     },
   },
   actions: {
-    async login(context, { username, password }) {
-      const { message, data: user } = await loginAccount({ username, password })
+    async login(context, {username, password}) {
+      const {message, data: user} = await loginAccount({username, password})
       if (!user) {
         return message
       }
       localStorage.setItem('user', JSON.stringify(user))
       context.commit('setUser', user)
-      context.dispatch('utils/fetchAddr', null, { root: true })
+      context.dispatch('utils/fetchAddr', null, {root: true})
       return true
     },
     logout(context) {

@@ -1,4 +1,4 @@
-import request from '../request'
+import request from '@/apis/3.0/request.js'
 
 /**
  * 统计报表列表

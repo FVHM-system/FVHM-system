@@ -1,23 +1,9 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { store } from '../../stores/index'
-// import request from '../../request'
 
-// const baseUrl = 'http://115.157.195.222:8787'
-// const baseUrl = 'http://112.124.39.133:8080'
-// const baseUrl = 'http://47.113.225.96:8080' //OUR？？？？？
 const baseUrl='http://121.37.66.218:8080'
-// const baseUrl = 'http://58.20.51.78:9292'
-// const baseUrl='http://192.168.202.43:8080'
-// const baseUrl='http://localhost:8080'
-// axios.defaults.paramsSerializer = params => {
-//   // Sample implementation of query string building
-//   let result = ''
-//   Object.keys(params).forEach(key => {
-//     result += `${key}=${encodeURIComponent(params[key])}&`
-//   })
-//   return result.substr(0, result.length - 1)
-// }
+
 /**
  * P 开头方法只返回内容，无内容时返回 undefined ：： data
  * 非 P 开头方法返回原内容（保证有对象返回） ：： { msg, code, data }
@@ -92,34 +78,3 @@ const request = {
 }
 
 export default request
-/*
-{
-    "code": "200",
-    "message": "成功!",
-    "data": [
-        {
-            "id": 1,
-            "licenseVolume": 0.0,
-            "planVolume": 0.0,
-            "totalVolume": 0.0,
-            "industryVolume": 0.0,
-            "agricultureVolume": 0.0,
-            "productVolume": 0.0,
-            "lifeVolume": 0.0
-        }
-    ]
-}
-{
-    "code": "200",
-    "message": "成功!",
-    "data": [
-        {
-            "id": 1,
-            "name": "海源区",
-            "valveVolume": 0.0,
-            "hydrantVolume": 240000.0,
-            "totalVolume": 240000.0
-        }
-    ]
-}
-*/
