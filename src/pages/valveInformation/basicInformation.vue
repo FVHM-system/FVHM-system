@@ -94,7 +94,7 @@
 import {ref, defineProps, onMounted} from 'vue'
 import {fetchDetailData} from "./util/detailData";
 import {fetchUpdateData} from "./util/updateData";
-import {ElMessage, ElLoading} from 'element-plus'
+import {ElMessage} from 'element-plus'
 
 let formData = ref([]);
 let options = ref([

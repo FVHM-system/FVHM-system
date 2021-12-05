@@ -42,12 +42,12 @@
 </template>
 
 <script setup>
-import LayerHeader from '@/layers/header.vue';
-import LayerAside from '@/layers/aside.vue';
-import MapContent from '@/pages/Map/mapContent.vue'
-import MapDetail from '@/pages/Map/mapDetail.vue'
-import MapLoader from '@/pages/Map/localMap.js'
-import login from '@/pages/login/login.vue'
+import LayerHeader from './layers/header.vue';
+import LayerAside from './layers/aside.vue';
+import MapContent from './pages/map/mapContent.vue'
+import MapDetail from './pages/map/mapDetail.vue'
+import MapLoader from './pages/map/localMap.js'
+import login from './pages/login/login.vue'
 
 import {computed, onMounted, ref} from 'vue'
 import {useStore} from 'vuex'

@@ -80,7 +80,7 @@
 import {onMounted, ref,} from 'vue'
 import {fetchAlarmManage, fetchFindWarnInfo, fetchUpdateWarnIdById} from "./util/alarmManage.js";
 import {mountedToArrPrototype} from "../../mock";
-import {fetchSuper} from '@/apis/2.0/addr'
+import {fetchSuper} from '../../apis/2.0/addr'
 import {ElMessage} from 'element-plus'
 
 /* 初始化输入变量 */
