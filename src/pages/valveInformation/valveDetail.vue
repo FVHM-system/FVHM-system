@@ -17,8 +17,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue'
-import {ElMessageBox} from 'element-plus'
+import {ref} from 'vue'
 import BasicInformation from "./basicInformation.vue";
 import LiveData from "./liveData.vue";
 
