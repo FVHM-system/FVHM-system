@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import MapLoader from '@/pages/Map/localMap.js';
+import MapLoader from './localMap.js';
 import {ref, onMounted} from 'vue'
 import {fetchValveInfos} from '../../apis/2.0/newMap';
 import MapTip from '../../components/mapTip.vue'
