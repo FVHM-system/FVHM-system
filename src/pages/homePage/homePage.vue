@@ -66,3 +66,4 @@ import whiteBlock from '../../components/whiteBlock.vue'
   padding-top: 10px;
 }
 </style>
+//ces1
