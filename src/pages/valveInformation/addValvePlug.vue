@@ -91,11 +91,11 @@
 </template>
 
 <script setup>
-import {defineComponent, defineProps, onMounted, ref} from 'vue'
+import { onMounted, ref} from 'vue'
 import {ElMessageBox} from 'element-plus'
 import {fetInsertValveInfo} from "./util/vpinformation";
 import {ElMessage} from 'element-plus'
-import {fetchSuper} from '@/apis/2.0/addr'
+import {fetchSuper} from '../../apis/2.0/addr'
 import axios from "axios";
 
 let dialogVisible = ref(false)

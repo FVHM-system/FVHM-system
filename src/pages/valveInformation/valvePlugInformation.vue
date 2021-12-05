@@ -64,10 +64,10 @@
 import {onMounted, ref, getCurrentInstance} from 'vue'
 import {fetchVpinformation, fetDeleteValveInfo} from "./util/vpinformation";
 import {fetchFindData} from "./util/dataSearch";
-import {types, statuss} from '@/utils/transform.js'
-import ValveDetail from "@/pages/valveInformation/valveDetail.vue";
-import AddValvePlug from "@/pages/valveInformation/addValvePlug.vue";
-import {fetchSuper} from '@/apis/2.0/addr'
+import {types, statuss} from '../../utils/transform.js'
+import ValveDetail from "./valveDetail.vue";
+import AddValvePlug from "./addValvePlug.vue";
+import {fetchSuper} from '../../apis/2.0/addr'
 import {exportExcel} from '../../utils/exportExcel'
 import {ElMessage} from 'element-plus'
 

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import MapLoader from '@/pages/Map/localMap.js';
+import MapLoader from './localMap.js';
 
 export default {
   data() {

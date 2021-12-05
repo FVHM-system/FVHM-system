@@ -177,8 +177,8 @@
 import {defineComponent, onMounted, ref,toRefs,reactive, computed} from 'vue'
 import {useStore} from 'vuex'
 import { fetchLicense, addLicense,
-  deleteLicense, editLicense, fetchDepartments } from "@/pages/licenseMgmt/util/licenseMgmt.js"
-import {fetchVpinformation} from "@/pages/valveInformation/util/vpinformation.js"
+  deleteLicense, editLicense, fetchDepartments } from "./util/licenseMgmt"
+import {fetchVpinformation} from "../valveInformation/util/vpinformation.js"
 import {mountedToArrPrototype} from "../../mock"
 import {ElMessage} from 'element-plus'
 import { licenseStates } from "../../utils/transform";
