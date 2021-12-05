@@ -1,13 +1,13 @@
 import {createRouter, createWebHistory} from 'vue-router';
-import homepage from '@/pages/homePage/homePage.vue';
+import homepage from './pages/homePage/homePage.vue';
 import comprehensiveStatistics
-  from '@/pages/comprehensiveStatistics/comprehensiveStatistics.vue'
-import MapContent from '@/pages/Map/mapContent.vue';
-import MapDetail from '@/pages/Map/mapDetail.vue';
-import AlarmMgmt from '@/pages/AlarmMgmt/alarmMgmt.vue'
+  from './pages/comprehensiveStatistics/comprehensiveStatistics.vue'
+import MapContent from './pages/map/mapContent.vue';
+import MapDetail from './pages/map/mapDetail.vue';
+import AlarmMgmt from './pages/alarmMgmt/alarmMgmt.vue'
 import  ValveInformation
   from './pages/valveInformation/valvePlugInformation.vue'
-import DistrictReport from '@/pages/statisticalReport/districtReport.vue';
+import DistrictReport from './pages/statisticalReport/districtReport.vue';
 import CityManage from './pages/addrManage/cityManage.vue';
 import DistrictManage from './pages/addrManage/districtManage.vue';
 import AreaManage from './pages/addrManage/areaManage.vue';
@@ -16,14 +16,14 @@ import VillageManage from './pages/addrManage/villageManage.vue';
 import RoadManage from './pages/addrManage/roadManage.vue';
 import waterConsumption from './pages/waterConsumption/waterConsumption.vue';
 import valveCheck from './pages/valveCheck/valveCheck.vue';
-import AcceptMange from '@/pages/SystemMgmt/acceptManage.vue'
-import AccountMgmt from '@/pages/SystemMgmt/accountMgmt.vue'
-import AccountPostManage from '@/pages/SystemMgmt/accountPostManage.vue'
+import AcceptMange from './pages/systemMgmt/acceptManage.vue'
+import AccountMgmt from './pages/systemMgmt/accountMgmt.vue'
+import AccountPostManage from './pages/systemMgmt/accountPostManage.vue'
 import ApiMgmt from './pages/systemMgmt/apiMgmt.vue'
 import MenuMgmt from './pages/systemMgmt/menuMgmt.vue'
 import PermissionManage from './pages/systemMgmt/permissionManage.vue'
 import PostMgmt from './pages/systemMgmt/postMgmt.vue'
-import LicenseMgmt from '@/pages/licenseMgmt/licenseMgmt.vue'
+import LicenseMgmt from './pages/licenseMgmt/licenseMgmt.vue'
 import { genType, mergeListConfigs, mergeMapConfigs } from './authority'
 import { cloneDeep } from 'lodash-es'
 
