@@ -183,12 +183,17 @@ const dataRequire = async function () {
 /* 查询按钮点击事件 */
 const dataRSearch = async function () {
   let roadValue = ''
+  let startTime = ''
+  let endTime = ''
   if (place.value.length !== 0) {
     roadValue = place.value[4].name
   }
-  let res = await fetchFindWarnInfo(roadValue, input1.value, input2.value,timeSolve(value1.value[0]),timeSolve(value1.value[1]))
-  console.log(timeSolve(value1.value[0]))
-  console.log(timeSolve(value1.value[1]))
+  console.log(value1.value.length)
+  if(value1.value.length!==0){
+    startTime = timeSolve(value1.value[0])
+    endTime = timeSolve(value1.value[1])
+  }
+  let res = await fetchFindWarnInfo(roadValue, input1.value, input2.value,startTime,endTime)
   if (res.code === '200' && res.data.length !== 0) {
     ElMessage({
       type: 'success',

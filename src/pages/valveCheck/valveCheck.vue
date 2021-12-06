@@ -21,7 +21,6 @@
             start-placeholder="Start date"
             end-placeholder="End date"
             style="margin-top: 3px;margin-left: 10px"
-            :default-time="defaultTime"
         >
         </el-date-picker>
       <div class="button-group">
@@ -134,10 +133,6 @@ let modalTitle = computed(() => {
     }
     return res
   })
-let defaultTime=[
-        new Date(2021, 1, 1, 12, 0, 0),
-        new Date(2000, 12, 31, 24, 0, 0),
-      ]
 const addForm = reactive({
     id: '0',
     zoneId:'',
@@ -184,11 +179,17 @@ function exportCSV() {
     exportExcel(excel)
   }
 async function dataSearch(){
+    let startTime = ''
+    let endTime = ''
+    if(value1.value.length!==0){
+      startTime = dayjs(value1.value[0]).format('YYYY-MM-DD HH:mm:ss')
+      endTime = dayjs(value1.value[1]).format('YYYY-MM-DD HH:mm:ss')
+    }
     let res=await fetchCheckInfoByConfig({
         people: input1.value,
         complete: input2.value,
-        startTime:dayjs(value1.value[0]).format('YYYY-MM-DD HH:mm:ss'),
-        endTime:dayjs(value1.value[1]).format('YYYY-MM-DD HH:mm:ss'),
+        startTime:startTime,
+        endTime:endTime,
     })
     console.log("people",input1.value)
     console.log("complete",input2.value)
