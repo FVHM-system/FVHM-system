@@ -4,14 +4,14 @@ export const fetchAlarmManage = async () => {
   return await request.get('/warn/getwarninfos', {})
 }
 
-export const fetchFindWarnInfo = async (roadName, valveName, status) => {
+export const fetchFindWarnInfo = async (roadName, valveName, status,starttime,endtime) => {
   return await request.get('/warn/findwarninfo', {
     params: {
       roadName: roadName,
       valveName: valveName,
       status: status,
-      // startTime:starttime,
-      // endTime:endtime
+      startTime:starttime,
+      endTime:endtime
     }
   })
 }

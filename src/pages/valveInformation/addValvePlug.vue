@@ -152,8 +152,8 @@ const genTwoLengthNumberString = n => (n >= 10 ? n : '0' + n)
 const timeSolve = function (time) {
   let timeString = ref('')
   timeString.value = timeString.value + time.getFullYear() + '-'
-  timeString.value = timeString.value + genTwoLengthNumberString(time.getMonth()) + '-'
-  timeString.value = timeString.value + genTwoLengthNumberString(time.getDay()) + ' '
+  timeString.value = timeString.value + genTwoLengthNumberString(time.getMonth()+1) + '-'
+  timeString.value = timeString.value + genTwoLengthNumberString(time.getDate()) + ' '
   timeString.value = timeString.value + time.toString().split(' ')[4]
   return timeString.value
 }

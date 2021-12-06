@@ -51,8 +51,20 @@
           <template #default="scope">
             <valve-detail class="drawer" :valve_id="scope.row.valveId"
                           :valve_createTime="tableData.createTime"></valve-detail>
-            <el-button type="warning" @click="">停用</el-button>
-            <el-button type="danger" @click="deleteValve(scope.row)">删除</el-button>
+            <el-button type="warning" v-if="scope.row.status === 1001" @click="valveStatusChange(scope.row)">停用</el-button>
+            <el-button type="success" v-if="scope.row.status !== 1001" @click="valveStatusChange(scope.row)">启用</el-button>
+            <el-popconfirm
+                confirm-button-text="确定"
+                cancel-button-text="取消"
+                :icon="InfoFilled"
+                icon-color="red"
+                title="确定要删除该设备吗?"
+                @confirm="deleteValve(scope.row)"
+            >
+              <template #reference>
+                <el-button type="danger">删除</el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -62,7 +74,7 @@
 </template>
 <script setup>
 import {onMounted, ref, getCurrentInstance} from 'vue'
-import {fetchVpinformation, fetDeleteValveInfo} from "./util/vpinformation";
+import {fetchVpinformation, fetDeleteValveInfo,fetUpdateStatus} from "./util/vpinformation";
 import {fetchFindData} from "./util/dataSearch";
 import {types, statuss} from '../../utils/transform.js'
 import ValveDetail from "./valveDetail.vue";
@@ -99,7 +111,30 @@ const statusFormate = function (row) {
   const targetStatus = statuss.find(i => i.value === row.status)
   return targetStatus.label;
 }
-
+const valveStatusChange = async function (row){
+  if(row.status === 1003){
+    let res = await fetUpdateStatus({valveId:row.valveId,status:1001})
+    console.log(res)
+    if(res.code === '200'){
+      ElMessage({
+        type: 'success',
+        message: '启用成功！',
+      })
+      location.reload()
+    }
+  }
+  else if(row.status === 1001 || row.status === 4444 ){
+    let res = await fetUpdateStatus({valveId:row.valveId,status:1003})
+    console.log(res)
+    if(res.code === '200'){
+      ElMessage({
+        type: 'success',
+        message: '停用成功！',
+      })
+      location.reload()
+    }
+  }
+}
 /* 查询 */
 const dataFind = async function () {
   let address = ref('')
