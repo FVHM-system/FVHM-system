@@ -48,3 +48,12 @@ export const fetDeleteValveInfo = async ({valveId}) => {
     }
   })
 }
+
+export const fetUpdateStatus = async ({valveId,status}) => {
+  return await request.put('/valveinfo/updatestatus',{
+    params:{
+      valveId:valveId,
+      status:status
+    }
+  })
+}

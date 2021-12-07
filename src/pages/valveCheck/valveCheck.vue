@@ -21,7 +21,6 @@
             start-placeholder="Start date"
             end-placeholder="End date"
             style="margin-top: 3px;margin-left: 10px"
-            :default-time="defaultTime"
         >
         </el-date-picker>
       <div class="button-group">
@@ -134,10 +133,6 @@ let modalTitle = computed(() => {
     }
     return res
   })
-let defaultTime=[
-        new Date(2021, 1, 1, 12, 0, 0),
-        new Date(2000, 12, 31, 24, 0, 0),
-      ]
 const addForm = reactive({
     id: '0',
     zoneId:'',

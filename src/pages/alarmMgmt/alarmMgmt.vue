@@ -138,6 +138,16 @@ const alarmStatus = [
     label: '确认已处理',
   }
 ]
+const genTwoLengthNumberString = n => (n >= 10 ? n : '0' + n)
+const timeSolve = function (time) {
+  let timeString = ref('')
+  timeString.value = timeString.value + time.getFullYear()+ '-'
+  timeString.value = timeString.value +  genTwoLengthNumberString(time.getMonth()+1) + '-'
+  timeString.value = timeString.value +  genTwoLengthNumberString(time.getDate()) + ' '
+  timeString.value = timeString.value + time.toString().split(' ')[4]
+  return timeString.value
+}
+
 /* 处理按钮名称点击事件 */
 const handleStatus = async item => {
   console.log(item)
@@ -173,14 +183,17 @@ const dataRequire = async function () {
 /* 查询按钮点击事件 */
 const dataRSearch = async function () {
   let roadValue = ''
+  let startTime = ''
+  let endTime = ''
   if (place.value.length !== 0) {
     roadValue = place.value[4].name
   }
-  let res = await fetchFindWarnInfo(roadValue, input1.value, input2.value)
-  console.log(res.data)
-  console.log(place.value)
-  console.log(input1.value)
-  console.log(input2.value)
+  console.log(value1.value.length)
+  if(value1.value.length!==0){
+    startTime = timeSolve(value1.value[0])
+    endTime = timeSolve(value1.value[1])
+  }
+  let res = await fetchFindWarnInfo(roadValue, input1.value, input2.value,startTime,endTime)
   if (res.code === '200' && res.data.length !== 0) {
     ElMessage({
       type: 'success',
