@@ -184,23 +184,34 @@ function exportCSV() {
     exportExcel(excel)
   }
 async function dataSearch(){
-    let res=await fetchCheckInfoByConfig({
+    console.log("value1",value1.value)
+    let res
+    if(value1.value===''){
+        res=await fetchCheckInfoByConfig({
         people: input1.value,
         complete: input2.value,
-        startTime:dayjs(value1.value[0]).format('YYYY-MM-DD HH:mm:ss'),
-        endTime:dayjs(value1.value[1]).format('YYYY-MM-DD HH:mm:ss'),
-    })
+      })
+    }
+    else{
+          res=await fetchCheckInfoByConfig({
+          people: input1.value,
+          complete: input2.value,
+          startTime:dayjs(value1.value[0]).format('YYYY-MM-DD HH:mm:ss'),
+          endTime:dayjs(value1.value[1]).format('YYYY-MM-DD HH:mm:ss'),
+      })
+    }
     console.log("people",input1.value)
     console.log("complete",input2.value)
     console.log("startTime",dayjs(value1.value[0]).format('YYYY-MM-DD HH:mm:ss'))
     console.log("endTime",dayjs(value1.value[1]).format('YYYY-MM-DD HH:mm:ss'))
+
     if(res.code==='200' && res.data.length!==0){
     ElMessage({
       type: 'success',
       message: '查询成功！',
     })
     tableData.value = res.data;
-    console.log(res.data)
+    console.log("all data",res.data)
     }
     else {
         ElMessage({
@@ -208,6 +219,7 @@ async function dataSearch(){
         message: '数据未找到！',
         })
     }
+
 }
 const myFunc={
         async search(){
@@ -341,6 +353,7 @@ const myFunc={
         addForm.time=item.time
         addForm.complete=item.complete
         addForm.remark=item.remark
+        console.log("hahahaha",item.zoneId)
     },
     }
 const reload = async function () {

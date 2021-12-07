@@ -11,7 +11,7 @@
         style="position: absolute; bottom: 5px; right: 10px; pointer-events: auto; padding-right: 240px"
         @change="changeLayer"
     >
-      <el-radio-button label="标准地图"></el-radio-button>
+      <el-radio-button label="标准地图" ></el-radio-button>
       <el-radio-button label="卫星地图"></el-radio-button>
     </el-radio-group>
     <div class="navtool">
@@ -28,11 +28,11 @@
       <div class="content" v-show="navmode">
         <div class="clickfirst" v-show="!clicked">请点击起点</div>
         <div class="clicksecond" v-if="clicked && !showNav">
-          <div>起点：{{ `${clicklocation[0].valveName}` }}</div>
+          <div>起点：{{ `${clicklocation[0].name}` }}</div>
           <div style="margin-top: 10px">请点击终点</div>
         </div>
         <div class="clickthird" v-if="clicked && showNav">
-          <div>{{ `${clicklocation[0].valveName}` }}至{{ `${clicklocation[1].valveName}` }}</div>
+          <div>{{ `${clicklocation[0].name}` }}至{{ `${clicklocation[1].name}` }}</div>
           <div style="margin-top: 10px">导航完成</div>
           <!-- <div style="margin-top: 10px">请点击新的起点</div> -->
         </div>
@@ -47,7 +47,7 @@ import {ref, onMounted} from 'vue'
 import {fetchValveInfos} from '../../apis/2.0/newMap';
 import MapTip from '../../components/mapTip.vue'
 
-let radio = ref()
+let radio = ref("标准地图")
 let satelliteObject = ref()
 let chart
 satelliteObject.value = null
@@ -84,12 +84,14 @@ function changeMode(e) {
     state.value = true
   }
   if (driving) {
-    driving.clear()
+    //driving.clear()
+    driving.destroy()//拖曳
   }
 }
 
 async function loadMap() {
   chart = echarts.init(document.getElementById('map-container'))
+  
   chart.on('click', e => {
     console.log("点击的", e.data)
     console.log(state.value)
@@ -271,15 +273,23 @@ const setNav = async () => {
   if (!chart) {
     await setMap()
   } else {
-    const amap = chart.getModel().getComponent('amap').getAMap()
-    AMap.plugin('AMap.Driving', function () {
-      driving = new AMap.Driving({
-        policy: AMap.DrivingPolicy.LEAST_TIME,
-        map: amap,
-        panel: 'panel'
-      })
-      driving.search(startLngLat, endLngLat, function (status, result) {
-      })
+    // const amap = chart.getModel().getComponent('amap').getAMap()
+    // AMap.plugin('AMap.Driving', function () {
+    //   driving = new AMap.Driving({
+    //     policy: AMap.DrivingPolicy.LEAST_TIME,
+    //     map: amap,
+    //     panel: 'panel'
+    //   })
+    //   driving.search(startLngLat, endLngLat, function (status, result) {
+    //   })
+    // })
+     const amap = chart.getModel().getComponent('amap').getAMap()
+      AMap.plugin('AMap.DragRoute', function () {
+      let path = []
+      path.push(startLngLat)
+      path.push(endLngLat)
+      driving = new AMap.DragRoute(amap, path, AMap.DrivingPolicy.LEAST_FEE)
+      driving.search()
     })
   }
 }
@@ -301,7 +311,7 @@ const fetchData = async () => {
     return res.filter(e).map(item => {
       return {
         valveId: item.valveId,
-        valveName: item.valveName,
+        name: item.valveName,
         value: [item.longitude, item.latitude],
         applicantName: item.applicantName
       }
@@ -320,6 +330,7 @@ const fetchData = async () => {
 }
 
 function changeLayer(e) {
+  console.log("哈哈哈哈",radio.value)
   if (e == '标准地图') {
     satelliteObject.value.hide()
   } else {
