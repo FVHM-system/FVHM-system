@@ -56,3 +56,12 @@ export const fetchMonthRoad = async({ month, list })=>{
       })
 }
 
+export const fetchMonthSection = async({ month, list })=>{
+  return await request.Ppost('/monthreport/getsectioninfos', {
+      params: {
+        month,
+      },
+      data: list,
+    })
+}
+
