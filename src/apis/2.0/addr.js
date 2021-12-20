@@ -50,11 +50,6 @@ export const fetchRoadList=async()=>{
   return await request.Pget('/road/getroadinfo')
 }
 
-export const fetchSectionList=async()=>{
-  return await request.Pget('/section/getsectioninfo')
-}
-
-
 export const AddVillageInfoByConfig = async ({ townId, villageId,villageName }) => {
   return await request.post('/village/insertvillageinfo', {
     data: {
@@ -85,30 +80,11 @@ export const editVillageInfoByConfig = async ({ townId, villageId, villageName }
   })
 }
 
-export const editSectionInfoByConfig = async ({ roadId, sectionId, sectionName }) => {
-  return await request.put('/section/updatesectioninfo', {
-    data: {
-      roadId,
-      sectionId,
-      sectionName,
-    },
-  })
-}
-
 export const AddTownInfoByConfig = async ({ districtId, townName }) => {
   return await request.post('/town/inserttowninfo', {
     data: {
       districtId,
       townName,
-    },
-  })
-}
-
-export const AddSectionInfoByConfig = async ({ roadId, sectionName }) => {
-  return await request.post('/section/insertsectioninfo', {
-    data: {
-      roadId,
-      sectionName,
     },
   })
 }
@@ -199,14 +175,6 @@ export const deleteVillageInfoById = async ({ id }) => {
   return await request.delete('/village/deletevillageinfo', {
     params: {
       villageId: id,
-    },
-  })
-}
-
-export const deleteSectionInfoById = async ({ id }) => {
-  return await request.delete('/section/deletesectioninfo', {
-    params: {
-      sectionId: id,
     },
   })
 }

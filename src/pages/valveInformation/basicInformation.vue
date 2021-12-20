@@ -71,11 +71,20 @@
             </el-option>
           </el-select>
         </el-form-item>
+
         <el-form-item label="负责部门" style="position:relative; left:300px; top: -270px">
           <el-col :span="9">
-            <el-input v-model="formData.applicantName" style="width: 190px"></el-input>
+            <el-select style="width: 190px" v-model="formData.applicantId" placeholder="请选择">
+              <el-option
+                  v-for="item in applicant"
+                  :key="item.applicantId"
+                  :value="item.applicantId"
+                  :label="item.applicantId + ' - ' + item.applicantName">
+              </el-option>
+            </el-select>
           </el-col>
         </el-form-item>
+
         <el-form-item label="备注" style="position:relative; left:300px; top: -260px">
           <el-col :span="9">
             <el-input v-model="input" style="width: 190px"></el-input>
@@ -94,9 +103,11 @@
 import {ref, defineProps, onMounted} from 'vue'
 import {fetchDetailData} from "./util/detailData";
 import {fetchUpdateData} from "./util/updateData";
-import {ElMessage} from 'element-plus'
+import { getApplicant } from "../ApplicantMgmt/ApplicantMgmt.js"
+import {ElMessage, ElLoading} from 'element-plus'
 
 let formData = ref([]);
+let applicant = ref([])
 let options = ref([
   {
     value: 1,
@@ -130,6 +141,10 @@ onMounted(async () => {
   if (res.code === '200') {
     formData.value = res.data;
   }
+  res = await getApplicant()
+  if (res.code === '200') {
+    applicant.value = res.data;
+  }
   console.log(formData.value)
 })
 let valveInfo = {}
@@ -148,6 +163,7 @@ const updateInfo = async function () {
   valveInfo.remark = formData.value.remark;
   valveInfo.meterCode = formData.value.meterCode;
   valveInfo.comNumber = formData.value.comNumber;
+  valveInfo.applicantId = formData.value.applicantId;
   const res = await fetchUpdateData(valveInfo)
   console.log(res)
   console.log(valveInfo)

@@ -24,6 +24,7 @@
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
           :data="roadList" style="margin-top:10px;width: 100%" size="medium" stripe>
         <el-table-column prop="road" label="道路名" min-width="150"></el-table-column>
+        <!-- <el-table-column prop="address" sortable label="地址" min-width="150"> </el-table-column> -->
         <el-table-column prop="village" sortable label="所属村庄" min-width="150"></el-table-column>
         <el-table-column prop="town" sortable label="所属乡镇" min-width="150"></el-table-column>
         <el-table-column prop="district" sortable label="所属区县" min-width="150"></el-table-column>
