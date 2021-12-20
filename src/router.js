@@ -14,6 +14,7 @@ import AreaManage from './pages/addrManage/areaManage.vue';
 import TownManage from './pages/addrManage/townManage.vue';
 import VillageManage from './pages/addrManage/villageManage.vue';
 import RoadManage from './pages/addrManage/roadManage.vue';
+import SectionManage from './pages/addrManage/sectionManage.vue';
 import waterConsumption from './pages/waterConsumption/waterConsumption.vue';
 import valveCheck from './pages/valveCheck/valveCheck.vue';
 import AcceptMange from './pages/systemMgmt/acceptManage.vue'
@@ -128,12 +129,12 @@ const configs = [
         name: 'page-addr-district',
         component: DistrictManage,
       },
-      {
-        path: '/area',
-        label: '工业区管理',
-        name: 'page-addr-area',
-        component: AreaManage,
-      },
+      // {
+      //   path: '/area',
+      //   label: '工业区管理',
+      //   name: 'page-addr-area',
+      //   component: AreaManage,
+      // },
       {
         path: '/town',
         label: '乡镇管理',
@@ -151,6 +152,12 @@ const configs = [
         label: '道路管理',
         name: 'page-addr-road',
         component: RoadManage,
+      },
+      {
+        path: '/section',
+        label: '路段管理',
+        name: 'page-addr-section',
+        component: SectionManage,
       },
     ]
   },

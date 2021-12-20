@@ -9,20 +9,31 @@
   <div class="layer box">
     <div class="map-tip">
         <div class="tip-item">
-          <div class="icon" :style="{ background: 'rgb(157,217,9)' }"></div>
-          <div class="word">阀门正常运行</div>
+          <div class="icon" :style="{ background: 'rgb(177,253,47)' }"></div>
+          <div class="word1">阀门</div>
           <el-switch
-            v-model="wellNormalFlag"
+            v-model="wellFlag"
             @change="changeSwitch"
             style="position: absolute; right: 4px; margin-top: 2px"
           >
           </el-switch>
         </div>
         <div class="tip-item">
-          <div class="icon" :style="{ background: 'rgb(117,205,245)' }"></div>
-          <div class="word">消防栓正常运行</div>
+          <div class="triangle-green"></div>
+          <div class="word2">消防栓</div>
           <el-switch
-            v-model="hydrantNormalFlag"
+            v-model="hydrantFlag"
+            @change="changeSwitch"
+            style="position: absolute; right: 4px; margin-top: 2px"
+          >
+          </el-switch>
+        </div>
+        <div class="tip-item">
+          <div class="icon" :style="{ background: 'rgb(177,253,47)' }"></div>
+          <div class="triangle-green"></div>
+          <div class="word">正常运行</div>
+          <el-switch
+            v-model="normalFlag"
             @change="changeSwitch"
             style="position: absolute; right: 4px; margin-top: 2px"
           >
@@ -30,6 +41,7 @@
         </div>
         <div class="tip-item">
           <div class="icon" :style="{ background: 'rgb(221, 109, 115)' }"></div>
+          <div class="triangle-red"></div>
           <div class="word">正在报警</div>
           <el-switch
             v-model="warningFlag"
@@ -40,6 +52,7 @@
         </div>
         <div class="tip-item">
           <div class="icon" :style="{ background: 'rgb(150,151,151)' }"></div>
+          <div class="triangle-grey"></div>
           <div class="word">已经废弃</div>
           <el-switch
             v-model="offlineFlag"
@@ -50,6 +63,7 @@
         </div>
         <div class="tip-item">
           <div class="icon" :style="{ background: 'rgb(213,22,251)' }"></div>
+          <div class="triangle-purple"></div>
           <div class="word">尚未安装</div>
           <el-switch
             v-model="uninstallFlag"
@@ -111,12 +125,22 @@ let normalWell = ref([])
 normalWell.value = []
 let normalHydrant = ref([])
 normalHydrant.value = []
-let offline = ref([])
-offline.value = []
-let warning = ref([])
-warning.value = []
-let uninstalled = ref([])
-uninstalled.value = []
+
+//
+let offlineWell=ref([])
+offlineWell.value=[]
+let warningWell=ref([])
+warningWell.value=[]
+let uninstalledWell=ref([])
+uninstalledWell.value=[]
+let offlineHydrant=ref([])
+offlineWell.value=[]
+let warningHydrant=ref([])
+warningWell.value=[]
+let uninstalledHydrant=ref([])
+uninstalledWell.value=[]
+
+//
 let valveData = ref([])
 valveData.value = []
 let startLngLat = []
@@ -133,6 +157,9 @@ let hydrantNormalFlag=ref(true)
 let warningFlag=ref(true)
 let offlineFlag=ref(true)
 let uninstallFlag=ref(true)
+let normalFlag=ref(true)
+let wellFlag=ref(true)
+let hydrantFlag=ref(true)
 
 async function changeSwitch(e){
   await fetchData()
@@ -191,20 +218,33 @@ async function loadMap() {
     })
   }
   
-  if(wellNormalFlag.value===false){
+  if(normalFlag.value===false){
     normalWell.value=[]
-  }
-  if(hydrantNormalFlag.value===false){
     normalHydrant.value=[]
   }
   if(warningFlag.value===false){
-    warning.value=[]
+    warningWell.value=[]
+    warningHydrant.value=[]
   }
   if(offlineFlag.value===false){
-    offline.value=[]
+    offlineWell.value=[]
+    offlineHydrant.value=[]
   }
   if(uninstallFlag.value===false){
-    uninstalled.value=[]
+    uninstalledWell.value=[]
+    uninstalledHydrant.value=[]
+  }
+  if(wellFlag.value==false){
+    normalWell.value=[]
+    warningWell.value=[]
+    offlineWell.value=[]
+    uninstalledWell.value=[]
+  }
+  if(hydrantFlag.value==false){
+    normalHydrant.value=[]
+    warningHydrant.value=[]
+    offlineHydrant.value=[]
+    uninstalledHydrant.value=[]
   }
 
   const optionNew = {
@@ -225,6 +265,11 @@ async function loadMap() {
         type: 'effectScatter',
         coordinateSystem: 'amap',
         data: normalWell.value,
+        symbol:'circle',
+        /*散点形状设置: 
+        'circle’, ‘rect’, ‘roundRect’, ‘triangle’, 
+        ‘diamond’, ‘pin’, 'arrow’
+        */
         symbolSize: 27,
         encode: {
           value: 2,
@@ -251,6 +296,11 @@ async function loadMap() {
         type: 'effectScatter',
         coordinateSystem: 'amap',
         data: normalHydrant.value,
+        symbol:'triangle',
+        /*散点形状设置: 
+        'circle’, ‘rect’, ‘roundRect’, ‘triangle’, 
+        ‘diamond’, ‘pin’, 'arrow’
+        */
         symbolSize: 27,
         encode: {
           value: 2,
@@ -266,17 +316,18 @@ async function loadMap() {
           show: true,
         },
         itemStyle: {
-          color: 'rgb(117, 205, 245)',
+          color: 'rgba(165, 255, 0, 0.8)',
           shadowBlur: 10,
           shadowColor: '#333',
         },
         zlevel: 1,
       },
       {
-        name: '正在报警',
+        name: '阀门正在报警',
         type: 'effectScatter',
         coordinateSystem: 'amap',
-        data: warning.value,
+        data: warningWell.value,
+        symbol:'circle',
         showEffectOn: 'emphasis',
         symbolSize: 27,
         encode: {
@@ -296,10 +347,35 @@ async function loadMap() {
         zlevel: 1,
       },
       {
-        name: '已经废弃',
+        name: '消防栓正在报警',
         type: 'effectScatter',
         coordinateSystem: 'amap',
-        data: offline.value,
+        data: warningHydrant.value,
+        symbol:'triangle',
+        showEffectOn: 'emphasis',
+        symbolSize: 27,
+        encode: {
+          value: 2,
+        },
+        hoverAnimation: true,
+        label: {
+          formatter: '{b}',
+          position: 'right',
+          show: true,
+        },
+        itemStyle: {
+          color: 'rgba(255,110,118, 0.8)',
+          shadowBlur: 10,
+          shadowColor: '#333',
+        },
+        zlevel: 1,
+      },
+      {
+        name: '阀门已经废弃',
+        type: 'effectScatter',
+        coordinateSystem: 'amap',
+        data: offlineWell.value,
+        symbol:'circle',
         symbolSize: 27,
         encode: {
           value: 2,
@@ -322,10 +398,65 @@ async function loadMap() {
         zlevel: 1,
       },
       {
-        name: '尚未安装',
+        name: '消防栓已经废弃',
         type: 'effectScatter',
         coordinateSystem: 'amap',
-        data: uninstalled.value,
+        data: offlineHydrant.value,
+        symbol:'triangle',
+        symbolSize: 27,
+        encode: {
+          value: 2,
+        },
+        showEffectOn: 'emphasis',
+        rippleEffect: {
+          brushType: 'stroke',
+        },
+        hoverAnimation: true,
+        label: {
+          formatter: '{b}',
+          position: 'right',
+          show: true,
+        },
+        itemStyle: {
+          color: 'rgba(165, 165, 165, 0.8)',
+          shadowBlur: 10,
+          shadowColor: '#333',
+        },
+        zlevel: 1,
+      },
+      {
+        name: '阀门尚未安装',
+        type: 'effectScatter',
+        coordinateSystem: 'amap',
+        data: uninstalledWell.value,
+        symbol:'circle',
+        symbolSize: 27,
+        encode: {
+          value: 2,
+        },
+        showEffectOn: 'emphasis',
+        rippleEffect: {
+          brushType: 'stroke',
+        },
+        hoverAnimation: true,
+        label: {
+          formatter: '{b}',
+          position: 'right',
+          show: true,
+        },
+        itemStyle: {
+          color: 'rgb(194,20,229)',
+          shadowBlur: 10,
+          shadowColor: '#333',
+        },
+        zlevel: 1,
+      },
+      {
+        name: '消防栓尚未安装',
+        type: 'effectScatter',
+        coordinateSystem: 'amap',
+        data: uninstalledHydrant.value,
+        symbol:'triangle',
         symbolSize: 27,
         encode: {
           value: 2,
@@ -400,14 +531,22 @@ const fetchData = async () => {
   }
   normalWell.value = getList(item => item.status === 1001 && item.valveType === 1)
   normalHydrant.value = getList(item => item.status === 1001 && item.valveType === 2)
-  warning.value = getList(item => item.status === 4444)
-  offline.value = getList(item => item.status === 1003)
-  uninstalled.value = getList(item => item.status === 1002)
+  warningWell.value=getList(item => item.status === 4444 && item.valveType === 1)
+  warningHydrant.value=getList(item => item.status === 4444 && item.valveType === 2)
+  offlineWell.value=getList(item => item.status === 1003 && item.valveType === 1)
+  offlineHydrant.value=getList(item => item.status === 1003 && item.valveType === 2)
+  uninstalledWell.value=getList(item => item.status === 1002 && item.valveType === 1)
+  uninstalledHydrant.value=getList(item => item.status === 1002 && item.valveType === 2)
+  
+
   console.log("阀门正常运行", normalWell.value)
   console.log("消防栓正常运行", normalHydrant.value)
-  console.log("正在报警", warning.value)
-  console.log("已经废弃", offline.value)
-  console.log("尚未安装", uninstalled.value)
+  console.log("阀门正在报警", warningWell.value)
+  console.log("消防栓正在报警", warningHydrant.value)
+  console.log("阀门已经废弃", offlineWell.value)
+  console.log("消防栓已经废弃", offlineHydrant.value)
+  console.log("阀门尚未安装", uninstalledWell.value)
+  console.log("消防栓尚未安装", uninstalledHydrant.value)
 }
 
 function changeLayer(e) {
@@ -446,6 +585,7 @@ onUnmounted(async()=>{
   width: 100%;
   height: calc(100vh - 100px);
 }
+
 
 .layer-out {
   position: relative;
@@ -557,8 +697,49 @@ onUnmounted(async()=>{
         margin-right: 6px;
       }
       .word {
+        position: relative;
+        left:8px;
         font-size: 13px;
       }
+      .word1 {
+        position: relative;
+        left:29px;
+        font-size: 13px;
+      }
+      .word2 {
+        position: relative;
+        left:35px;
+        font-size: 13px;
+      }
+      .triangle-green {
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 20px solid rgb(173, 255, 47);
+      }
+      .triangle-red {
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 20px solid rgb(221, 109, 115);
+      }
+      .triangle-grey {
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 20px solid rgb(150,151,151);
+      }
+      .triangle-purple {
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 20px solid rgb(213,22,251);
+      }
+
     }
   }
 </style>

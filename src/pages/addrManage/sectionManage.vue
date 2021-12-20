@@ -1,7 +1,7 @@
 <template>
   <div class="p-page">
     <div class="p-header">
-      <p class="page2-name">道路管理</p>
+      <p class="page2-name">路段管理</p>
       <div class="p-operation">
         <div class="p-row">
           <div class="op-flex">
@@ -10,7 +10,7 @@
                 icon="el-icon-plus"
                 @click="addModal.open()"
             >
-              新增道路
+              新增路段
             </el-button>
           </div>
         </div>
@@ -22,8 +22,9 @@
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
-          :data="roadList" style="margin-top:10px;width: 100%" size="medium" stripe>
-        <el-table-column prop="road" label="道路名" min-width="150"></el-table-column>
+          :data="sectionList" style="margin-top:10px;width: 100%" size="medium" stripe>
+        <el-table-column prop="section" label="路段名" min-width="150"></el-table-column>
+        <el-table-column prop="road" sortable label="所属道路" min-width="150"></el-table-column>
         <el-table-column prop="village" sortable label="所属村庄" min-width="150"></el-table-column>
         <el-table-column prop="town" sortable label="所属乡镇" min-width="150"></el-table-column>
         <el-table-column prop="district" sortable label="所属区县" min-width="150"></el-table-column>
@@ -40,12 +41,12 @@
   </div>
   <el-dialog v-model="modalState" :title="modalTitle" center>
     <el-form :model="addForm" label-width="100px" :inline="false">
-      <el-form-item label="道路名" required>
+      <el-form-item label="路段名" required>
         <el-input v-model="addForm.name" style="width: 360px"></el-input>
       </el-form-item>
-      <el-form-item label="所属村庄" required>
+      <el-form-item label="所属道路" required>
         <el-select v-model="addForm.zoneId" clearable style="width: 330px" placeholder="请选择">
-          <el-option v-for="item in villageList" :key="item.zoneId" :label="item.village"
+          <el-option v-for="item in roadList" :key="item.zoneId" :label="item.road"
                      :value="item.zoneId"></el-option>
         </el-select>
       </el-form-item>
@@ -67,11 +68,13 @@ import {
   fetchDistrictList,
   fetchTownList,
   fetchRoadList,
-  AddRoadInfoByConfig,
-  editRoadInfoByConfig,
-  deleteRoadInfoById
+  fetchSectionList,
+  AddSectionInfoByConfig,
+  editSectionInfoByConfig,
+  deleteSectionInfoById
 } from '../../apis/2.0/addr'
 
+let sectionList=ref([])
 let roadList = ref([])
 let villageList = ref([])
 let townList = ref([])
@@ -84,9 +87,9 @@ let currentItem = ref()
 let modalTitle = computed(() => {
   let res
   if (mode.value === 'add') {
-    res = '新增道路'
+    res = '新增路段'
   } else if (mode.value === 'edit') {
-    res = '编辑道路'
+    res = '编辑路段'
   }
   return res
 })
@@ -106,11 +109,13 @@ const myFunc = {
     townList.value = temp4
     const temp5 = await fetchVillageList()
     villageList.value = temp5
+    const temp6 = await fetchSectionList()
+    sectionList.value = temp6
   },
   async add() {
-    const r = await AddRoadInfoByConfig({
-      villageId: addForm.zoneId,
-      roadName: addForm.name,
+    const r = await AddSectionInfoByConfig({
+      roadId: addForm.zoneId,
+      sectionName: addForm.name,
     })
     if (r.code === '200') {
       ElMessage({
@@ -123,10 +128,10 @@ const myFunc = {
     return false
   },
   async edit() {
-    const r = await editRoadInfoByConfig({
-      roadId: currentItem.value.zoneId,
-      roadName: addForm.name,
-      villageId: addForm.zoneId,
+    const r = await editSectionInfoByConfig({
+      sectionId: currentItem.value.zoneId,
+      sectionName: addForm.name,
+      roadId: addForm.zoneId,
     })
     if (r.code === '200') {
       ElMessage({
@@ -145,7 +150,7 @@ const myFunc = {
       type: 'warning',
     })
     .then(async () => {
-      const r = await deleteRoadInfoById({id: item.zoneId})
+      const r = await deleteSectionInfoById({id: item.zoneId})
       if (r.code === '200') {
         this.search()
         ElMessage({
@@ -213,7 +218,7 @@ const editModal = {
     mode.value = 'edit'
     modal.value = editModal
     currentItem.value = item
-    addForm.name = item.road
+    addForm.name = item.section
     addForm.zoneId = item.pid
   },
 }

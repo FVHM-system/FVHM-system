@@ -233,9 +233,14 @@ const waterTrandGet = async function () {
   BarPic(waterYearData)
 
 }
-created(async () => {
+onMounted(async () => {
   await getTimeWaterDataYear()
   await waterTrandGet()
+})
+onUnmounted(() => {
+  if (myChart) {
+    myChart.dispose()
+  }
 })
 onUnmounted(() => {
   if (myChart) {

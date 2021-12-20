@@ -39,8 +39,7 @@
             :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
             style="width: 100%"
         >
-          <el-table-column label="任务编号" prop="id" width="120px"/>
-          <el-table-column label="任务道路" prop="zoneName" width="120px"/>
+          <el-table-column label="任务编号" prop="taskId" width="120px"/>
           <el-table-column label="巡视人" prop="people" width="120px"/>
           <el-table-column label="电话号码" prop="phone" width="200px"/>
           <el-table-column label="完成状态" prop="complete"  width="200px"/>
@@ -257,11 +256,7 @@ function exportCSV() {
     excel.props = [
       {
         label: '任务编号',
-        name: 'id',
-      },
-      {
-        label: '任务道路',
-        name: 'zoneName',
+        name: 'taskId',
       },
       {
         label: '巡视人',
@@ -499,10 +494,10 @@ const myFunc={
 const reload = async function () {
     location.reload()
 }
-const statusFormate = function (row){
-  const targetStatus = status.find(i => i.value === row.complete)
-  return targetStatus.label;
-}
+// const statusFormate = function (row){
+//   const targetStatus = status.find(i => i.value === row.complete)
+//   return targetStatus.label;
+// }
 
 onMounted(async () => {
   myFunc.search()
