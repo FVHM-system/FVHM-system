@@ -34,7 +34,7 @@
             :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
             :load="load"
         >
-          <el-table-column prop="name" label="行政区域" width="340" ></el-table-column>
+          <el-table-column prop="name" label="行政区域" width="190"></el-table-column>
           <el-table-column prop="planVolume" label="计划用水量(万m³)" min-width="200"></el-table-column>
           <el-table-column prop="licenseVolume" label="许可用水量(万m³)"
                            min-width="200"></el-table-column>
@@ -54,19 +54,19 @@ import {onMounted, ref} from 'vue'
 import {useStore} from 'vuex'
 import {
   fetchMonthCity,
+  fetchMonthArea,
   fetchMonthTown,
   fetchMonthDistrict,
   fetchMonthVillage,
   fetchMonthRoad,
-  fetchMonthSection,
 } from '../../apis/2.0/newMonth'
-import {         
+import {
   fetchCityList,
+  fetchAreaList,
   fetchDistrictList,
   fetchTownList,
   fetchVillageList,
   fetchRoadList,
-  fetchSectionList,
 } from '../../apis/2.0/addr'
 import {dateTimeTrans} from '../../utils/mrWang'
 
@@ -78,6 +78,27 @@ const load = async (tree, treeNode, resolve) => {
   let r1 = [], r2 = [], r3 = [], r4 = [], r5 = []
   let res
   if (tree.type === 'city') {
+    //工业区
+    const area = (await fetchAreaList() || []).filter(item => item.pid == tree.zoneId)
+    console.log("area: ", area)
+    res = (await fetchMonthArea({
+      month: dateTimeTrans(searchTime.value, searchTimeType.value),
+      list: area.map(item => {
+        return item.zoneId;
+      }),
+    }))
+    console.log("res: ", res)
+    r1 = res.map((item, index) => {
+      return {
+        ...item,
+        zoneId: area[index].zoneId,
+        name: area[index].area,
+        hasChildren: false,
+        type: 'area',
+        id: 'area' + area[index].zoneId,
+      }
+    })
+    console.log("r1: ", r1)
     //区县
     const district = (await fetchDistrictList() || []).filter(item => item.pid == tree.zoneId)
     console.log("district: ", district)
@@ -162,37 +183,14 @@ const load = async (tree, treeNode, resolve) => {
         ...item,
         zoneId: road[index].zoneId,
         name: road[index].road,
-        hasChildren: true,
+        hasChildren: false,
         type: 'road',
         id: 'road' + road[index].zoneId,
       }
     })
     console.log("r5: ", r5)
   }
-  if (tree.type == 'road') {
-    //路段
-    const section = (await fetchSectionList() || []).filter(item => item.pid == tree.zoneId)
-    console.log("section: ", section)
-    res = (await fetchMonthSection({
-      month: dateTimeTrans(searchTime.value, searchTimeType.value),
-      list: section.map(item => {
-        return item.zoneId;
-      }),
-    }))
-    console.log("res: ", res)
-    r1 = res.map((item, index) => {
-      return {
-        ...item,
-        zoneId: section[index].zoneId,
-        name: section[index].section,
-        hasChildren: false,
-        type: 'section',
-        id: 'section' + section[index].zoneId,
-      }
-    })
-    console.log("r1: ", r1)
-  }
-  resolve([].concat(r2).concat(r3).concat(r4).concat(r5).concat(r1))
+  resolve([].concat(r2).concat(r1).concat(r3).concat(r4).concat(r5))
 
 }
 

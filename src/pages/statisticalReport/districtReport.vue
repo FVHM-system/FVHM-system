@@ -84,6 +84,7 @@ import {multiply} from 'lodash'
 import {getCurrentInstance, onMounted, ref} from 'vue'
 import {
   fetchCityList,
+  fetchAreaList,
   fetchDistrictList,
   fetchTownList,
   fetchVillageList,
@@ -93,6 +94,7 @@ import {
 } from '../../apis/2.0/addr'
 import {
   fetchCityReport,
+  fetchAreaReport,
   fetchDistrictReport,
   fetchTownReport,
   fetchVillageReport,
@@ -137,7 +139,20 @@ myprops = {
 
 const getList = async (type, zoneId) => {
   let place, newplace;
-  if (type === 'district') {
+  if (type === 'area') {
+    place = (await fetchAreaList() || []).filter(value => value.pid == zoneId);
+    newplace = place.map((item, index) => {
+      return {
+        name: item.area,
+        message: {
+          zoneId: item.zoneId,
+          type: type,
+          name: item.area
+        },
+        child: null
+      }
+    })
+  } else if (type === 'district') {
     place = (await fetchDistrictList() || []).filter(value => value.pid == zoneId);
     newplace = place.map((item, index) => {
       return {
@@ -230,11 +245,12 @@ const getNodes = async (val) => {
     options.value.map(async (item, index) => {
       if (item.message.zoneId === val[0].zoneId) {
         if (item.child.length === 0) {
+          let area = await getList('area', item.message.zoneId)
           let district = await getList('district', item.message.zoneId)
-          if (district.length === 0 ) {
+          if (district.length === 0 && area.length === 0) {
             item.child = null;
           } else {
-            item.child = [].concat(district)
+            item.child = [].concat(district).concat(area)
           }
         }
       }
@@ -437,7 +453,19 @@ async function search() {
           totalVolume = item1.totalVolume
         }
       })
-    }  else if (item.type === 'district') {
+    } else if (item.type === 'area') {
+      const temp1 = await fetchAreaReport({
+        type: type,
+        currentTime: dateTimeTrans(searchTime.value, searchTimeType.value),
+      })
+      temp1.map((item1) => {
+        if (item1.id === item.zoneId) {
+          valveVolume = item1.valveVolume
+          hydrantVolume = item1.hydrantVolume
+          totalVolume = item1.totalVolume
+        }
+      })
+    } else if (item.type === 'district') {
       const temp1 = await fetchDistrictReport({
         type: type,
         currentTime: dateTimeTrans(searchTime.value, searchTimeType.value),
