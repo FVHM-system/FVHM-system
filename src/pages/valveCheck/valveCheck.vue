@@ -43,38 +43,40 @@
           <el-table-column label="巡视人" prop="people" width="120px"/>
           <el-table-column label="电话号码" prop="phone" width="200px"/>
           <el-table-column label="完成状态" prop="complete"  width="200px"/>
-          <el-table-column label="任务时间" prop="time" width="200px"/>
+          <el-table-column label="创建时间" prop="createTime" width="200px"/>
+          <el-table-column label="任务时间" prop="inspectTime" width="200px"/>
           <el-table-column label="备注" prop="remark" width="200px"/>
-          <el-table-column fixed="right" label="操作" width="220">
+          <el-table-column fixed="right" label="操作" width="300">
             <template #default="scope">
               <el-button type="primary" @click="editModal.open(scope.row)">编辑</el-button>
+              <el-button type="primary" @click="detailModal.open(scope.row)">详情</el-button>
               <el-button type="danger" @click="myFunc.delete(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
     </el-scrollbar>
   </div>
-  <el-dialog v-model="modalState" :title="modalTitle"  center>
+  <el-dialog v-model="editState" :title="modalTitle"  center>
         <el-form :model="addForm" label-width="100px" :inline="false">
-        <el-form-item label="任务阀栓" required>
+        <!-- <el-form-item label="任务阀栓" required>
             <el-select v-model="addForm.zoneId" clearable style="width: 330px" placeholder="请选择">
             <el-option v-for="item in roadList" :key="item.zoneId" :label="item.road" :value="item.zoneId"></el-option>
             </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="巡视人" required>
             <el-input v-model="addForm.people" style="width: 360px"></el-input>
         </el-form-item>
         <el-form-item label="电话号码" required>
             <el-input v-model="addForm.phone" style="width: 360px"></el-input>
         </el-form-item>
-        <el-form-item label="完成状态" required>
+        <!-- <el-form-item label="完成状态" required>
             <el-select v-model="addForm.complete" clearable style="width: 330px" placeholder="请选择">
             <el-option v-for="item in status" :key="item.label" :label="item.label" :value="item.value"></el-option>
             </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="任务时间" >
             <el-date-picker
-                    v-model="addForm.time"
+                    v-model="addForm.inspectTime"
                     value-format="yyyy-MM-dd HH:mm:ss"
                     type="datetime"
                     placeholder="请选择"
@@ -89,7 +91,57 @@
         <el-button type="primary" class="search-btn" @click="modal.submit()">保存</el-button>
         <el-button @click="modal.cancel()">取消</el-button>
         </template>
-    </el-dialog>
+   </el-dialog>
+  <el-dialog v-model="detailState" :title="modalTitle"  center width="65%">
+    <el-button type="primary" class="detail-btn">新增任务阀栓</el-button>
+    <el-table 
+      :data="taskData"
+      :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
+          color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
+      :cell-style="{'text-align':'center'}"
+      :row-style="{fontSize:'14px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
+      style="width: 100%"
+      height="350"
+    >
+      <el-table-column label="阀栓编号" prop="valveId" width="60px"/>
+      <el-table-column label="阀栓名" prop="valveName" width="150px"/>
+      <el-table-column label="地址" prop="address" width="180px"/>
+      <el-table-column label="完成状态" prop="complete" width="60px"/>
+      <el-table-column label="完成时间" prop="completeTime" width="160px"/>
+      <el-table-column label="备注" prop="remark" width="120px"/>
+      <el-table-column  label="操作" width="180px">
+            <template #default="scope">
+              <el-button type="primary" @click="valveDetail.detailEdit(scope.row)">编辑</el-button>
+              <el-button type="danger" >删除</el-button>
+            </template>
+      </el-table-column>
+    </el-table>
+  </el-dialog>
+  <el-dialog v-model="editDetailState" title="编辑"  center>
+        <el-form :model="detailForm" label-width="100px" :inline="false">
+        <el-form-item label="完成状态" required>
+            <el-select v-model="detailForm.complete" clearable style="width: 330px" placeholder="请选择">
+            <el-option v-for="item in status" :key="item.label" :label="item.label" :value="item.value"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="完成时间" >
+            <el-date-picker
+                    v-model="detailForm.completeTime"
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                    type="datetime"
+                    placeholder="请选择"
+                    >
+            </el-date-picker>
+        </el-form-item>
+        <el-form-item label="备注" >
+            <el-input v-model="detailForm.remark" style="width: 360px"></el-input>
+        </el-form-item>
+        </el-form>
+        <template #footer>
+        <el-button type="primary" class="search-btn" @click="valveDetail.submitEdit()">保存</el-button>
+        <el-button @click="valveDetail.detailCancel()">取消</el-button>
+        </template>
+   </el-dialog>
 </template>
 
 <script setup>
@@ -100,18 +152,20 @@ import {
     fetchCheckInfoByConfig,
     deleteCheck,
     addCheck,
-    updateCheck 
-} from '../../apis/2.0/newCheck'//
+    updateCheck,
+    fetchCheckDetail,
+    changeDetail 
+} from '../../apis/2.0/newCheck'
 import {fetchRoadList} from '../../apis/2.0/addr'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import dayjs from 'dayjs'
 const status = [
   {
-    value: '已完成',
+    value: 1,
     label: '已完成',
   },
   {
-    value: '未完成',
+    value: 0,
     label: '未完成',
   },
 ]
@@ -119,7 +173,11 @@ let input1 = ref('')
 let input2 = ref('')
 let value1 = ref('')
 let tableData = ref([])
-let modalState = ref(false)
+let taskData=ref([])
+let editState = ref(false)
+let detailState=ref(false)
+let modalState=ref(false)
+let editDetailState=ref(false)
 let roadList=ref([])
 let mode=ref('')
 let modal = ref()
@@ -129,18 +187,70 @@ let modalTitle = computed(() => {
       res = '新增巡视任务'
     } else if (mode.value === 'edit') {
       res = '编辑巡视任务'
+    } else if(mode.value==='detail'){
+      res='任务详情'
     }
     return res
   })
 const addForm = reactive({
-    id: '0',
+    taskId: '',
     zoneId:'',
     people: '', 
     phone: '',
-    time: '',
+    createTime: '',
+    inspectTime:'',
     complete: '',
     remark:''
   })
+const detailForm = reactive({
+  id:'',
+  complete: '',
+  completeTime: '',
+  remark:''
+})
+
+
+
+const valveDetail={
+    async detailAdd(item){
+
+    },
+    async detailEdit(item){
+      editDetailState.value=true
+      detailForm.id=item.id
+      detailForm.complete=item.complete
+      detailForm.completeTime=item.completeTime
+      detailForm.remark=item.remark
+    },
+    async detailDelete(item){
+
+    },
+    detailCancel(){
+      editDetailState.value=false
+    },
+    async submitEdit(){
+      console.log("id",detailForm.id)
+      console.log("完成状态",detailForm.complete)
+      console.log("完成时间",dayjs(detailForm.completeTime).format('YYYY-MM-DD HH:mm:ss'))
+      console.log("备注",detailForm.remark)
+      const r=await changeDetail({
+        id:detailForm.id,
+        complete:detailForm.complete,
+        remark:detailForm.remark,
+        completeTime:dayjs(detailForm.completeTime).format('YYYY-MM-DD HH:mm:ss'),
+      })
+      if (r.code === '200') {
+        ElMessage({
+          type: 'success',
+          message: '操作成功!',
+        })
+        const res1=await fetchCheckDetail({taskId: addForm.taskId})//刷新表格数据
+        taskData.value=res1.data
+      }
+      this.detailCancel()
+    }
+}
+
 function exportCSV() {
     const excel = {}
     excel.props = [
@@ -161,8 +271,12 @@ function exportCSV() {
         name: 'complete',
       },
       {
+        label:'创建时间',
+        name:'createTime',
+      },
+      {
         label: '任务时间',
-        name: 'time',
+        name: 'inspectTime',
       },
       {
         label: '备注',
@@ -215,6 +329,7 @@ const myFunc={
         async search(){
           let res = await fetchCheckInfo()
           tableData.value = res.data; 
+          console.log("所有信息",tableData.value)
           const temp1=await fetchRoadList()
           roadList.value=temp1
         },
@@ -225,7 +340,8 @@ const myFunc={
               zoneId: addForm.zoneId,
               people: addForm.people,
               phone: addForm.phone,
-              time: dayjs(addForm.time).format('YYYY-MM-DD HH:mm:ss'),
+              createTime: dayjs(addForm.createTime).format('YYYY-MM-DD HH:mm:ss'),
+              inspectTime: dayjs(addForm.inspectTime).format('YYYY-MM-DD HH:mm:ss'),
               complete: addForm.complete,
               remark: addForm.remark
             })
@@ -242,11 +358,12 @@ const myFunc={
         async edit() {
             const r = await updateCheck({
                 id: addForm.id,
-                zoneId: addForm.zoneId,
+                //zoneId: addForm.zoneId,
                 people: addForm.people,
                 phone: addForm.phone,
-                time: dayjs(addForm.time).format('YYYY-MM-DD HH:mm:ss'),
-                complete: addForm.complete,
+                createTime: dayjs(addForm.createTime).format('YYYY-MM-DD HH:mm:ss'),
+                inspectTime: dayjs(addForm.inspectTime).format('YYYY-MM-DD HH:mm:ss'),
+                //complete: addForm.complete,
                 remark: addForm.remark
             })
             if (r.code === '200') {
@@ -305,19 +422,21 @@ const myFunc={
         addForm.zoneId = ''
         addForm.people = ''
         addForm.phone=''
-        addForm.time=''
+        addForm.createTime=''
+        addForm.inspectTime=''
         addForm.complete=''
         addForm.remark=''
         modal.value = addModal
         },
     }
+
     const editModal = {
     changeState(e) {
-        modalState.value = e
+        editState.value = e
     },
-    state: modalState,
+    state: editState,
     async submit() {
-        if (!addForm.people || !addForm.phone ||!addForm.zoneId||!addForm.complete) {
+        if (!addForm.people || !addForm.phone) {
         ElMessage({
             type: 'info',
             message: '必要信息不能为空',
@@ -340,11 +459,37 @@ const myFunc={
         addForm.zoneId = item.zoneId
         addForm.people = item.people
         addForm.phone=item.phone
-        addForm.time=item.time
+        addForm.createTime=item.createTime
+        addForm.inspectTime=item.inspectTime
         addForm.complete=item.complete
         addForm.remark=item.remark
         console.log("hahahaha",item.zoneId)
     },
+    }
+    const detailModal={
+        changeState(e) {
+          detailState.value = e
+        },
+        state: detailState,
+        cancel() {
+          this.changeState(false)
+        },
+        async open(item) {
+        const res1=await fetchCheckDetail({taskId: item.taskId})
+        taskData.value=res1.data
+        this.changeState(true)
+        mode.value = 'detail'
+        modal.value = detailModal
+        addForm.taskId=item.taskId
+        addForm.zoneId = item.zoneId
+        addForm.people = item.people
+        addForm.phone=item.phone
+        addForm.createTime=item.createTime,
+        addForm.inspectTime=item.inspectTime,
+        addForm.complete=item.complete
+        addForm.remark=item.remark
+        console.log("hahahaha",item.zoneId)
+        },
     }
 const reload = async function () {
     location.reload()
@@ -365,5 +510,11 @@ onMounted(async () => {
   margin-top: -40px;
   margin-left: 950px;
   width: 400px;
+}
+
+.detail-btn{
+  position: relative;
+  left: 82.5%;
+  top: -15px;
 }
 </style>

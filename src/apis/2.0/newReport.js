@@ -53,3 +53,12 @@ export const fetchRoadReport = async({ type, currentTime })=>{
         },
       })
 }
+
+export const fetchSectionReport = async({ type, currentTime })=>{
+  return await request.Pget('/report/getsectionreport', {
+      params: {
+        type,
+        currentTime,
+      },
+    })
+}

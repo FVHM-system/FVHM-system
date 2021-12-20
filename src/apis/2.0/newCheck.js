@@ -18,11 +18,30 @@ export const fetchCheckInfoByConfig=async({roadId,status,people,startTime,endTim
     })
 }
 
+export const fetchCheckDetail=async({taskId})=>{
+    return await request.get('/inspect/gettaskdetail',{
+        params:{
+            taskId,
+        },
+    })
+}
+
 export const changeCheck=async({inspectId,complete})=>{
     return await request.put('/inspect/updatecomplete',{
         params:{
             inspectId,
             complete
+        },
+    })
+}//????
+
+export const changeDetail=async({id,complete,remark,completeTime})=>{
+    return await request.put('/inspect/updatecomplete',{
+        params:{
+            id,
+            complete,
+            remark,
+            completeTime,
         },
     })
 }

@@ -88,6 +88,7 @@ import {
   fetchTownList,
   fetchVillageList,
   fetchRoadList,
+  fetchSectionList,
   fetchSuper,
 } from '../../apis/2.0/addr'
 import {
@@ -96,6 +97,7 @@ import {
   fetchTownReport,
   fetchVillageReport,
   fetchRoadReport,
+  fetchSectionReport,
 } from '../../apis/2.0/newReport'
 import {exportExcel} from '../../utils/exportExcel'
 import {dateTimeTrans} from '../../utils/mrWang'
@@ -132,6 +134,7 @@ myprops = {
   children: 'child',
   multiple: 'true'
 }
+
 const getList = async (type, zoneId) => {
   let place, newplace;
   if (type === 'district') {
@@ -183,6 +186,19 @@ const getList = async (type, zoneId) => {
           type: type,
           name: item.road
         },
+        child: []
+      }
+    })
+  } else if (type === 'section') {
+    place = (await fetchSectionList() || []).filter(value => value.pid == zoneId);
+    newplace = place.map((item, index) => {
+      return {
+        name: item.road,
+        message: {
+          zoneId: item.zoneId,
+          type: type,
+          name: item.section
+        },
         child: null
       }
     })
@@ -190,6 +206,7 @@ const getList = async (type, zoneId) => {
   console.log("newplace: ", newplace);
   return newplace;
 }
+
 const getNodes = async (val) => {
   if (!val) {
     let rawcity = [];
@@ -281,6 +298,34 @@ const getNodes = async (val) => {
                         item3.child = [].concat(road)
                       }
                     }
+                  }
+                })
+              }
+            })
+          }
+        })
+      }
+    })
+  } else if(val.length===5){
+    options.value.map(async (item, index) => {
+      if (item.message.zoneId === val[0].zoneId) {
+        item.child.map(async (item1) => {
+          if (item1.message.zoneId === val[1].zoneId && item1.message.type === 'district') {
+            item1.child.map(async (item2) => {
+              if (item2.message.zoneId === val[2].zoneId) {
+                item2.child.map(async (item3) => {
+                  if (item3.message.zoneId === val[3].zoneId) {
+                    item3.child.map(async (item4)=>{
+                        if (item4.child.length === 0) {
+                        let section = await getList('section', val[4].zoneId)
+                        console.log("section", section)
+                        if (section.length === 0) {
+                          item4.child = null;
+                        } else {
+                          item4.child = [].concat(section)
+                        }
+                      }
+                    })
                   }
                 })
               }
@@ -440,7 +485,20 @@ async function search() {
           totalVolume = item1.totalVolume
         }
       })
+    }else if (item.type === 'section') {
+      const temp1 = await fetchSectionReport({
+        type: type,
+        currentTime: dateTimeTrans(searchTime.value, searchTimeType.value),
+      })
+      temp1.map((item1) => {
+        if (item1.id === item.zoneId) {
+          valveVolume = item1.valveVolume
+          hydrantVolume = item1.hydrantVolume
+          totalVolume = item1.totalVolume
+        }
+      })
     }
+
     return {
       place: item.name,
       valveVolume: valveVolume,
@@ -450,6 +508,7 @@ async function search() {
   })
   //console.log("测试测试",myData)
   data.value = await Promise.all(myData)//important
+  console.log("测试测试",data.value)
 }
 
 onMounted(async () => {

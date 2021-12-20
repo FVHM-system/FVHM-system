@@ -41,7 +41,7 @@
         <el-table-column fixed="left" label="阀栓编号" prop="valveCode" width="120px"/>
         <el-table-column label="阀栓类型" prop="valveType" :formatter="typeFormate" width="120px"/>
         <el-table-column label="阀栓名称" prop="valveName" width="120px"/>
-        <el-table-column label="所属道路" prop="address" width="200px"/>
+        <el-table-column label="地址" prop="address" width="200px"/>
         <el-table-column label="阀栓状态" prop="status" :formatter="statusFormate" width="200px"/>
         <el-table-column label="阀栓设置时间" :valve_createTime="this.prop" prop="createTime"
                          width="200px"/>

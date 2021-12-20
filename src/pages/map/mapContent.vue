@@ -1,7 +1,10 @@
 <template>
   <div class="lay-out">
+    
     <div id="map-container" class="layer"></div>
+    
     <div id="panel"></div>
+    
   </div>
   <div class="layer box">
     <div class="map-tip">
@@ -110,6 +113,7 @@
 import MapLoader from './localMap.js';
 import {ref, onMounted,onUnmounted} from 'vue'
 import {fetchValveInfos} from '../../apis/2.0/newMap';
+import floatBall from '../../components/floatBall.vue'
 
 let radio = ref("标准地图")
 let satelliteObject = ref()
@@ -172,8 +176,8 @@ function changeMode(e) {
     state.value = true
   }
   if (driving) {
-    //driving.clear()
-    driving.destroy()//拖曳
+    driving.clear()
+    // driving.destroy()//拖曳
   }
 }
 
@@ -483,24 +487,24 @@ const setNav = async () => {
   if (!chart) {
     await setMap()
   } else {
-    // const amap = chart.getModel().getComponent('amap').getAMap()
-    // AMap.plugin('AMap.Driving', function () {
-    //   driving = new AMap.Driving({
-    //     policy: AMap.DrivingPolicy.LEAST_TIME,
-    //     map: amap,
-    //     panel: 'panel'
-    //   })
-    //   driving.search(startLngLat, endLngLat, function (status, result) {
-    //   })
-    // })
-     const amap = chart.getModel().getComponent('amap').getAMap()
-      AMap.plugin('AMap.DragRoute', function () {
-      let path = []
-      path.push(startLngLat)
-      path.push(endLngLat)
-      driving = new AMap.DragRoute(amap, path, AMap.DrivingPolicy.LEAST_FEE)
-      driving.search()
+    const amap = chart.getModel().getComponent('amap').getAMap()
+    AMap.plugin('AMap.Driving', function () {
+      driving = new AMap.Driving({
+        policy: AMap.DrivingPolicy.LEAST_TIME,
+        map: amap,
+        panel: 'panel'
+      })
+      driving.search(startLngLat, endLngLat, function (status, result) {
+      })
     })
+    //  const amap = chart.getModel().getComponent('amap').getAMap()
+    //   AMap.plugin('AMap.DragRoute', function () {
+    //   let path = []
+    //   path.push(startLngLat)
+    //   path.push(endLngLat)
+    //   driving = new AMap.DragRoute(amap, path, AMap.DrivingPolicy.LEAST_FEE)
+    //   driving.search()
+    // })
   }
 }
 const setMap = async () => {
