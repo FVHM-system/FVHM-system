@@ -27,15 +27,13 @@
     </div>
     <div class="data-chart">
       <el-table
-          v-loading="loading"
-          :key="Math.random()"
-          :data=tableData
+          :data=currentData
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
           style="width: 100%"
-          height="520"
+          height="450"
           @row-click="getValveId"
       >
         <el-table-column fixed="left" label="阀栓编号" prop="valveCode" width="120px"/>
@@ -51,8 +49,12 @@
           <template #default="scope">
             <valve-detail class="drawer" :valve_id="scope.row.valveId"
                           :valve_createTime="tableData.createTime"></valve-detail>
-            <el-button type="warning" v-if="scope.row.status === 1001" @click="valveStatusChange(scope.row)">停用</el-button>
-            <el-button type="success" v-if="scope.row.status !== 1001" @click="valveStatusChange(scope.row)">启用</el-button>
+            <el-button type="warning" v-if="scope.row.status === 1001"
+                       @click="valveStatusChange(scope.row)">停用
+            </el-button>
+            <el-button type="success" v-if="scope.row.status !== 1001"
+                       @click="valveStatusChange(scope.row)">启用
+            </el-button>
             <el-popconfirm
                 confirm-button-text="确定"
                 cancel-button-text="取消"
@@ -68,13 +70,26 @@
           </template>
         </el-table-column>
       </el-table>
-    </div>
-
+      </div>
+      <div class="pagination-out">
+        <div class="pagination-in">
+          <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[10, 20, 30, 50, 100]"
+              :page-size="pageSize"
+              style="margin-top: 10px;"
+              hide-on-single-page
+              :total="tableData.length">
+          </el-pagination>
+        </div>
+      </div>
   </div>
 </template>
 <script setup>
 import {onMounted, ref, getCurrentInstance} from 'vue'
-import {fetchVpinformation, fetDeleteValveInfo,fetUpdateStatus} from "./util/vpinformation";
+import {fetchVpinformation, fetDeleteValveInfo, fetUpdateStatus} from "./util/vpinformation";
 import {fetchFindData} from "./util/dataSearch";
 import {types, statuss} from '../../utils/transform.js'
 import ValveDetail from "./valveDetail.vue";
@@ -87,10 +102,14 @@ let input1 = ref('')
 let input2 = ref('')
 let options = ref([])
 let tableData = ref([])
+let currentData = ref([])
 let excelData = ref([])
 let testnum = ref('')
 let require = ref(null)
 let myprops = ref()
+let currentPage = 1
+// 每页多少条
+let pageSize = 10
 let dialogVisible = ref(false)
 myprops = {
   label: 'name',
@@ -102,6 +121,16 @@ let place = ref()
 const getValveId = function (row) {
   testnum = row.valveId
 }
+
+function handleSizeChange(val) {
+  pageSize = val;
+}
+// 当前页
+function handleCurrentChange(val) {
+  currentPage = val;
+  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+}
+
 /* 阀栓代码与文本转换 */
 const typeFormate = function (row) {
   const target = types.find(i => i.value === row.valveType)
@@ -111,22 +140,21 @@ const statusFormate = function (row) {
   const targetStatus = statuss.find(i => i.value === row.status)
   return targetStatus.label;
 }
-const valveStatusChange = async function (row){
-  if(row.status === 1003){
-    let res = await fetUpdateStatus({valveId:row.valveId,status:1001})
+const valveStatusChange = async function (row) {
+  if (row.status === 1003) {
+    let res = await fetUpdateStatus({valveId: row.valveId, status: 1001})
     console.log(res)
-    if(res.code === '200'){
+    if (res.code === '200') {
       ElMessage({
         type: 'success',
         message: '启用成功！',
       })
       location.reload()
     }
-  }
-  else if(row.status === 1001 || row.status === 4444 ){
-    let res = await fetUpdateStatus({valveId:row.valveId,status:1003})
+  } else if (row.status === 1001 || row.status === 4444) {
+    let res = await fetUpdateStatus({valveId: row.valveId, status: 1003})
     console.log(res)
-    if(res.code === '200'){
+    if (res.code === '200') {
       ElMessage({
         type: 'success',
         message: '停用成功！',
@@ -227,6 +255,11 @@ onMounted(async () => {
   if (res.code === '200') {
     tableData.value = res.data;
   }
+  if (tableData.value.length < pageSize) {
+    currentData.value = tableData.value
+  } else {
+    currentData.value = tableData.value.slice(0, pageSize)
+  }
   options.value = await fetchSuper()
 })
 
@@ -254,14 +287,6 @@ onMounted(async () => {
   left: 20px;
   position: relative;
 }
-
-.addrSelect {
-  position: relative;
-  top: 3px;
-  margin-left: -145px;
-  width: 200px;
-}
-
 .device-id {
   position: relative;
   top: 3px;
@@ -291,7 +316,24 @@ onMounted(async () => {
   height: 8px;
   border-radius: 4px;
 }
-
+.pagination-out{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 70px;
+}
+.pagination-in{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+  background-color: white;
+  height: 50px;
+  width: 600px;
+  border-radius: 30px;
+  box-shadow: -2px 2px 2px #888888;
+}
 ::-webkit-scrollbar-thumb {
   background-color: darkgray;
   border-radius: 4px;
