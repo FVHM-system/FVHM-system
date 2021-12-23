@@ -23,7 +23,7 @@ export const fetchStatisticsList = async ({ type, time, place }) => {
  */
 // 仍在使用的旧接口
 export const fetchInstalledWell = async () => {
-  return await request.get('/home/getvalveStatusCounts', {
+  return await request.get('/home/getvalvestatuscounts', {
     params: {
       valveType: 1
     },
@@ -32,7 +32,7 @@ export const fetchInstalledWell = async () => {
 }
 
 export const fetchInstalledHydrant = async () => {
-  return await request.get('/home/getvalveStatusCounts', {
+  return await request.get('/home/getvalvestatuscounts', {
     params: {
       valveType: 2
     },

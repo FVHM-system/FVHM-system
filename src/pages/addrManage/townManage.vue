@@ -9,6 +9,7 @@
                 type="primary"
                 icon="el-icon-plus"
                 @click="addModal.open()"
+                :disabled="buttonState"
             >
               新增乡镇
             </el-button>
@@ -28,8 +29,8 @@
         <el-table-column prop="city" sortable label="所属城市" min-width="150"></el-table-column>
         <el-table-column fixed="right" label="操作" width="230">
           <template #default="scope">
-            <el-button type="primary" @click="editModal.open(scope.row)">编辑</el-button>
-            <el-button type="danger" @click="myFunc.delete(scope.row)">删除</el-button>
+            <el-button type="primary" @click="editModal.open(scope.row)" :disabled="buttonState">编辑</el-button>
+            <el-button type="danger" @click="myFunc.delete(scope.row)" :disabled="buttonState">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -67,7 +68,13 @@ import {
   editTownInfoByConfig,
   deleteTownInfoById
 } from '../../apis/2.0/addr'
+import { 
+  fetchAuthority ,
+  fetchUsername
+} from '../../utils/mrWang'
 
+let authority=ref('')
+let buttonState=ref(false)//禁用按钮
 let townList = ref([])
 let districtList = ref([])
 let cityList = ref([])
@@ -209,6 +216,12 @@ const editModal = {
 }
 
 onMounted(() => {
+  authority.value=fetchAuthority()
+  if(authority.value==='ROLE_ADMIN'){
+    buttonState.value=false
+  }else{
+    buttonState.value=true
+  }
   myFunc.search()
 })
 </script>

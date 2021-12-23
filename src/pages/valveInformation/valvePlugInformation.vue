@@ -50,9 +50,9 @@
         <el-table-column fixed="right" label="操作" width="360">
           <template #default="scope">
             <valve-detail class="drawer" :valve_id="scope.row.valveId"
-                          :valve_createTime="tableData.createTime"></valve-detail>
-            <el-button type="warning" v-if="scope.row.status === 1001" @click="valveStatusChange(scope.row)">停用</el-button>
-            <el-button type="success" v-if="scope.row.status !== 1001" @click="valveStatusChange(scope.row)">启用</el-button>
+                          :valve_createTime="scope.row.createTime"></valve-detail>
+            <el-button type="warning" v-if="scope.row.status === 1001" @click="valveStatusChange(scope.row)" :disabled="buttonState">停用</el-button>
+            <el-button type="success" v-if="scope.row.status !== 1001" @click="valveStatusChange(scope.row)" :disabled="buttonState">启用</el-button>
             <el-popconfirm
                 confirm-button-text="确定"
                 cancel-button-text="取消"
@@ -62,7 +62,7 @@
                 @confirm="deleteValve(scope.row)"
             >
               <template #reference>
-                <el-button type="danger">删除</el-button>
+                <el-button type="danger" :disabled="buttonState">删除</el-button>
               </template>
             </el-popconfirm>
           </template>
@@ -82,7 +82,13 @@ import AddValvePlug from "./addValvePlug.vue";
 import {fetchSuper} from '../../apis/2.0/addr'
 import {exportExcel} from '../../utils/exportExcel'
 import {ElMessage} from 'element-plus'
+import { 
+  fetchAuthority ,
+  fetchUsername
+} from '../../utils/mrWang'
 
+let authority=ref('')
+let buttonState=ref(false)//禁用按钮
 let input1 = ref('')
 let input2 = ref('')
 let options = ref([])
@@ -223,10 +229,17 @@ function exportCSV() {
 }
 
 onMounted(async () => {
+  authority.value=fetchAuthority()
+  if(authority.value==='ROLE_ADMIN'){
+    buttonState.value=false
+  }else{
+    buttonState.value=true
+  }
   let res = await fetchVpinformation()
   if (res.code === '200') {
     tableData.value = res.data;
   }
+  console.log("数据",tableData.createTime)
   options.value = await fetchSuper()
 })
 

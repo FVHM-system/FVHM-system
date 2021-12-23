@@ -38,8 +38,6 @@ export default {
   },
   props: {
     valve_id: Number,
-    valve_status: Number,
-    valve_type: Number,
     valve_createTime: Date
   },
   methods: {

@@ -82,7 +82,7 @@
           </el-col>
         </el-form-item>
         <el-form-item style="position:relative; left:-60px; top: -275px">
-          <el-button size="medium" type="primary" @click="updateInfo">保存修改</el-button>
+          <el-button size="medium" type="primary" @click="updateInfo" :disabled="buttonState">保存修改</el-button>
         </el-form-item>
       </el-form>
 
@@ -95,7 +95,13 @@ import {ref, defineProps, onMounted} from 'vue'
 import {fetchDetailData} from "./util/detailData";
 import {fetchUpdateData} from "./util/updateData";
 import {ElMessage} from 'element-plus'
+import { 
+  fetchAuthority ,
+  fetchUsername
+} from '../../utils/mrWang'
 
+let authority=ref('')
+let buttonState=ref(false)//禁用按钮
 let formData = ref([]);
 let options = ref([
   {
@@ -126,6 +132,12 @@ const statuss = [
   },
 ]
 onMounted(async () => {
+  authority.value=fetchAuthority()
+  if(authority.value==='ROLE_ADMIN'){
+    buttonState.value=false
+  }else{
+    buttonState.value=true
+  }
   let res = await fetchDetailData(props.valve_id_end)
   if (res.code === '200') {
     formData.value = res.data;

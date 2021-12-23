@@ -250,8 +250,8 @@ async function loadMap() {
   const optionNew = {
     amap: {
       viewMode: '3D',
-      center: [105.189568, 37.514951],
-      zoom: 11,
+      center: [115.381112,33.252427],
+      zoom: 15,
       resizeEnable: true,
       mapStyle: 'amap://styles/macaron',
       renderOnMoving: true,
@@ -296,7 +296,7 @@ async function loadMap() {
         type: 'effectScatter',
         coordinateSystem: 'amap',
         data: normalHydrant.value,
-        symbol:'triangle',
+        symbol:'rec',
         /*散点形状设置: 
         'circle’, ‘rect’, ‘roundRect’, ‘triangle’, 
         ‘diamond’, ‘pin’, 'arrow’
@@ -351,7 +351,7 @@ async function loadMap() {
         type: 'effectScatter',
         coordinateSystem: 'amap',
         data: warningHydrant.value,
-        symbol:'triangle',
+        symbol:'rec',
         showEffectOn: 'emphasis',
         symbolSize: 27,
         encode: {
@@ -402,7 +402,7 @@ async function loadMap() {
         type: 'effectScatter',
         coordinateSystem: 'amap',
         data: offlineHydrant.value,
-        symbol:'triangle',
+        symbol:'rec',
         symbolSize: 27,
         encode: {
           value: 2,
@@ -456,7 +456,7 @@ async function loadMap() {
         type: 'effectScatter',
         coordinateSystem: 'amap',
         data: uninstalledHydrant.value,
-        symbol:'triangle',
+        symbol:'rec',
         symbolSize: 27,
         encode: {
           value: 2,
@@ -609,7 +609,7 @@ onUnmounted(async()=>{
 }
 
 .header {
-  width: 220px;
+  width: 130px;
   padding: 7px;
   padding-left: 15px;
 }
@@ -712,34 +712,33 @@ onUnmounted(async()=>{
         font-size: 13px;
       }
       .triangle-green {
-        width: 0;
-        height: 0;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        border-bottom: 20px solid rgb(173, 255, 47);
+        width: 10%;
+				height: 0;
+				padding-top: 10%;
+				border: 1px solid rgb(252, 250, 250);
+				background: rgb(177,253,47);
       }
       .triangle-red {
-        width: 0;
-        height: 0;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        border-bottom: 20px solid rgb(221, 109, 115);
+        width: 10%;
+				height: 0;
+				padding-top: 10%;
+				border: 1px solid rgb(252, 250, 250);
+				background: rgb(221, 109, 115);
       }
       .triangle-grey {
-        width: 0;
-        height: 0;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        border-bottom: 20px solid rgb(150,151,151);
+        width: 10%;
+				height: 0;
+				padding-top: 10%;
+				border: 1px solid rgb(252, 250, 250);
+				background: rgb(150,151,151);
       }
       .triangle-purple {
-        width: 0;
-        height: 0;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        border-bottom: 20px solid rgb(213,22,251);
+        width: 10%;
+				height: 0;
+				padding-top: 10%;
+				border: 1px solid rgb(252, 250, 250);
+				background: rgb(213,22,251);
       }
-
     }
   }
 </style>

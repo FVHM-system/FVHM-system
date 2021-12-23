@@ -2,7 +2,10 @@ import request from './request'
 
 export const fetchSuper = async () => {
   return await request.Pget('/city/getalladdress')
-}
+}  
+export const fetchSuperWithValves = async () => {
+  return await request.Pget('/city/getalladdressandvalves')
+}  
 
 // 仍在使用的旧接口
 export const fetchVillageInfo = async () => {
@@ -53,6 +56,8 @@ export const fetchRoadList=async()=>{
 export const fetchSectionList=async()=>{
   return await request.Pget('/section/getsectioninfo')
 }
+
+
 
 
 export const AddVillageInfoByConfig = async ({ townId, villageId,villageName }) => {

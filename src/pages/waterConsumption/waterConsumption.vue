@@ -155,7 +155,6 @@ let BarPic = function (xValues, yValues) {
     yAxis: [
       {
         type: 'value',
-        interval: 1,
       },
     ],
     series: [

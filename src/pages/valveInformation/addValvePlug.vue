@@ -1,7 +1,9 @@
 <template>
   <el-button type="success"
              style="margin-right: 10px"
-             @click="add">添加
+             @click="add"
+             :disabled="buttonState"
+  >添加
   </el-button>
   <el-dialog
       v-model="dialogVisible"
@@ -97,7 +99,13 @@ import {fetInsertValveInfo} from "./util/vpinformation";
 import {ElMessage} from 'element-plus'
 import {fetchSuper} from '../../apis/2.0/addr'
 import axios from "axios";
+import { 
+  fetchAuthority ,
+  fetchUsername
+} from '../../utils/mrWang'
 
+let authority=ref('')
+let buttonState=ref(false)//禁用按钮
 let dialogVisible = ref(false)
 let formData = ref({});
 let input = ref('')
@@ -219,6 +227,12 @@ const handleClose = (done) => {
   })
 }
 onMounted(async () => {
+  authority.value=fetchAuthority()
+  if(authority.value==='ROLE_ADMIN'){
+    buttonState.value=false
+  }else{
+    buttonState.value=true
+  }
   optionss.value = await fetchSuper()
 })
 </script>
