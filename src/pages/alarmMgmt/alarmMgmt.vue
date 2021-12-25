@@ -1,7 +1,7 @@
 <template>
-  <div class="p-page2">
-    <div class="p2-header">
-      <p class="page2-name">报警管理</p>
+  <div class="p-page">
+    <div class="p-header">
+      <p class="page-name">报警管理</p>
       <el-col :span="8">
         <el-cascader
             v-model="place"
@@ -42,14 +42,15 @@
         <el-button type="primary">导出</el-button>
       </div>
     </div>
-    <el-scrollbar class="data-chart2">
+    <div class="data-chart">
       <el-table
-          :data=tableData
+          :data=currentData
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
           style="width: 100%"
+          height="450"
       >
         <el-table-column fixed="left" label="报警编号" prop="warnId" width="120px"/>
         <el-table-column fixed="left" label="设备编号" prop="valveId" width="120px"/>
@@ -73,7 +74,20 @@
           </template>
         </el-table-column>
       </el-table>
-    </el-scrollbar>
+    </div>
+    <div class="pagination-out">
+      <div class="pagination-in">
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 50, 100]"
+            :page-size="pageSize"
+            style="margin-top: 10px;"
+            :total="tableData.length">
+        </el-pagination>
+      </div>
+    </div>
   </div>
 </template>
 <script setup>
@@ -85,11 +99,15 @@ import {ElMessage} from 'element-plus'
 
 /* 初始化输入变量 */
 let input1 = ref('') //查询阀栓名称变量初始化
+let currentData = ref([])
 let input2 = ref('') //查询阀栓状态变量初始化
 let value1 = ref('') //查询创建时间初始化
 let options = ref([]) //道路选择项初始化
 let tableData = ref([]) //表单数据初始化
 let place = ref('') //道路选择变量初始化
+let currentPage = 1
+// 每页多少条
+let pageSize = 10
 let CarProps
 /* 初始化级联菜单选项 */
 CarProps = {
@@ -138,6 +156,15 @@ const alarmStatus = [
     label: '确认已处理',
   }
 ]
+function handleSizeChange(val) {
+  pageSize = val;
+}
+// 当前页
+function handleCurrentChange(val) {
+  currentPage = val;
+  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  console.log(currentPage.value)
+}
 const genTwoLengthNumberString = n => (n >= 10 ? n : '0' + n)
 const timeSolve = function (time) {
   let timeString = ref('')
@@ -220,13 +247,18 @@ onMounted(async () => {
   if (res.code === '200') {
     tableData.value = res.data;
   }
+  if (tableData.value.length < pageSize) {
+    currentData.value = tableData.value
+  } else {
+    currentData.value = tableData.value.slice(0, pageSize)
+  }
   console.log(res.data)
   options.value = await fetchSuper()
 })
 
 </script>
 <style>
-.p-page2 {
+.p-page {
   width: 100%;
   height: calc(100vh - 120px);
   overflow-y: scroll;
@@ -234,14 +266,14 @@ onMounted(async () => {
   margin: 0;
 }
 
-.p2-header {
+.p-header {
   background-color: #219ded0d;
   width: 100%;
   height: 100px;
   border: 1px solid #219ded0f;
 }
 
-.page2-name {
+.page-name {
   font-size: 20px;
   font-weight: 700;
   top: 35px;
@@ -256,7 +288,7 @@ onMounted(async () => {
   width: 260px;
 }
 
-.data-chart2 {
+.data-chart {
   position: relative;
   top: 10px;
   overflow-y: hidden;
