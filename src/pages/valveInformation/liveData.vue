@@ -19,7 +19,7 @@
             <h1 style="position:relative;margin-top:50px;font-size: 20px;color: #409eff">
               <el-tag>{{ new Date(value1[0]).toLocaleString() }}</el-tag>
               至
-              <el-tag>{{ value1[1] }}</el-tag>
+              <el-tag>{{ value1[1].toLocaleString() }}</el-tag>
             </h1>
             <h1 style="position:relative;margin-top:20px;font-size: 20px;color: #409eff">阀栓用水量</h1>
             <h1 style="position:relative;margin-top:60px;font-size: 100px;color: #409eff">
@@ -130,7 +130,7 @@ let searchTime = ref(new Date())
 let timeActive = ref('日')
 let typeSelect = ref("")
 let value = ref("")
-let value1 = ref([0, new Date().toLocaleString()])
+let value1 = ref([new Date(), new Date()])
 let waterData = ref(0)
 let waterDataYear = ref(0)
 let waterDataTotal = ref(0)
