@@ -5,6 +5,14 @@ export const fetchCheckInfo=async()=>{
     return await request.get('/inspect/getinspectinfos')
 }
 
+export const fetchPeopleList=async({role})=>{
+    return await request.get('/user/findinspectpeople',{
+        params:{
+            role,
+        },
+    })
+}
+
 export const fetchCheckInfoByConfig=async({roadId,status,people,startTime,endTime,complete})=>{
     return await request.get('/inspect/findinspectinfo',{
         params:{
@@ -26,14 +34,34 @@ export const fetchCheckDetail=async({taskId})=>{
     })
 }
 
-export const changeCheck=async({inspectId,complete})=>{
-    return await request.put('/inspect/updatecomplete',{
-        params:{
-            inspectId,
-            complete
+export const updateCheck=async({taskId,peopleId,inspectTime,createTime,remark})=>{
+    return await request.put('/inspect/updateinspecttask',{
+        data:{
+            taskId,
+            peopleId,
+            inspectTime,
+            createTime,
+            remark,
         },
     })
 }//????
+
+export const addMissionValves=async({taskId,valveIds})=>{
+    return await request.post('/inspect/insertinspectvalves',{
+        params:{
+            taskId,
+        },
+        data: valveIds,
+    })
+}
+
+export const deleteMissionValves=async({id})=>{
+    return await request.delete('/inspect/deleteinspectvalve',{
+        params:{
+            id,
+        },
+    })
+}
 
 export const changeDetail=async({id,complete,remark,completeTime})=>{
     return await request.put('/inspect/updatecomplete',{
@@ -46,38 +74,22 @@ export const changeDetail=async({id,complete,remark,completeTime})=>{
     })
 }
 
-export const deleteCheck=async({inspectId})=>{
+export const deleteCheck=async({taskId})=>{
     return await request.delete('/inspect/deleteinspectinfo',{
         params:{
-            inspectId
+            taskId,
         },
     })
 }
 
-export const addCheck=async({id,zoneId,people,phone,time,complete,remark})=>{
+export const addCheck=async({peopleId,valveIds,inspectTime,createTime})=>{
     return await request.post('/inspect/insertinspectinfo',{
         data:{
-            id,
-            zoneId,
-            people,
-            phone,
-            time,
-            complete,
-            remark
+            peopleId,
+            valveIds,
+            inspectTime,
+            createTime,
         },
     })
 }
 
-export const updateCheck=async({id,zoneId,people,phone,time,complete,remark})=>{
-    return await request.put('/inspect/updateinspectinfo',{
-        data:{
-            id,
-            zoneId,
-            people,
-            phone,
-            time,
-            complete,
-            remark
-        },
-    })
-}

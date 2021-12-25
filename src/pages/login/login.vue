@@ -28,6 +28,7 @@
 
 <script>
 import axios from 'axios'
+import { fetchValveInfos } from '../../apis/2.0/newMap';
 
 export default {
   data() {

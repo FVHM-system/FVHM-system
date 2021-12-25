@@ -40,18 +40,19 @@ const configs = [
     label: '一张图',
     icon: 'el-icon-s-opportunity',
     name: 'map',
-    children: [
-      {
-        path: '/content',
-        label: '内容',
-        component: MapContent
-      },
-      {
-        path: '/detail',
-        label: '详情',
-        component: MapDetail
-      }
-    ]
+    component: MapContent,
+    // children: [
+    //   {
+    //     path: '/content',
+    //     label: '内容',
+    //     component: MapContent
+    //   },
+    //   {
+    //     path: '/detail',
+    //     label: '详情',
+    //     component: MapDetail
+    //   }
+    // ]
   },
   {
     path: '/valvePlugInformation',

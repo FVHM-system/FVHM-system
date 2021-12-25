@@ -264,7 +264,7 @@ onMounted(userFunc.fetchUser)
 
 .addbutton {
   position: relative;
-  margin-left: 1300px;
+  margin-left: 100px;
   top: 8px;
 }
 

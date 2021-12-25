@@ -64,7 +64,7 @@
                 @confirm="deleteValve(scope.row)"
             >
               <template #reference>
-                <el-button type="danger">删除</el-button>
+                <el-button type="danger" :disabled="buttonState">删除</el-button>
               </template>
             </el-popconfirm>
           </template>
@@ -97,7 +97,13 @@ import AddValvePlug from "./addValvePlug.vue";
 import {fetchSuper} from '../../apis/2.0/addr'
 import {exportExcel} from '../../utils/exportExcel'
 import {ElMessage} from 'element-plus'
+import { 
+  fetchAuthority ,
+  fetchUsername
+} from '../../utils/mrWang'
 
+let authority=ref('')
+let buttonState=ref(false)//禁用按钮
 let input1 = ref('')
 let input2 = ref('')
 let options = ref([])
@@ -251,6 +257,12 @@ function exportCSV() {
 }
 
 onMounted(async () => {
+  authority.value=fetchAuthority()
+  if(authority.value==='ROLE_ADMIN'){
+    buttonState.value=false
+  }else{
+    buttonState.value=true
+  }
   let res = await fetchVpinformation()
   if (res.code === '200') {
     tableData.value = res.data;

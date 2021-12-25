@@ -340,7 +340,7 @@ const getNodes = async (val) => {
 const handleItemChange = async (val) => {
   console.log("点击的val", val)
   fetchMychoice()
-  getNodes(val)
+  getNodes(val)//加速，非必要
 }
 
 function fetchMychoice() {//important
@@ -404,7 +404,7 @@ async function init() {
       }
     })
     return {
-      place: "中卫市",
+      place: "阜阳市",
       valveVolume: valveVolume,
       hydrantVolume: hydrantVolume,
       totalVolume: totalVolume,

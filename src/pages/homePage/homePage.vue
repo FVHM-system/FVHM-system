@@ -57,6 +57,16 @@ import useRank from '../../components/useRank.vue'
 import valveDistribution from '../../components/waterBarPic.vue'//阀门分布
 import hydrantDistribution from '../../components/waterLinePic.vue'//消防栓分布
 import whiteBlock from '../../components/whiteBlock.vue'
+import { onMounted } from 'vue'
+import { fetchVpinformation} from '../valveInformation/util/vpinformation'
+
+async function getValveInfo(){
+  let res2 = await fetchVpinformation()
+  console.log('ssss',res2)
+}
+onMounted(async () =>{
+  await getValveInfo()
+})
 </script>
 
 <style lang="scss" scoped>

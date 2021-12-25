@@ -1,3 +1,16 @@
+import {store} from "../stores"
+import { computed } from "vue"
+
+export function fetchAuthority(){
+  let auth = computed(() => store.getters['user/auth'])
+  return auth.value[0].authority
+}
+
+export function fetchUsername(){
+  let username = computed(() => store.getters['user/username'])
+  return username.value
+}
+
 /*
   转换时间格式为后端标准
 */
