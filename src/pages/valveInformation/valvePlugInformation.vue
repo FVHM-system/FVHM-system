@@ -41,7 +41,7 @@
         <el-table-column label="阀栓名称" prop="valveName" width="120px"/>
         <el-table-column label="地址" prop="address" width="200px"/>
         <el-table-column label="阀栓状态" prop="status" :formatter="statusFormate" width="200px"/>
-        <el-table-column label="阀栓设置时间" :valve_createTime="this.prop" prop="createTime"
+        <el-table-column label="阀栓设置时间"  prop="createTime"
                          width="200px"/>
         <el-table-column label="计量设备型号" prop="meterCode" width="200px"/>
         <el-table-column label="通讯编号" prop="comNumber" width="200px"/>
@@ -50,10 +50,10 @@
             <valve-detail class="drawer" :valve_id="scope.row.valveId"
                           :valve_createTime="tableData.createTime"></valve-detail>
             <el-button type="warning" v-if="scope.row.status === 1001"
-                       @click="valveStatusChange(scope.row)">停用
+                       @click="valveStatusChange(scope.row)" :disabled="buttonState">停用
             </el-button>
             <el-button type="success" v-if="scope.row.status !== 1001"
-                       @click="valveStatusChange(scope.row)">启用
+                       @click="valveStatusChange(scope.row)" :disabled="buttonState">启用
             </el-button>
             <el-popconfirm
                 confirm-button-text="确定"
@@ -97,7 +97,7 @@ import AddValvePlug from "./addValvePlug.vue";
 import {fetchSuper} from '../../apis/2.0/addr'
 import {exportExcel} from '../../utils/exportExcel'
 import {ElMessage} from 'element-plus'
-import { 
+import {
   fetchAuthority ,
   fetchUsername
 } from '../../utils/mrWang'
