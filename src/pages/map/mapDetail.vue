@@ -1,24 +1,100 @@
 <template>
   <div class="lay-out">
-    <div id="map-container" class="layer"></div>
+
+    <div id="map-container"  class="layer"></div>
+
     <div id="panel"></div>
+
   </div>
   <div class="layer box">
-    
     <div class="indexbox2">
-        <div class="header2"><b>道路选择</b></div>
+        <div class="header2"><b>阀栓选择</b></div>
         <div class="divider2"></div>
         <div class="inner-box2">
-
+          <el-cascader
+            v-model="place"
+            :options="options"
+            :props="myprops"
+            :show-all-levels="false"
+            placeholder="选择阀栓"
+            @change="handleItemChange"
+            collapse-tags="true"
+            style="left: 10px;width: 220px"
+            clearable/>
         </div>
     </div>
 
+    <div class="map-tip">
+        <div class="tip-item">
+          <div class="icon" :style="{ background: 'rgb(177,253,47)' }"></div>
+          <div class="word1">阀门</div>
+          <el-switch
+            v-model="wellFlag"
+            @change="changeSwitch"
+            style="position: absolute; right: 4px; margin-top: 2px"
+          >
+          </el-switch>
+        </div>
+        <div class="tip-item">
+          <div class="triangle-green"></div>
+          <div class="word2">消防栓</div>
+          <el-switch
+            v-model="hydrantFlag"
+            @change="changeSwitch"
+            style="position: absolute; right: 4px; margin-top: 2px"
+          >
+          </el-switch>
+        </div>
+        <div class="tip-item">
+          <div class="icon" :style="{ background: 'rgb(177,253,47)' }"></div>
+          <div class="triangle-green"></div>
+          <div class="word">正常运行</div>
+          <el-switch
+            v-model="normalFlag"
+            @change="changeSwitch"
+            style="position: absolute; right: 4px; margin-top: 2px"
+          >
+          </el-switch>
+        </div>
+        <div class="tip-item">
+          <div class="icon" :style="{ background: 'rgb(221, 109, 115)' }"></div>
+          <div class="triangle-red"></div>
+          <div class="word">正在报警</div>
+          <el-switch
+            v-model="warningFlag"
+            @change="changeSwitch"
+            style="position: absolute; right: 4px; margin-top: 2px"
+          >
+          </el-switch>
+        </div>
+        <div class="tip-item">
+          <div class="icon" :style="{ background: 'rgb(150,151,151)' }"></div>
+          <div class="triangle-grey"></div>
+          <div class="word">已经废弃</div>
+          <el-switch
+            v-model="offlineFlag"
+            @change="changeSwitch"
+            style="position: absolute; right: 4px; margin-top: 2px"
+          >
+          </el-switch>
+        </div>
+        <div class="tip-item">
+          <div class="icon" :style="{ background: 'rgb(213,22,251)' }"></div>
+          <div class="triangle-purple"></div>
+          <div class="word">尚未安装</div>
+          <el-switch
+            v-model="uninstallFlag"
+            @change="changeSwitch"
+            style="position: absolute; right: 4px; margin-top: 2px"
+          >
+          </el-switch>
+        </div>
+    </div>
 
-    <map-tip></map-tip>
     <el-radio-group
         v-model="radio"
         size="medium"
-        style="position: absolute; bottom: 5px; right: 10px; pointer-events: auto; padding-right: 240px"
+        style="position: absolute; bottom: 17px; right: -220px; pointer-events: auto; padding-right: 240px"
         @change="changeLayer"
     >
       <el-radio-button label="标准地图" ></el-radio-button>
@@ -44,7 +120,6 @@
         <div class="clickthird" v-if="clicked && showNav">
           <div>{{ `${clicklocation[0].name}` }}至{{ `${clicklocation[1].name}` }}</div>
           <div style="margin-top: 10px">导航完成</div>
-          <!-- <div style="margin-top: 10px">请点击新的起点</div> -->
         </div>
       </div>
     </div>
@@ -54,15 +129,16 @@
 <script setup>
 import MapLoader from './localMap.js';
 import {ref, onMounted,onUnmounted} from 'vue'
+import { markRaw } from 'vue'
 import {fetchValveInfos} from '../../apis/2.0/newMap';
-import {
-  fetchRoadList,
-} from '../../apis/2.0/addr'
-import MapTip from '../../components/mapTip.vue'
+import { fetchSuperWithValves} from '../../apis/2.0/addr'
+import floatBall from '../../components/floatBall.vue'
 
 let radio = ref("标准地图")
 let satelliteObject = ref()
 let chart
+let place = ref()
+let options = ref([])
 satelliteObject.value = null
 const echarts = globalThis.echarts
 let navmode = ref(false)//导航
@@ -70,12 +146,28 @@ let normalWell = ref([])
 normalWell.value = []
 let normalHydrant = ref([])
 normalHydrant.value = []
-let offline = ref([])
-offline.value = []
-let warning = ref([])
-warning.value = []
-let uninstalled = ref([])
-uninstalled.value = []
+
+//
+let offlineWell=ref([])
+offlineWell.value=[]
+let warningWell=ref([])
+warningWell.value=[]
+let uninstalledWell=ref([])
+uninstalledWell.value=[]
+let offlineHydrant=ref([])
+offlineWell.value=[]
+let warningHydrant=ref([])
+warningWell.value=[]
+let uninstalledHydrant=ref([])
+uninstalledWell.value=[]
+let myprops = {
+  label: 'name',
+  value: 'message',
+  checkStrictly: false,//是否能选择任意一级选项
+  children: 'child',
+  multiple: 'true'
+}
+//
 let valveData = ref([])
 valveData.value = []
 let startLngLat = []
@@ -86,9 +178,35 @@ let clicked = ref(false)
 let showNav = ref(false)
 let state = ref(false)
 let driving
-let roadList=ref([])
+let myData=ref([])
+let wellNormalFlag=ref(true)
+let hydrantNormalFlag=ref(true)
+let warningFlag=ref(true)
+let offlineFlag=ref(true)
+let uninstallFlag=ref(true)
+let normalFlag=ref(true)
+let wellFlag=ref(true)
+let hydrantFlag=ref(true)
 
-
+async function changeSwitch(e){
+  await fetchData()
+  await setMap()
+}
+async function handleItemChange(e){
+  //console.log("变化")
+  myData.value=place.value.map(item=>{
+        let myId
+        let temp=item.map(item1=>{
+          if(item1.type==='hydrant'||item1.type==='valve'){
+            myId=item1.zoneId
+          }
+        })
+        return myId
+      })
+  console.log("阀栓id",myData.value)
+  await fetchData()
+  await setMap()
+}
 function changeMode(e) {
   clicklocation.value = []
   clicked.value = false
@@ -99,16 +217,15 @@ function changeMode(e) {
     state.value = true
   }
   if (driving) {
-    //driving.clear()
-    driving.destroy()//拖曳
+    driving.clear()
+    // driving.destroy()//拖曳
   }
 }
 
 async function loadMap() {
-  chart = echarts.init(document.getElementById('map-container'))
-  
-
-  chart.on('click', e => {
+  if(!chart){
+    chart = markRaw(echarts.init(document.getElementById('map-container')))
+    chart.on('click', e => {
     console.log("点击的", e.data)
     console.log(state.value)
     if (navmode.value === true && state.value === true) {
@@ -135,16 +252,47 @@ async function loadMap() {
         clicklocation.value = []
         clicked.value = true
         state.value = false
-      }
-    } else {
+        }
+      } else {
 
-    }
-  })
+      }
+    })
+  }
+
+  if(normalFlag.value===false){
+    normalWell.value=[]
+    normalHydrant.value=[]
+  }
+  if(warningFlag.value===false){
+    warningWell.value=[]
+    warningHydrant.value=[]
+  }
+  if(offlineFlag.value===false){
+    offlineWell.value=[]
+    offlineHydrant.value=[]
+  }
+  if(uninstallFlag.value===false){
+    uninstalledWell.value=[]
+    uninstalledHydrant.value=[]
+  }
+  if(wellFlag.value==false){
+    normalWell.value=[]
+    warningWell.value=[]
+    offlineWell.value=[]
+    uninstalledWell.value=[]
+  }
+  if(hydrantFlag.value==false){
+    normalHydrant.value=[]
+    warningHydrant.value=[]
+    offlineHydrant.value=[]
+    uninstalledHydrant.value=[]
+  }
+
   const optionNew = {
     amap: {
       viewMode: '3D',
-      center: [105.189568, 37.514951],
-      zoom: 11,
+      center: [115.381112,33.252427],
+      zoom: 15,
       resizeEnable: true,
       mapStyle: 'amap://styles/macaron',
       renderOnMoving: true,
@@ -158,6 +306,11 @@ async function loadMap() {
         type: 'effectScatter',
         coordinateSystem: 'amap',
         data: normalWell.value,
+        symbol:'circle',
+        /*散点形状设置:
+        'circle’, ‘rect’, ‘roundRect’, ‘triangle’,
+        ‘diamond’, ‘pin’, 'arrow’
+        */
         symbolSize: 27,
         encode: {
           value: 2,
@@ -184,6 +337,11 @@ async function loadMap() {
         type: 'effectScatter',
         coordinateSystem: 'amap',
         data: normalHydrant.value,
+        symbol:'rec',
+        /*散点形状设置:
+        'circle’, ‘rect’, ‘roundRect’, ‘triangle’,
+        ‘diamond’, ‘pin’, 'arrow’
+        */
         symbolSize: 27,
         encode: {
           value: 2,
@@ -199,17 +357,18 @@ async function loadMap() {
           show: true,
         },
         itemStyle: {
-          color: 'rgb(117, 205, 245)',
+          color: 'rgba(165, 255, 0, 0.8)',
           shadowBlur: 10,
           shadowColor: '#333',
         },
         zlevel: 1,
       },
       {
-        name: '正在报警',
+        name: '阀门正在报警',
         type: 'effectScatter',
         coordinateSystem: 'amap',
-        data: warning.value,
+        data: warningWell.value,
+        symbol:'circle',
         showEffectOn: 'emphasis',
         symbolSize: 27,
         encode: {
@@ -229,10 +388,35 @@ async function loadMap() {
         zlevel: 1,
       },
       {
-        name: '已经废弃',
+        name: '消防栓正在报警',
         type: 'effectScatter',
         coordinateSystem: 'amap',
-        data: offline.value,
+        data: warningHydrant.value,
+        symbol:'rec',
+        showEffectOn: 'emphasis',
+        symbolSize: 27,
+        encode: {
+          value: 2,
+        },
+        hoverAnimation: true,
+        label: {
+          formatter: '{b}',
+          position: 'right',
+          show: true,
+        },
+        itemStyle: {
+          color: 'rgba(255,110,118, 0.8)',
+          shadowBlur: 10,
+          shadowColor: '#333',
+        },
+        zlevel: 1,
+      },
+      {
+        name: '阀门已经废弃',
+        type: 'effectScatter',
+        coordinateSystem: 'amap',
+        data: offlineWell.value,
+        symbol:'circle',
         symbolSize: 27,
         encode: {
           value: 2,
@@ -255,10 +439,65 @@ async function loadMap() {
         zlevel: 1,
       },
       {
-        name: '尚未安装',
+        name: '消防栓已经废弃',
         type: 'effectScatter',
         coordinateSystem: 'amap',
-        data: uninstalled.value,
+        data: offlineHydrant.value,
+        symbol:'rec',
+        symbolSize: 27,
+        encode: {
+          value: 2,
+        },
+        showEffectOn: 'emphasis',
+        rippleEffect: {
+          brushType: 'stroke',
+        },
+        hoverAnimation: true,
+        label: {
+          formatter: '{b}',
+          position: 'right',
+          show: true,
+        },
+        itemStyle: {
+          color: 'rgba(165, 165, 165, 0.8)',
+          shadowBlur: 10,
+          shadowColor: '#333',
+        },
+        zlevel: 1,
+      },
+      {
+        name: '阀门尚未安装',
+        type: 'effectScatter',
+        coordinateSystem: 'amap',
+        data: uninstalledWell.value,
+        symbol:'circle',
+        symbolSize: 27,
+        encode: {
+          value: 2,
+        },
+        showEffectOn: 'emphasis',
+        rippleEffect: {
+          brushType: 'stroke',
+        },
+        hoverAnimation: true,
+        label: {
+          formatter: '{b}',
+          position: 'right',
+          show: true,
+        },
+        itemStyle: {
+          color: 'rgb(194,20,229)',
+          shadowBlur: 10,
+          shadowColor: '#333',
+        },
+        zlevel: 1,
+      },
+      {
+        name: '消防栓尚未安装',
+        type: 'effectScatter',
+        coordinateSystem: 'amap',
+        data: uninstalledHydrant.value,
+        symbol:'rec',
         symbolSize: 27,
         encode: {
           value: 2,
@@ -289,28 +528,27 @@ const setNav = async () => {
   if (!chart) {
     await setMap()
   } else {
-    // const amap = chart.getModel().getComponent('amap').getAMap()
-    // AMap.plugin('AMap.Driving', function () {
-    //   driving = new AMap.Driving({
-    //     policy: AMap.DrivingPolicy.LEAST_TIME,
-    //     map: amap,
-    //     panel: 'panel'
-    //   })
-    //   driving.search(startLngLat, endLngLat, function (status, result) {
-    //   })
-    // })
-     const amap = chart.getModel().getComponent('amap').getAMap()
-      AMap.plugin('AMap.DragRoute', function () {
-      let path = []
-      path.push(startLngLat)
-      path.push(endLngLat)
-      driving = new AMap.DragRoute(amap, path, AMap.DrivingPolicy.LEAST_FEE)
-      driving.search()
+    const amap = chart.getModel().getComponent('amap').getAMap()
+    AMap.plugin('AMap.Driving', function () {
+      driving = new AMap.Driving({
+        policy: AMap.DrivingPolicy.LEAST_TIME,
+        map: amap,
+        panel: 'panel'
+      })
+      driving.search(startLngLat, endLngLat, function (status, result) {
+      })
     })
+    //  const amap = chart.getModel().getComponent('amap').getAMap()
+    //   AMap.plugin('AMap.DragRoute', function () {
+    //   let path = []
+    //   path.push(startLngLat)
+    //   path.push(endLngLat)
+    //   driving = new AMap.DragRoute(amap, path, AMap.DrivingPolicy.LEAST_FEE)
+    //   driving.search()
+    // })
   }
 }
 const setMap = async () => {
-  if (!chart) {
     await loadMap()
     const amap = chart.getModel().getComponent('amap').getAMap()
     var satellite = new AMap.TileLayer.Satellite({
@@ -318,36 +556,42 @@ const setMap = async () => {
     })
     satellite.hide()
     satelliteObject.value = satellite
-
-    
-  }
 }
 const fetchData = async () => {
   let res = await fetchValveInfos()
   valveData.value = res
   const getList = e => {
     return res.filter(e).map(item => {
-      return {
-        valveId: item.valveId,
-        name: item.valveName,
-        value: [item.longitude, item.latitude],
-        applicantName: item.applicantName,
-        roadId: item.zoneId
+      if(myData.value.indexOf(item.valveId)!=-1){
+          return {
+          valveId: item.valveId,
+          name: item.valveName,
+          value: [item.longitude, item.latitude],
+          applicantName: item.applicantName
+        }
+      }else{
+        return false
       }
     })
   }
   normalWell.value = getList(item => item.status === 1001 && item.valveType === 1)
   normalHydrant.value = getList(item => item.status === 1001 && item.valveType === 2)
-  warning.value = getList(item => item.status === 4444)
-  offline.value = getList(item => item.status === 1003)
-  uninstalled.value = getList(item => item.status === 1002)
+  warningWell.value=getList(item => item.status === 4444 && item.valveType === 1)
+  warningHydrant.value=getList(item => item.status === 4444 && item.valveType === 2)
+  offlineWell.value=getList(item => item.status === 1003 && item.valveType === 1)
+  offlineHydrant.value=getList(item => item.status === 1003 && item.valveType === 2)
+  uninstalledWell.value=getList(item => item.status === 1002 && item.valveType === 1)
+  uninstalledHydrant.value=getList(item => item.status === 1002 && item.valveType === 2)
+
+
   console.log("阀门正常运行", normalWell.value)
   console.log("消防栓正常运行", normalHydrant.value)
-  console.log("正在报警", warning.value)
-  console.log("已经废弃", offline.value)
-  console.log("尚未安装", uninstalled.value)
-  roadList.value=await fetchRoadList()
-  console.log("嘎嘎嘎",roadList.value)
+  console.log("阀门正在报警", warningWell.value)
+  console.log("消防栓正在报警", warningHydrant.value)
+  console.log("阀门已经废弃", offlineWell.value)
+  console.log("消防栓已经废弃", offlineHydrant.value)
+  console.log("阀门尚未安装", uninstalledWell.value)
+  console.log("消防栓尚未安装", uninstalledHydrant.value)
 }
 
 function changeLayer(e) {
@@ -361,8 +605,11 @@ function changeLayer(e) {
 
 onMounted(async () => {
   await fetchData()
-  await setMap()
-  //await setNav()
+  if(!chart){
+    await setMap()
+  }
+  const temp = await fetchSuperWithValves()
+  options.value = temp
 })
 
 onUnmounted(async()=>{
@@ -373,29 +620,6 @@ onUnmounted(async()=>{
 </script>
 
 <style lang="scss" scoped>
-
-.inner-box2 {
-    width: 350px;
-    height: 300px;
-    margin-left: 10px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-.indexbox2 {
-    background: rgb(255, 255, 255, 0.9);
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 370px;
-    height: fit-content;
-    pointer-events: auto;
-    border: 0.5px solid rgba($color: #000000, $alpha: 0.1);
-    font-size: 140%;
-    border-radius: 15px;
-  }
-
 #container {
   position: absolute;
   margin-top: -40px;
@@ -409,6 +633,42 @@ onUnmounted(async()=>{
   height: calc(100vh - 100px);
 }
 
+.inner-box2 {
+    width: 350px;
+    height: 40px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+.indexbox2 {
+    background: rgb(255, 255, 255, 0.9);
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 250px;
+    height: 120px;
+    pointer-events: auto;
+    border: 0.5px solid rgba($color: #000000, $alpha: 0.1);
+    font-size: 140%;
+    border-radius: 15px;
+  }
+ .header2 {
+    margin: 15px;
+    margin-top: 17px;
+    margin-bottom: 13px;
+  }
+
+.divider2 {
+    border-top: 1px solid rgba($color: #969696, $alpha: 0.15);
+    height: 1px;
+    overflow: hidden;
+    width: 345px;
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
 .layer-out {
   position: relative;
   overflow: hidden;
@@ -431,26 +691,10 @@ onUnmounted(async()=>{
 }
 
 .header {
-  width: 220px;
+  width: 130px;
   padding: 7px;
   padding-left: 15px;
 }
-
-.header2 {
-    margin: 15px;
-    margin-top: 17px;
-    margin-bottom: 13px;
-  }
-
-.divider2 {
-    border-top: 1px solid rgba($color: #969696, $alpha: 0.15);
-    height: 1px;
-    overflow: hidden;
-    width: 345px;
-    margin-left: 10px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-  }
 
 .content {
   width: fit-content;
@@ -515,4 +759,68 @@ onUnmounted(async()=>{
   border-bottom-right-radius: 4px;
   overflow: hidden;
 }
+
+.map-tip {
+    position: absolute;
+    bottom: 80px;
+    right: 25px;
+    padding: 5px;
+    width: 180px;
+    background: white;
+    border-radius: 6px;
+    .tip-item {
+      display: flex;
+      align-items: center;
+      padding: 6px;
+      .icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+        margin-right: 6px;
+      }
+      .word {
+        position: relative;
+        left:8px;
+        font-size: 13px;
+      }
+      .word1 {
+        position: relative;
+        left:29px;
+        font-size: 13px;
+      }
+      .word2 {
+        position: relative;
+        left:35px;
+        font-size: 13px;
+      }
+      .triangle-green {
+        width: 10%;
+				height: 0;
+				padding-top: 10%;
+				border: 1px solid rgb(252, 250, 250);
+				background: rgb(177,253,47);
+      }
+      .triangle-red {
+        width: 10%;
+				height: 0;
+				padding-top: 10%;
+				border: 1px solid rgb(252, 250, 250);
+				background: rgb(221, 109, 115);
+      }
+      .triangle-grey {
+        width: 10%;
+				height: 0;
+				padding-top: 10%;
+				border: 1px solid rgb(252, 250, 250);
+				background: rgb(150,151,151);
+      }
+      .triangle-purple {
+        width: 10%;
+				height: 0;
+				padding-top: 10%;
+				border: 1px solid rgb(252, 250, 250);
+				background: rgb(213,22,251);
+      }
+    }
+  }
 </style>

@@ -154,6 +154,7 @@ let BarPic = function (xValues, yValues) {
     ],
     yAxis: [
       {
+        name:'用水量(m³)',
         type: 'value',
       },
     ],

@@ -35,13 +35,13 @@
             :load="load"
         >
           <el-table-column prop="name" label="行政区域" width="340" ></el-table-column>
-          <el-table-column prop="planVolume" label="计划用水量(万m³)" min-width="200"></el-table-column>
-          <el-table-column prop="licenseVolume" label="许可用水量(万m³)"
+          <el-table-column prop="planVolume" label="计划用水量(m³)" min-width="200"></el-table-column>
+          <el-table-column prop="licenseVolume" label="许可用水量(m³)"
                            min-width="200"></el-table-column>
-          <el-table-column prop="valveVolume" label="阀门用水量(万m³)" min-width="200"></el-table-column>
-          <el-table-column prop="hydrantVolume" label="消防栓用水量(万m³)"
+          <el-table-column prop="valveVolume" label="阀门用水量(m³)" min-width="200"></el-table-column>
+          <el-table-column prop="hydrantVolume" label="消防栓用水量(m³)"
                            min-width="200"></el-table-column>
-          <el-table-column prop="totalVolume" label="总用水量(万m³)" min-width="200"></el-table-column>
+          <el-table-column prop="totalVolume" label="总用水量(m³)" min-width="200"></el-table-column>
         </el-table>
       </el-scrollbar>
     </div>

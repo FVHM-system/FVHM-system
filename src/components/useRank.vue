@@ -7,33 +7,18 @@
     <div class="table">
       <el-table
         :data="tableData.slice(0, 20)"
-        height="86%"
+        height="90%"
         style="width: 100%"
         stripe
         :row-style="{ height: '42px' }"
         :cell-style="{ padding: '0px', fontSize: '14px' }"
       >
-        <el-table-column prop="roadName" label="道路名称"> </el-table-column>
-        <el-table-column prop="volume" width="160" label="用水量(万m³)"> </el-table-column>
+        <el-table-column prop="villageName" width="120" label="村庄名称"> </el-table-column>
+        <el-table-column prop="roadName" width="120" label="道路名称"> </el-table-column>
+        <el-table-column prop="volume" width="125" label="用水量(m³)"> </el-table-column>
       </el-table>
     </div>
   </div>
-  <el-dialog title="监测阀栓信息" v-model="dialogVisible">
-    <div class="myDialog" style="height: 45vh">
-      <el-table
-        :data="tableData"
-        height="100%"
-        border
-        stripe
-        style="width: 100%"
-        :cell-style="{ padding: '0px', fontSize: '0.5em' }"
-        :header-cell-style="{ height: '22px', padding: '2px', fontWeight: 'bold' }"
-      >
-        <el-table-column min-width="1" align="center" prop="well" label="道路名称"> </el-table-column>
-        <el-table-column sortable min-width="2" align="center" prop="consume" label="用水量(万m³)"> </el-table-column>
-      </el-table>
-    </div>
-  </el-dialog>
 </template>
 
 <script setup>
@@ -50,6 +35,7 @@
     if (res.code === '200') {
       tableData.value = res.data;
     }
+    console.log("rankdata",tableData.value)
   })
 </script>
 

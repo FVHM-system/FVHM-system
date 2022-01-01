@@ -55,7 +55,7 @@ export default {
             alert('登陆成功');
           }
         }).catch(error => {
-          alert('账号或密码错误');
+          //alert('账号或密码错误');
           console.log(error);
         });
       }

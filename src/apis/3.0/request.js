@@ -2,7 +2,7 @@ import axios from 'axios'
 import {ElMessage} from 'element-plus'
 import {store} from '../../stores/index'
 
-const baseUrl = 'http://124.71.237.225:8080'
+const baseUrl = 'http://121.37.66.218:8080'
 /**
  * P 开头方法只返回内容，无内容时返回 undefined ：： data
  * 非 P 开头方法返回原内容（保证有对象返回） ：： { msg, code, data }

@@ -1,21 +1,21 @@
 <template>
   <div class="water">
-    <el-row :gutter="20" style="margin-top: -40px">
-      <el-col :span="4" style="padding: 10px"
+    <el-row :gutter="100" style="margin-top: -25px">
+      <el-col :span="4" 
       >
         <white-block style="width:200px;height:310px;">
           <wells-count></wells-count>
         </white-block
         >
       </el-col>
-      <el-col :span="4" style="padding: 10px"
+      <el-col :span="4" 
       >
         <white-block style="width:200px;height:310px;">
           <hydrant-count></hydrant-count>
         </white-block
         >
       </el-col>
-      <el-col :span="14" style="padding: 10px; height:330px;"
+      <el-col :span="14" style=" height:310px;"
       >
         <white-block>
           <water-consume></water-consume>
@@ -23,22 +23,22 @@
         >
       </el-col>
     </el-row>
-    <el-row :gutter="10" style="margin-top: -14px">
-      <el-col :span="7" style="padding: 10px; height: 385px"
+    <el-row :gutter="20" style="margin-top: 10px">
+      <el-col :span="8" style=" height: 385px;"
       >
-        <white-block>
+        <white-block style="width:430px;">
           <use-rank></use-rank>
         </white-block
         >
       </el-col>
-      <el-col :span="8" style="padding: 10px; height:385px"
+      <el-col :span="8" style=" height:385px;"
       >
         <white-block>
           <valve-distribution></valve-distribution>
         </white-block
         >
       </el-col>
-      <el-col :span="8" style="padding: 10px; height:385px"
+      <el-col :span="8" style=" height:385px"
       >
         <white-block>
           <hydrant-distribution></hydrant-distribution>
