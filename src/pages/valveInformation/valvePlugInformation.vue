@@ -97,7 +97,7 @@ import AddValvePlug from "./addValvePlug.vue";
 import {fetchSuper} from '../../apis/2.0/addr'
 import {exportExcel} from '../../utils/exportExcel'
 import {ElMessage} from 'element-plus'
-import { 
+import {
   fetchAuthority ,
   fetchUsername
 } from '../../utils/mrWang'

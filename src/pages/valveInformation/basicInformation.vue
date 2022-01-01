@@ -35,7 +35,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="监测设备编号" style="position:relative; left:-10px; top: 110px">
+        <el-form-item label="计量设备编号" style="position:relative; left:-10px; top: 110px">
           <el-col :span="9">
             <el-input v-model="formData.meterCode" style=" width: 150px"></el-input>
           </el-col>
@@ -95,7 +95,7 @@ import {ref, defineProps, onMounted} from 'vue'
 import {fetchDetailData} from "./util/detailData";
 import {fetchUpdateData} from "./util/updateData";
 import {ElMessage} from 'element-plus'
-import { 
+import {
   fetchAuthority ,
   fetchUsername
 } from '../../utils/mrWang'
