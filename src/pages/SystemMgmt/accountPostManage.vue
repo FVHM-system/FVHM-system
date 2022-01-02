@@ -18,9 +18,9 @@
       </div>
 
     </div>
-    <div class="p-body">
+    <div id="box" class="p-body">
       <el-table
-          :data="accountList"
+          :data="currentData"
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
           :cell-style="{'text-align':'center'}"
@@ -49,13 +49,29 @@
           </template>
         </el-table-column>
       </el-table>
+
+      <div class="pagination-out">
+      <div class="pagination-in">
+        <el-pagination
+            v-if="showpagination"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 50, 100]"
+            :page-size="pageSize"
+            style="margin-top: 10px;"
+            :total="tableData.length">
+        </el-pagination>
+      </div>
+    </div>
+
     </div>
   </div>
 </template>
 
 <script setup>
 import {computed, nextTick, onMounted, reactive, ref, watch, watchEffect} from 'vue'
-import {ElMessage} from 'element-plus'
+import {ElMessage, ElLoading} from 'element-plus'
 import {useStore} from 'vuex'
 import {fetchAccountsListById, fetchPostById, saveAccount2PostByList} from '/src/apis/2.0/post'
 import {AddTownInfoByConfig, deleteTownInfoById} from '/src/apis/2.0/addr'
@@ -67,20 +83,22 @@ const router = useRouter()
 
 const tableData = ref([])
 const currentItem = ref({})
-const perPage = ref(20)
-const currentPage = ref(1)
+let currentPage = 1
+let pageSize = 10
+let currentData = ref([])
 const hasChange = ref(false)
+let showpagination = ref(true)
 
-const handleSizeChange = size => (perPage.value = size)
-const handleCurrentChange = current => (currentPage.value = current)
+function handleSizeChange(val) {
+  pageSize = val;
+}
+// 当前页
+function handleCurrentChange(val) {
+  currentPage = val;
+  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  console.log(currentPage)
+}
 
-const accountList = computed(() => {
-  // const page = currentPage.value
-  // const offset = perPage.value * (page - 1)
-  // return (tableData.value || []).slice(offset, offset + perPage.value)
-  return tableData.value
-})
-const total = computed(() => (tableData.value || []).length)
 const id = computed(() => route.query.id)
 
 const reset = async () => {
@@ -97,6 +115,7 @@ const postFunc = {
     const id = route.query.id
     const r = await fetchAccountsListById({id})
     tableData.value = r || []
+    currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
     const it = await fetchPostById({id})
     currentItem.value = it || {}
   },
@@ -159,7 +178,10 @@ const postFunc = {
   },
 }
 
-onMounted(() => postFunc.search())
+onMounted(() => {
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
+  postFunc.search()
+  loadingInstance.close()})
 </script>
 
 <style lang="scss" scoped>
