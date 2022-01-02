@@ -1,6 +1,6 @@
 <template>
-  <div class="wholePage">
-  <div class="lay-out">
+  <div class="wholePage" >
+  <div class="lay-out" >
 
     <div id="map-container"  class="layer"></div>
 
@@ -683,7 +683,6 @@ function changeLayer(e) {
 }
 
 onMounted(async () => {
-  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: true})
   await fetchData()
   if(!chart){
     await setMap()
@@ -695,7 +694,6 @@ onMounted(async () => {
     defaultKey.value.splice(0,0,i)
   }
   judge=true
-  loadingInstance.close()
 })
 
 onUnmounted(async()=>{

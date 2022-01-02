@@ -71,7 +71,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="负责部门" style="position:relative; left:300px; top: -270px">
+        <el-form-item label="所属单位" style="position:relative; left:300px; top: -270px">
           <el-col :span="9">
             <el-input v-model="formData.applicantName" style="width: 190px"></el-input>
           </el-col>

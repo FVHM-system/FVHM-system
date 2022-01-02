@@ -11,12 +11,15 @@
       width="50%"
       :before-close="handleClose">
     <el-form :model="formData" label-width="120px">
+      <div style="display: flex;flex-direction: row">
       <el-form-item label="阀栓名称" >
           <el-input v-model="formData.valveName" style="width: 190px"></el-input>
       </el-form-item>
-      <el-form-item label="阀栓编号" style="margin-left: 350px;margin-top: -70px">
+      <el-form-item label="阀栓编号">
           <el-input v-model="formData.valveCode" style="width: 190px"></el-input>
       </el-form-item>
+      </div>
+      <div style="margin-top:10px;display: flex;flex-direction: row">
       <el-form-item label="所在位置">
         <el-cascader
             v-model="place"
@@ -25,10 +28,10 @@
             ref="require"
             placeholder="选择地址"
             :show-all-levels="false"
-            style="width: 120px"
+            style="width: 190px"
             clearable></el-cascader>
       </el-form-item>
-      <el-form-item label="阀栓创建时间" style="margin-left: 350px;margin-top: -60px">
+      <el-form-item label="阀栓创建时间" >
         <el-date-picker
             value-format="yyyy-MM-dd HH:mm:ss"
             v-model="formData.createTime"
@@ -38,17 +41,21 @@
         >
         </el-date-picker>
       </el-form-item>
+      </div>
+      <div style="display: flex;margin-top:10px;flex-direction: row;">
       <el-form-item label="经度">
-          <el-input v-model="formData.longitude" style=" width: 150px"></el-input>
+          <el-input v-model="formData.longitude" style="width: 150px"></el-input>
       </el-form-item>
-      <el-form-item label="通讯编号" style="margin-left: 350px;margin-top: -60px">
+        <el-form-item label="通讯编号" style="margin-left: 40px">
           <el-input v-model="formData.comNumber" style="width: 190px"></el-input>
-      </el-form-item>
+        </el-form-item>
+      </div>
+      <div style="display: flex;margin-top:10px;flex-direction: row">
       <el-form-item label="纬度">
           <el-input v-model="formData.latitude" style=" width: 150px"></el-input>
       </el-form-item>
-      <el-form-item label="阀栓类型" style="margin-left: 350px;margin-top: -60px">
-        <el-select v-model="formData.valveType" placeholder="Select" style="width: 120px">
+      <el-form-item label="阀栓类型" style="margin-left: 40px;">
+        <el-select v-model="formData.valveType" placeholder="选择类型" style="width: 120px">
           <el-option
               v-for="item in options"
               :key="item.value"
@@ -58,8 +65,10 @@
           </el-option>
         </el-select>
       </el-form-item>
+      </div>
+      <div style="display: flex;margin-top:10px;flex-direction: row">
       <el-form-item label="状态">
-        <el-select v-model="formData.status" placeholder="Select" style="width: 140px">
+        <el-select v-model="formData.status" placeholder="选择状态" style="width: 140px">
           <el-option
               v-for="item in statuss"
               :key="item.value"
@@ -69,15 +78,23 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="负责部门" style="margin-left: 350px;margin-top: -60px">
-          <el-input v-model="formData.applicantName" style="width: 190px"></el-input>
+      <el-form-item label="所属单位" style="margin-left: 50px;">
+        <el-select v-model="formData.applicantName" placeholder="选择所属单位" style="width: 190px">
+          <el-option
+              v-for="item in applicantList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="监测设备编号">
-          <el-input v-model="formData.meterCode" style=" width: 150px"></el-input>
-      </el-form-item>
-      <el-form-item label="备注" style="margin-left: 350px;margin-top: -60px">
+      </div>
+      <div style="display: flex;margin-top:10px;flex-direction: row">
+      <el-form-item label="备注" >
           <el-input v-model="formData.remark" style="width: 190px"></el-input>
       </el-form-item>
+      </div>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -103,12 +120,14 @@ import {
   fetchAuthority ,
   fetchUsername
 } from '../../utils/mrWang'
+import {getApplicant} from "../applicantMgmt/util/ApplicantMgmt";
 
 let authority=ref('')
 let buttonState=ref(false)//禁用按钮
 let dialogVisible = ref(false)
 let formData = ref({});
 let input = ref('')
+let applicantList = ref([])
 let options = ref([
   {
     value: 1,
@@ -167,7 +186,7 @@ const timeSolve = function (time) {
 }
 const confirm = async function () {
   if (formData.value.comNumber && formData.value.createTime && formData.value.latitude
-      && formData.value.longitude && formData.value.meterCode && formData.value.applicantName
+      && formData.value.longitude  && formData.value.applicantName
       && formData.value.status && formData.value.valveCode && formData.value.valveName
       && formData.value.valveType && place.value.length > 0) {
     valveInfo = {}
@@ -177,7 +196,6 @@ const confirm = async function () {
     valveInfo.createTime = timeSolve(formData.value.createTime)
     valveInfo.latitude = parseFloat(formData.value.latitude)
     valveInfo.longitude = parseFloat(formData.value.longitude)
-    valveInfo.meterCode = stringJudge(formData.value.meterCode)
     valveInfo.remark = stringJudge(formData.value.remark)
     valveInfo.status = formData.value.status
     valveInfo.valveCode = stringJudge(formData.value.valveCode)
@@ -216,6 +234,19 @@ function dateTimeTrans(d) {
     return ''
   }
 }
+async function getApplicantList() {
+  let res = await getApplicant()
+  console.log(res.data)
+  applicantList.value = res.data.map(item=>{
+    return {
+      value:item.applicantId,
+      label:item.applicantName
+    }
+  })
+  console.log(applicantList)
+}
+
+
 
 const handleClose = (done) => {
   ElMessageBox.confirm('是否要退出编辑？')
@@ -234,6 +265,7 @@ onMounted(async () => {
     buttonState.value=true
   }
   optionss.value = await fetchSuper()
+  await getApplicantList()
 })
 </script>
 
