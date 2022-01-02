@@ -12,6 +12,7 @@
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
           style="width: 100%"
+          :height="tableHeight"
       >
         <el-table-column prop="userName" label="用户名" width="200"></el-table-column>
         <el-table-column label="备注" min-width="200">
@@ -151,7 +152,7 @@ import {
   editAccountPost,
   fetchAccountsList,
 } from '/src/apis/account.js'
-
+let tableHeight = window.innerHeight - 310
 const tableData = ref([])
 let currentPage = 1
 let pageSize = 10
