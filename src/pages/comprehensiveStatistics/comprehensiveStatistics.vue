@@ -34,7 +34,7 @@
             :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
             :load="load"
         >
-          <el-table-column prop="name" label="行政区域" min-width="260" ></el-table-column>
+          <el-table-column prop="name" label="行政区域" width="340" ></el-table-column>
           <el-table-column prop="planVolume" label="计划用水量(m³)" min-width="200"></el-table-column>
           <el-table-column prop="licenseVolume" label="许可用水量(m³)"
                            min-width="200"></el-table-column>

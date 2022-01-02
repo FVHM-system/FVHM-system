@@ -5,24 +5,15 @@
       <el-col :span="8">
         <el-input v-model="input1" placeholder="请输入巡视人" style="margin-left: 170px;top:3px;width: 150px"/>
       </el-col>
-        <el-select v-model="input2" placeholder="选择状态" style="margin-left:10px;width: 120px;margin-top: 3px">
-          <el-option
-              v-for="item in status"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-          >
-          </el-option>
-        </el-select>
-        <!-- <el-date-picker
-            v-model="value1"
-            type="datetimerange"
-            range-separator="至"
-            start-placeholder="Start date"
-            end-placeholder="End date"
-            style="margin-top: 3px;margin-left: 10px"
+      <el-select v-model="input2" placeholder="选择状态" style="margin-left:10px;width: 120px;margin-top: 3px">
+        <el-option
+            v-for="item in status"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
         >
-        </el-date-picker> -->
+        </el-option>
+      </el-select>
       <div class="button-group">
         <el-button v-model="search" type="primary" @click="dataSearch" >查询</el-button>
         <el-button type="primary" @click="addModal.open()" :disabled="buttonState">新增</el-button>
@@ -30,19 +21,27 @@
         <el-button type="primary" @click="exportCSV">导出</el-button>
       </div>
     </div>
-    <el-scrollbar >
+    <div class="data-chart2">
         <el-table
             :data=tableData
             :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
-            :cell-style="{'text-align':'center'}"
-            :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
-            style="width: 100%"
+          :cell-style="{'text-align':'center'}"
+          :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
+          style="width: 100%"
+          :height="tableHeight"
         >
           <el-table-column label="任务编号" prop="taskId" width="120px"/>
           <el-table-column label="巡视人" prop="people" width="120px"/>
           <el-table-column label="电话号码" prop="phone" width="200px"/>
-          <el-table-column label="完成状态" prop="complete"  width="200px"/>
+          <!-- <el-table-column label="完成状态" prop="complete"  width="200px">
+            
+          </el-table-column> -->
+          <el-table-column label="完成状态"  width="200px">
+            <template #default="scope">
+              <el-progress type="circle" width="50" :percentage="scope.row.complete*100" />
+            </template>
+          </el-table-column>
           <el-table-column label="创建时间" prop="createTime" width="200px"/>
           <el-table-column label="任务时间" prop="inspectTime" width="200px"/>
           <el-table-column label="备注" prop="remark" width="200px"/>
@@ -54,7 +53,7 @@
             </template>
           </el-table-column>
         </el-table>
-    </el-scrollbar>
+    </div>
   </div>
   <el-dialog v-model="editState" :title="modalTitle"  center>
         <el-form :model="addForm" label-width="100px" :inline="false">
@@ -236,7 +235,8 @@ let authority=ref('')
 let tableData = ref([])
 let taskData=ref([])
 let options = ref([])
-let place = ref()
+let place = ref([])
+//place.value
 let buttonState=ref(false)//禁用按钮
 let editState = ref(false)
 let detailState=ref(false)
@@ -247,6 +247,7 @@ let roadList=ref([])
 let mode=ref('')
 let modal = ref()
 let peopleList=ref([])
+let tableHeight = window.innerHeight - 230
 let modalTitle = computed(() => {
     let res
     if (mode.value === 'add') {
@@ -374,6 +375,7 @@ const valveDetail={
           taskData.value=res1.data
         }
       myFunc.search()
+      place.value=[]
       this.detailCancel()
     },
 }
@@ -570,6 +572,7 @@ const myFunc={
         if (r) {
             this.changeState(false)
         }
+        place.value=[]
         },
         cancel() {
         this.changeState(false)
@@ -668,6 +671,7 @@ onMounted(async () => {
   options.value = temp
   
   console.log("name",fetchUsername())
+  console.log("tttt",place.value)
 
 })
 </script>
@@ -679,10 +683,27 @@ onMounted(async () => {
   margin-left: 950px;
   width: 400px;
 }
-
+.p-page {
+  width: 100%;
+  height: calc(100vh - 120px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin: 0;
+}
 .detail-btn{
   position: relative;
   left: 82.5%;
   top: -15px;
+}
+.p-header {
+  background-color: #219ded0d;
+  width: 100%;
+  height: 100px;
+  border: 1px solid #219ded0f;
+}
+.data-chart2 {
+  position: relative;
+  top: 10px;
+  overflow-y: hidden;
 }
 </style>
