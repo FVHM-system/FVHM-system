@@ -82,9 +82,9 @@
           <el-select style="position:relative; left:6%; width:101%" v-model="addModal.data.valveId" placeholder="请选择">
           <el-option
               v-for="item in valvePlugInformation"
-              :key="item.valveId"
-              :label="item.valveId + ' - ' + item.valveName"
-              :value="item.valveId">
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
@@ -303,7 +303,21 @@ const addModal = reactive({
     typeId:'',
     createTime:'',
   },
-  open(){
+  async open(){
+    const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
+    let res = await fetchHasNoMeterVpinformation()
+    if (res.code === '200') {
+    valvePlug = res.data;
+    console.log('sdsd',res.data)
+    valvePlugInformation.value = res.data.map(item=>{
+      return{
+        value:item.valveId,
+        label:item.valveName
+      }
+    })
+    }
+    console.log()
+    loadingInstance.close(valvePlugInformation.value)
     this.show = true;
   },
   async submit(){
@@ -361,10 +375,6 @@ const editModal = reactive({
     this.data.typeId=row.typeId
     this.data.createTime=row.createTime
     const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
-    
-    
-    
-
     let res = await fetchHasNoMeterVpinformation()
     if (res.code === '200') {
     valvePlug = res.data;
@@ -376,7 +386,6 @@ const editModal = reactive({
       }
     })
     }
-
     res = await fetchVpinformationById(row.valveId)
     if(res.code==='200'){
       console.log('default',res.data)
