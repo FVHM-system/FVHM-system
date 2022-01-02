@@ -266,6 +266,7 @@ const waterTrandGet = async function () {
 onMounted(async () => {
   await getTimeWaterDataYear()
   await waterTrandGet()
+  await getWaterTotal()
 })
 onUnmounted(() => {
   if (myChart) {
