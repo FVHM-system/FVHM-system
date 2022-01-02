@@ -57,6 +57,7 @@
       <div class="pagination-out">
       <div class="pagination-in">
         <el-pagination
+            v-if="showpagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
@@ -204,7 +205,7 @@ import {fetchVpinformation} from "../valveInformation/util/vpinformation.js"
 import {mountedToArrPrototype} from "../../mock"
 import {ElMessageBox,ElLoading, ElMessage} from 'element-plus'
 import { licenseStates } from "../../utils/transform";
-
+let showpagination = ref(true)
 const store= useStore()
 let date=ref()
 let valvePlugInformation=ref()
@@ -281,7 +282,25 @@ const search = reactive({
 })
 
 async function reset(){
-  location.reload();
+  search.data.valveId=null
+  search.data.license=null
+  daterange.value=[]
+  search.data.start=null
+  search.data.end=null
+  showpagination.value = false
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
+  let res = await searchLicense(this.data)
+    if (res.code == '200'){
+      tableData.value = res.data;
+    }
+  currentPage = 1
+  showpagination.value = true
+  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  loadingInstance.close()
+  ElMessage({
+        type: 'success',
+        message : '重置成功'
+      })
 }
 
 const addModal = reactive({
