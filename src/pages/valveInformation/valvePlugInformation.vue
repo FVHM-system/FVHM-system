@@ -3,7 +3,6 @@
     <div class="p-header">
       <p class="page-name">阀栓信息</p>
       <el-form
-          ref="ruleFormRef"
           :model="searchForm"
           status-icon
           :rules="rules"
@@ -162,7 +161,9 @@ const getValveId = function (row) {
 }
 
 let searchForm = reactive({
-  place:''
+  place:'',
+  type:'',
+  status:''
 })
 
 function handleSizeChange(val) {
@@ -244,7 +245,9 @@ const dataFind = async function () {
 }
 
 const dataRequire = async function () {
-  proxy.$refs.ruleFormRef.resetFields()
+  searchForm.place=''
+  searchForm.type=''
+  searchForm.status=''
   pageshow.value = false
   let res = await fetchVpinformation()
   if (res.code === '200') {

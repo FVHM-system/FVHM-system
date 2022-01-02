@@ -213,6 +213,21 @@ const {proxy} = getCurrentInstance()
 
 
 async function changeSwitch(e){
+  let place = proxy.$refs.require.getCheckedNodes().filter((item) => {
+    if(item.message.type==='hydrant'||item.message.type==='valve'){
+      return true
+    }else{
+      return false
+    }
+  })
+  console.log("place",place)
+  myData.value=place.map(item=>{
+        let myId
+          if(item.message.type==='hydrant'||item.message.type==='valve'){
+            myId=item.message.zoneId
+          }
+        return myId
+      })
   await fetchData()
   await setMap()
 }
@@ -609,6 +624,7 @@ const fetchData = async () => {
   let res = await fetchValveInfos()
   valveData.value = res
   let getList
+  console.log("myData",myData.value)
   if(judge===true){
       getList = e => {
       return res.filter(e).map(item => {
@@ -624,7 +640,7 @@ const fetchData = async () => {
             createTime:item.createTime
           }
         }else{
-          return false
+          return false;
         }
       })
     }
