@@ -73,7 +73,15 @@
         </el-form-item>
         <el-form-item label="所属单位" style="position:relative; left:300px; top: -270px">
           <el-col :span="9">
-            <el-input v-model="formData.applicantName" style="width: 190px"></el-input>
+            <el-select v-model="formData.applicantId" placeholder="选择所属单位" style="width: 190px">
+              <el-option
+                  v-for="item in applicantList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              >
+              </el-option>
+            </el-select>
           </el-col>
         </el-form-item>
         <el-form-item label="备注" style="position:relative; left:300px; top: -260px">
@@ -109,6 +117,7 @@ import {
   fetchAuthority ,
   fetchUsername
 } from '../../utils/mrWang'
+import {getApplicant} from "../applicantMgmt/util/ApplicantMgmt";
 
 let authority=ref('')
 let buttonState=ref(false)//禁用按钮
@@ -141,6 +150,18 @@ const statuss = [
     label: '正在报警',
   },
 ]
+let applicantList = ref([])
+async function getApplicantList() {
+  let res = await getApplicant()
+  console.log(res.data)
+  applicantList.value = res.data.map(item=>{
+    return {
+      value:item.applicantId,
+      label:item.applicantName
+    }
+  })
+  console.log(applicantList)
+}
 onMounted(async () => {
   authority.value=fetchAuthority()
   if(authority.value==='ROLE_ADMIN'){
@@ -153,6 +174,7 @@ onMounted(async () => {
     formData.value = res.data;
   }
   console.log(formData.value)
+  await getApplicantList()
 })
 let valveInfo = {}
 const updateInfo = async function () {
@@ -170,6 +192,8 @@ const updateInfo = async function () {
   valveInfo.remark = formData.value.remark;
   valveInfo.meterCode = formData.value.meterCode;
   valveInfo.comNumber = formData.value.comNumber;
+  valveInfo.applicantId = formData.value.applicantId
+  console.log('ssdsasad',valveInfo.applicantId)
   const res = await fetchUpdateData(valveInfo)
   console.log(res)
   console.log(valveInfo)
