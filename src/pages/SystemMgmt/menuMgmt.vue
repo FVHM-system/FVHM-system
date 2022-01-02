@@ -16,6 +16,7 @@
           row-key="frontendMenuId"
           default-expand-all
           :tree-props="{ children: 'children' }"
+          :height="tableHeight"
       >
         <el-table-column prop="frontendMenuName" label="菜单名称" min-width="240"></el-table-column>
         <el-table-column prop="description" label="菜单描述" min-width="240"></el-table-column>
@@ -92,7 +93,7 @@ import {
   fetchMenuListByNone
 } from '/src/apis/2.0/menu.js'
 import {routerConfigs} from '/src/router'
-
+let tableHeight = window.innerHeight - 310
 const router = useRouter()
 const route = useRoute()
 const form = reactive({
