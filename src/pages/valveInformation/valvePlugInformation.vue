@@ -271,16 +271,7 @@ const deleteValve = async function (row) {
 }
 
 /* 导出 */
-function exportCSV() {
-  excelData.value = tableData.value
-  let status
-  let type
-  for (let j = 0; j < excelData.value.length; j++) {
-    status = statuss.find(i => i.value === excelData.value[j].status)
-    type = types.find(i => i.value === excelData.value[j].valveType)
-    console.log(status.label)
-  }
-  console.log((statuss.find(i => i.value === excelData.value[4].status)).label)
+async function exportCSV() {
   const excel = {}
   excel.props = [
     {
@@ -320,7 +311,28 @@ function exportCSV() {
       name:'applicantName'
     }
   ]
-  excel.body = excelData.value
+  
+  let temp=await fetchVpinformation()
+  temp.data.map(item=>{
+    if(item.valveType===1){
+      item.valveType="阀门"
+    }else if(item.valveType===2){
+      item.valveType="消防栓"
+    }
+
+    if(item.status===1001){
+      item.status="正在运行"
+    }else if(item.status===1002){
+      item.status="尚未安装"
+    }else if(item.status===1003){
+      item.status="已经停用"
+    }else if(item.status===4444){
+      item.status="正在报警"
+    }
+
+  })
+
+  excel.body = temp.data
   excel.fileName = '阀栓信息表'
   exportExcel(excel)
 }
