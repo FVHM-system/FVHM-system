@@ -6,6 +6,7 @@
       <el-button class="addbutton" type="primary" @click="changeModal.add(true)">新增用户</el-button>
     </div>
       <el-table
+          id="box"
           :data="currentData"
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
