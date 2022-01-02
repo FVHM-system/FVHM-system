@@ -99,12 +99,12 @@
         <el-table-column label="报警时间" prop="warnTime" width="200px"/>
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
-            <el-button type="warning" v-if="scope.row.warnStatus===1"
+            <el-button type="warning" v-if="scope.row.warnStatus===0"
                        @click="handleStatus(scope.row)">{{
                 alarmStatus.find(i => i.value === scope.row.warnStatus).label
               }}
             </el-button>
-            <el-button type="success" v-if="scope.row.warnStatus===0"
+            <el-button type="success" v-if="scope.row.warnStatus===1"
                        @click="handleStatus(scope.row)">{{
                 alarmStatus.find(i => i.value === scope.row.warnStatus).label
               }}
@@ -169,11 +169,11 @@ CarProps = {
 const statuss = [
   {
     value: 0,
-    label: '已处理',
+    label: '未处理',
   },
   {
     value: 1,
-    label: '未处理',
+    label: '已处理',
   },
   {
     value: null,
@@ -203,11 +203,11 @@ const alarmType = [
 const alarmStatus = [
   {
     value: 0,
-    label: '取消已处理',
+    label: '确认已处理',
   },
   {
     value: 1,
-    label: '确认已处理',
+    label: '取消已处理',
   }
 ]
 const genTwoLengthNumberString = n => (n >= 10 ? n : '0' + n)
@@ -224,11 +224,11 @@ const timeSolve = function (time) {
 const handleStatus = async item => {
   console.log(item)
   let res
-  if (item.warnStatus === 0) {
-    res = await fetchUpdateWarnIdById(item.valveId, item.warnId, 1)
-    console.log(item.valveId, item.warnId)
-  } else if (item.warnStatus === 1) {
+  if (item.warnStatus === 1) {
     res = await fetchUpdateWarnIdById(item.valveId, item.warnId, 0)
+    console.log(item.valveId, item.warnId)
+  } else if (item.warnStatus === 0) {
+    res = await fetchUpdateWarnIdById(item.valveId, item.warnId, 1)
     console.log(item.valveId, item.warnId)
   }
   console.log(res)
