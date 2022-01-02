@@ -16,17 +16,17 @@
           <el-table-column fixed="left" label="ID" prop="id" width="100px"/>
           <el-table-column fixed="left"  label="型号编号" prop="meterNo" width="200px"/>
           <el-table-column fixed="left"  label="类型名称" prop="meterNoName" width="200px"/>
-          <el-table-column fixed="left" label="用途" prop="meterType" width="150px"> 
+          <el-table-column fixed="left" label="用途" prop="meterType" width="150px">
             <template #default="scope">
               {{['流量计','压力计'][scope.row.meterType-1]}}
             </template>
-          </el-table-column> 
+          </el-table-column>
           <el-table-column fixed="left" label="水表口径" prop="meterCaliber" width="150px" />
           <el-table-column fixed="left" label="带阀控" prop="meterVc" width="150px">
             <template #default="scope">
               {{['是','否'][scope.row.meterVc-1]}}
             </template>
-          </el-table-column> 
+          </el-table-column>
           <el-table-column fixed="left" label="创建时间" prop="createTime" width="250px" />
           <el-table-column fixed="right" label="操作" width="400">
             <template #default="scope">
@@ -154,9 +154,9 @@
 <script setup>
 import {defineComponent, onMounted, ref,toRefs,reactive, computed} from 'vue'
 import {useStore} from 'vuex'
-import { getMeterType, addMeterType, 
-editMeterType, deleteMeterType } from "/src/pages/MeterMgmt/MeterTypeMgmt.js"
-import {fetchVpinformation} from "/src/pages/valvePlugInformation/util/vpinformation.js"
+import { getMeterType, addMeterType,
+editMeterType, deleteMeterType } from "./util/MeterTypeMgmt.js"
+import {fetchVpinformation} from "../valveInformation/util/vpinformation.js"
 import {mountedToArrPrototype} from "../../mock"
 import {ElMessage} from 'element-plus'
 
@@ -330,7 +330,7 @@ onMounted(async () => {
   if (res.code === '200') {
     tableData.value = res.data;
   }
-  
+
 })
 
 </script>

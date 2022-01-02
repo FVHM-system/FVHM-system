@@ -296,7 +296,7 @@ function exportCSV() {
       name: 'valveName',
     },
     {
-      label: '所属道路',
+      label: '地址',
       name: 'address',
     },
     {
@@ -308,13 +308,17 @@ function exportCSV() {
       name: 'createTime',
     },
     {
-      label: '计量设备编号',
+      label: '监测编号',
       name: 'meterCode',
     },
     {
       label: '通讯编号',
       name: 'comNumber',
     },
+    {
+      label: '所属单位',
+      name:'applicantName'
+    }
   ]
   excel.body = excelData.value
   excel.fileName = '阀栓信息表'

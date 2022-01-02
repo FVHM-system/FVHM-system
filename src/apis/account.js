@@ -45,7 +45,6 @@ export const editAccountDesc = async ({ id, name, desc, password }) => {
 }
 
 export const editAccountPhone = async ({ id, phone }) => {
-  console.log(phone)
   return await request.Pput('/user/updateuser', {
     data: {
       userId: id,

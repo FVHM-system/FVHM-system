@@ -79,7 +79,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="所属单位" style="margin-left: 50px;">
-        <el-select v-model="formData.applicantName" placeholder="选择所属单位" style="width: 190px">
+        <el-select v-model="formData.applicantId" placeholder="选择所属单位" style="width: 190px">
           <el-option
               v-for="item in applicantList"
               :key="item.value"
@@ -186,12 +186,12 @@ const timeSolve = function (time) {
 }
 const confirm = async function () {
   if (formData.value.comNumber && formData.value.createTime && formData.value.latitude
-      && formData.value.longitude  && formData.value.applicantName
+      && formData.value.longitude  && formData.value.applicantId
       && formData.value.status && formData.value.valveCode && formData.value.valveName
       && formData.value.valveType && place.value.length > 0) {
     valveInfo = {}
     valveInfo.zoneId = place.value[4].zoneId
-    valveInfo.applicantName = stringJudge(formData.value.applicantName)
+    valveInfo.applicantId = formData.value.applicantId
     valveInfo.comNumber = stringJudge(formData.value.comNumber)
     valveInfo.createTime = timeSolve(formData.value.createTime)
     valveInfo.latitude = parseFloat(formData.value.latitude)
@@ -203,20 +203,15 @@ const confirm = async function () {
     valveInfo.zoneType = 2
     valveInfo.valveName = stringJudge(formData.value.valveName)
     valveInfo.valveType = formData.value.valveType
-    console.log(valveInfo)
     valveInfo = JSON.stringify(valveInfo)
-    console.log(timeSolve(formData.value.createTime))
-    console.log(place)
     let res = await fetInsertValveInfo(valveInfo)
-    console.log(res.code)
-    console.log(res)
     if (res.code === '200') {
       ElMessage({
         type: 'success',
         message: '操作成功！',
       })
       dialogVisible.value = false
-      location.reload()
+      // location.reload()
     }
   } else {
     ElMessage({
@@ -236,18 +231,13 @@ function dateTimeTrans(d) {
 }
 async function getApplicantList() {
   let res = await getApplicant()
-  console.log(res.data)
   applicantList.value = res.data.map(item=>{
     return {
       value:item.applicantId,
       label:item.applicantName
     }
   })
-  console.log(applicantList)
 }
-
-
-
 const handleClose = (done) => {
   ElMessageBox.confirm('是否要退出编辑？')
   .then(() => {

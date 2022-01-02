@@ -13,6 +13,7 @@
 
     </div>
         <el-table
+            id="box"
             :data=currentData
             :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
@@ -24,14 +25,14 @@
           <el-table-column fixed="left" label="ID" prop="meterId" width="100px"/>
           <el-table-column fixed="left"  label="设备编号" prop="meterCode" width="200px"/>
           <el-table-column fixed="left"  label="设备名称" prop="meterName" width="200px"/>
-          <el-table-column fixed="left" label="阀栓ID" prop="valveId" width="150px" />
-          <el-table-column fixed="left" label="状态" prop="status" width="150px">
+          <el-table-column fixed="left" label="阀栓ID" prop="valveId" width="100px" />
+          <el-table-column fixed="left" label="状态" prop="status" width="100px">
             <template #default="scope">
               <el-tag :type="statusFormate(scope.row.status)">{{['不正常','正常'][scope.row.status]}}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column fixed="left" label="设备型号" prop="meterNoName" width="200px" />
-          <el-table-column fixed="left" label="安装时间" prop="createTime" width="250px" />
+          <el-table-column fixed="left" label="设备型号" prop="meterNoName" width="180px" />
+          <el-table-column fixed="left" label="安装时间" prop="createTime" width="230px" />
           <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
               <el-button @click="editModal.open(scope.row)">修改</el-button>
@@ -50,6 +51,7 @@
         <div class="pagination-out">
         <div class="pagination-in">
         <el-pagination
+            v-if="showpagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
@@ -190,10 +192,10 @@ import {useStore} from 'vuex'
 import { getMeter, getMeterById, addMeter,
 editMeter, deleteMeter } from "./util/MeterMgmt.js"
 import { getMeterType } from "./util/MeterTypeMgmt.js"
-import {fetchVpinformation} from "../valveInformation/util/vpinformation.js"
+import {fetchVpinformation, fetchHasNoMeterVpinformation} from "../valveInformation/util/vpinformation.js"
 import {mountedToArrPrototype} from "../../mock"
-import {ElMessage} from 'element-plus'
-
+import {ElMessage, ElLoading} from 'element-plus'
+let showpagination = ref(true)
 const store= useStore()
 let date=ref()
 let valvePlugInformation=ref()
@@ -264,15 +266,31 @@ async function submit(){
       })
     }
     else{
+      const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
       let res = await getMeterById(id.value)
       if (res.code === '200' && res.data.length !== 0) {
       currentData.value = [res.data]
       }
+      loadingInstance.close()
     }
 }
 
 async function reset(){
-  location.reload();
+  id.value = null
+  showpagination.value = false
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
+  let res = await getMeter(this.data)
+    if (res.code == '200'){
+      tableData.value = res.data;
+    }
+  currentPage = 1
+  showpagination.value = true
+  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  loadingInstance.close()
+  ElMessage({
+        type: 'success',
+        message : '重置成功'
+      })
 }
 
 const addModal = reactive({
@@ -385,6 +403,7 @@ async function deleteMet(id){
 
 onMounted(async () => {
   mountedToArrPrototype()
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
   let res = await getMeter()
   if (res.code === '200') {
     tableData.value = res.data;
@@ -398,11 +417,12 @@ onMounted(async () => {
   if (res.code === '200') {
     meterType.value = res.data;
   }
-  res = await fetchVpinformation()
+  res = await fetchHasNoMeterVpinformation()
   if (res.code === '200') {
     valvePlug = res.data;
     valvePlugInformation.value = res.data;
   }
+  loadingInstance.close()
 })
 
 </script>
