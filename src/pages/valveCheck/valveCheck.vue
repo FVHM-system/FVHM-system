@@ -239,6 +239,7 @@ let input2 = ref('')
 let value1 = ref('')
 let authority=ref('')
 let tableData = ref([])
+let tempData = ref([])
 let taskData=ref([])
 let options = ref([])
 let place = ref([])
@@ -386,7 +387,7 @@ const valveDetail={
     },
 }
 
-function exportCSV() {
+async function exportCSV() {
     const excel = {}
     excel.props = [
       // {
@@ -404,6 +405,7 @@ function exportCSV() {
       {
         label: '完成状态',
         name: 'complete',
+        default: '0',
       },
       {
         label:'创建时间',
@@ -418,7 +420,11 @@ function exportCSV() {
         name: 'remark',
       },
     ]
-    excel.body = tableData.value
+    let temp=await fetchCheckInfo()
+    temp.data.map(item=>{
+        item.complete=item.complete*100+'%'
+    })
+    excel.body = temp.data
     excel.fileName = '巡视任务表'
     exportExcel(excel)
   }
@@ -454,9 +460,10 @@ async function dataSearch(){
     }
     else {
         ElMessage({
-        type: 'error',
+        type: 'warning',
         message: '数据未找到！',
         })
+        tableData.value=[]
     }
 
 }
