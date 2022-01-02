@@ -16,7 +16,7 @@ export const fetchUpdateData = async ({
   remark,
   meterCode,
   comNumber,
-  applicantName,
+  applicantId,
   zoneType
 }) => {
   return await request.put('/valveinfo/updatevalveinfo', {
@@ -37,7 +37,7 @@ export const fetchUpdateData = async ({
       remark,
       meterCode,
       comNumber,
-      applicantName,
+      applicantId,
     },
   })
 }

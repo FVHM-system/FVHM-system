@@ -192,6 +192,8 @@ const updateInfo = async function () {
   valveInfo.remark = formData.value.remark;
   valveInfo.meterCode = formData.value.meterCode;
   valveInfo.comNumber = formData.value.comNumber;
+  valveInfo.applicantId = formData.value.applicantId
+  console.log('ssdsasad',valveInfo.applicantId)
   const res = await fetchUpdateData(valveInfo)
   console.log(res)
   console.log(valveInfo)
