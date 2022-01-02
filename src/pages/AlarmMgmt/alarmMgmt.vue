@@ -73,7 +73,7 @@
           <div class="button">
             <el-button v-model="search" type="primary" @click="dataRSearch">查询</el-button>
             <el-button type="info" @click="dataRequire">重置</el-button>
-            <el-button type="primary">导出</el-button>
+            <el-button type="primary" @click="exportCSV">导出</el-button>
           </div>
         </el-form-item>
       </el-form>
@@ -139,6 +139,7 @@ import {fetchSuper} from '../../apis/2.0/addr'
 import {types} from '../../utils/transform.js'
 import {ElLoading, ElMessage} from 'element-plus'
 import {fetchVpinformation} from "../valveInformation/util/vpinformation";
+import {exportExcel} from '../../utils/exportExcel'
 
 /* 初始化输入变量 */
 const {proxy} = getCurrentInstance()
@@ -219,7 +220,68 @@ const timeSolve = function (time) {
   timeString.value = timeString.value + time.toString().split(' ')[4]
   return timeString.value
 }
+async function exportCSV() {
+  const excel = {}
+  excel.props = [
+    {
+      label: '阀栓编号',
+      name: 'valveCode',
+    },
+    {
+      label: '阀栓名称',
+      name: 'valveName',
+    },
+    {
+      label: '阀栓类型',
+      name: 'valveType',
+    },
+    {
+      label: '地址',
+      name: 'address',
+    },
+    {
+      label: '报警类型',
+      name: 'warnType',
+    },
+    {
+      label: '状态',
+      name: 'warnStatus',
+      default: '0',
+    },
+    {
+      label: '报警时间',
+      name: 'warnTime',
+    },
+  ]
 
+  let temp = await fetchAlarmManage()
+  
+  temp.data.map(item=>{
+    if(item.warnType===1){
+      item.warnType="水量超额"
+    }else if(item.warnType===2){
+      item.warnType="阀栓故障"
+    }else if(item.warnType===3){
+      item.warnType="流量异常"
+    }else if(item.warnType===4){
+      item.warnType="电量不足"
+    }
+    if(item.warnStatus===1){
+      item.warnStatus="已处理"
+    }else if(item.warnStatus===0){
+      item.warnStatus="未处理"
+    }
+    if(item.valveType===1){
+      item.valveType="阀门"
+    }else if(item.valveType===2){
+      item.valveType="消防栓"
+    }
+  })
+ 
+  excel.body = temp.data
+  excel.fileName = '报警管理表'
+  exportExcel(excel)
+}
 /* 处理按钮名称点击事件 */
 const handleStatus = async item => {
   console.log(item)

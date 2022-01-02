@@ -26,6 +26,7 @@ import PostMgmt from './pages/systemMgmt/postMgmt.vue'
 import LicenseMgmt from './pages/licenseMgmt/licenseMgmt.vue'
 import ApplicantMgmt from './pages/applicantMgmt/ApplicantMgmt.vue'
 import MeterMgmt from './pages/meterMgmt/MeterMgmt.vue'
+import MeterTypeMgmt from './pages/meterMgmt/MeterTypeMgmt.vue'
 import { genType, mergeListConfigs, mergeMapConfigs } from './authority'
 import { cloneDeep } from 'lodash-es'
 
@@ -98,13 +99,13 @@ const configs = [
     icon: 'el-icon-s-help',
     component: MeterMgmt
   },
-  // {
-  //   path: '/test',
-  //   label: 'TEST',
-  //   name: 'test',
-  //   icon: 'el-icon-s-claim',
-  //   component: TESTPAGE
-  // },
+  {
+    path: '/meterTypeMgmt',
+    label: '设备型号管理',
+    name: 'MeterTypeMgmt',
+    icon: 'el-icon-s-ticket',
+    component: MeterTypeMgmt
+  },
   {
     path: '/comprehensive_statistics',
     label: '综合统计',
