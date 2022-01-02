@@ -58,9 +58,11 @@
         },
       ],
       grid: {
-        top: 70,
+        top: 40,
         left: '3%',
         right: '10%',
+        height:180,
+        width:720,
         bottom: 80,
         containLabel: true,
       },

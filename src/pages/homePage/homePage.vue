@@ -1,51 +1,33 @@
 <template>
   <div class="water">
-    <el-row :gutter="100" style="margin-top: -25px">
-      <el-col :span="4" 
-      >
-        <white-block style="width:200px;height:310px;">
+    <div style="display: flex;flex-direction: row;align-items: center">
+        <white-block style="width:305px;height:280px;">
           <wells-count></wells-count>
         </white-block
         >
-      </el-col>
-      <el-col :span="4" 
-      >
-        <white-block style="width:200px;height:310px;">
+        <white-block style="margin-left:10px;width:306px;height:280px;">
           <hydrant-count></hydrant-count>
         </white-block
         >
-      </el-col>
-      <el-col :span="14" style=" height:310px;"
-      >
-        <white-block>
+        <white-block style="margin-left:10px;height:280px;">
           <water-consume></water-consume>
         </white-block
         >
-      </el-col>
-    </el-row>
-    <el-row :gutter="20" style="margin-top: 10px">
-      <el-col :span="8" style=" height: 385px;"
-      >
-        <white-block style="width:430px;">
+    </div>
+    <div style="display: flex;flex-direction: row;align-items: center">
+        <white-block style="width:740px;height: 370px">
           <use-rank></use-rank>
         </white-block
         >
-      </el-col>
-      <el-col :span="8" style=" height:385px;"
-      >
-        <white-block>
+        <white-block style="margin-left:10px;width:700px;height: 370px">
           <valve-distribution></valve-distribution>
         </white-block
         >
-      </el-col>
-      <el-col :span="8" style=" height:385px"
-      >
-        <white-block>
+        <white-block style="margin-left:10px;width:700px;height: 370px">
           <hydrant-distribution></hydrant-distribution>
         </white-block
         >
-      </el-col>
-    </el-row>
+      </div>
   </div>
 </template>
 
@@ -69,11 +51,9 @@ onMounted(async () =>{
 })
 </script>
 
-<style lang="scss" scoped>
+<style>
 .water {
-  height: calc(100vh - 130px);
-  width: 100%;
-  padding-top: 10px;
+  width: 97%;
+  overflow-y: hidden;
 }
 </style>
-//ces1

@@ -49,6 +49,7 @@
         left: '3%',
         right: '11%',
         bottom: '10%',
+        width:340,
         containLabel: true,
       },
       xAxis: [

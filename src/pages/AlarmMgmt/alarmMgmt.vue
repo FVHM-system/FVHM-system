@@ -251,7 +251,8 @@ const typeFormate = function (row) {
 /* 重置按钮点击事件 */
 const dataRequire = async function () {
   proxy.$refs.ruleFormRef.resetFields()
-  let res = await fetchVpinformation()
+  pageshow.value = false
+  let res = await fetchAlarmManage()
   if (res.code === '200') {
     tableData.value = res.data;
   }
@@ -260,21 +261,29 @@ const dataRequire = async function () {
   } else {
     currentData.value = tableData.value.slice(0, pageSize)
   }
+  currentPage = 1
+  pageshow.value = true
 }
 /* 查询按钮点击事件 */
 const dataRSearch = async function () {
-  let roadValue = ''
   let startTime = ''
   let endTime = ''
-  if (place.value.length !== 0) {
-    roadValue = place.value[4].name
+  let address = ref('')
+  console.log(searchForm.place)
+  if (searchForm.place) {
+    if(searchForm.place.length>1){
+      for (let i = searchForm.place.length - 1; i >= 0; i--) {
+        address.value = searchForm.place[i].name + address.value
+      }
+    }
   }
-  console.log(value1.value.length)
-  if(value1.value.length!==0){
-    startTime = timeSolve(value1.value[0])
-    endTime = timeSolve(value1.value[1])
+  console.log(searchForm.time)
+  if(searchForm.time){
+    startTime = timeSolve(searchForm.time[0])
+    endTime = timeSolve(searchForm.time[1])
   }
-  let res = await fetchFindWarnInfo(roadValue, input1.value, input2.value,startTime,endTime)
+  console.log(address.value, searchForm.type, searchForm.typeWarn,searchForm.status,startTime,endTime)
+  let res = await fetchFindWarnInfo(address.value, searchForm.type, searchForm.typeWarn,searchForm.status,startTime,endTime)
   if (res.code === '200' && res.data.length !== 0) {
     ElMessage({
       type: 'success',

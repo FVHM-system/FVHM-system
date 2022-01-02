@@ -216,7 +216,7 @@ const dataFind = async function () {
     }
     }
   }
-
+  console.log(searchForm.type, searchForm.status, address.value)
   let res = await fetchFindData(searchForm.type, searchForm.status, address.value)
   if (res.code === '200') {
     if(res.data.length>0){
