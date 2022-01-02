@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from 'vue-router';
+import {createRouter, createWebHashHistory} from 'vue-router';
 import homepage from './pages/homePage/homePage.vue';
 import comprehensiveStatistics
   from './pages/comprehensiveStatistics/comprehensiveStatistics.vue'
@@ -24,6 +24,8 @@ import MenuMgmt from './pages/systemMgmt/menuMgmt.vue'
 import PermissionManage from './pages/systemMgmt/permissionManage.vue'
 import PostMgmt from './pages/systemMgmt/postMgmt.vue'
 import LicenseMgmt from './pages/licenseMgmt/licenseMgmt.vue'
+import ApplicantMgmt from './pages/applicantMgmt/ApplicantMgmt.vue'
+import MeterMgmt from './pages/meterMgmt/MeterMgmt.vue'
 import { genType, mergeListConfigs, mergeMapConfigs } from './authority'
 import { cloneDeep } from 'lodash-es'
 
@@ -81,6 +83,20 @@ const configs = [
     name: 'LicenseMgmt',
     icon: 'el-icon-s-claim',
     component: LicenseMgmt
+  },
+  {
+    path: '/applicantMgmt',
+    label: '用水户管理',
+    name: 'ApplicantMgmt',
+    icon: 'el-icon-s-custom',
+    component: ApplicantMgmt
+  },
+  {
+    path: '/meterMgmt',
+    label: '监测设备管理',
+    name: 'MeterMgmt',
+    icon: 'el-icon-s-help',
+    component: MeterMgmt
   },
   // {
   //   path: '/test',
@@ -336,7 +352,7 @@ export const funcMap = mergeMapConfigs(genType('page', cloneDeep(funcListConfigs
 
 console.log(routerConfigs)
 export const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: routerConfigs,
   linkActiveClass: 'active',
 })

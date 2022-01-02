@@ -1,46 +1,85 @@
 <template>
-  <div class="p-page">
-    <div class="p-header">
-      <p class="page-name">报警管理</p>
-      <el-col :span="8">
-        <el-cascader
-            v-model="place"
-            :options="options"
-            :props="CarProps"
-            ref="require"
-            placeholder="选择道路"
-            :show-all-levels="false"
-            style="margin-left: 170px;top:3px;width: 150px"
-            clearable></el-cascader>
-      </el-col>
-      <el-col :span="8">
-        <el-input v-model="input1" placeholder="请输入阀栓名称"
-                  style="margin-top: 3px;margin-left: 10px;width: 150px"/>
-      </el-col>
-      <el-select v-model="input2" placeholder="选择状态"
-                 style="margin-left:10px;width: 120px;margin-top: 3px">
-        <el-option
-            v-for="item in statuss"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-        >
-        </el-option>
-      </el-select>
-      <el-date-picker
-          v-model="value1"
-          type="datetimerange"
-          range-separator="至"
-          start-placeholder="Start date"
-          end-placeholder="End date"
-          style="margin-top: 3px;margin-left: 10px"
+  <div class="p-page2">
+    <div class="p2-header">
+      <p class="page2-name">报警管理</p>
+      <el-form
+          ref="ruleFormRef"
+          :model="searchForm"
+          status-icon
+          :rules="rules"
+          label-width="120px"
+          class="searchForm"
+          style="top:3px"
       >
-      </el-date-picker>
-      <div class="button2">
-        <el-button v-model="search" type="primary" @click="dataRSearch">查询</el-button>
-        <el-button type="info" @click="dataRequire">重置</el-button>
-        <el-button type="primary">导出</el-button>
-      </div>
+        <el-form-item prop="place">
+          <el-cascader
+              v-model="searchForm.place"
+              :options="options"
+              :props="CarProps"
+              ref="require"
+              placeholder="选择地址"
+              :show-all-levels="false"
+              style="width: 110px;"
+              size="small"
+              clearable></el-cascader>
+        </el-form-item>
+        <el-form-item prop="type">
+          <el-select v-model="searchForm.type" placeholder="选择阀栓类型"  size="small"
+                     style="margin-left:-110px;width: 130px;">
+            <el-option
+                v-for="item in types"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="typeWarn">
+          <el-select v-model="searchForm.typeWarn" placeholder="选择报警类型"
+                     size="small" style="margin-left:-110px;width: 140px;">
+            <el-option
+                v-for="item in alarmType"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="status">
+          <el-select v-model="searchForm.status" placeholder="选择处理状态"
+                     size="small" style="margin-left:-110px;width: 140px;">
+            <el-option
+                v-for="item in statuss"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-date-picker
+            v-model="searchForm.time"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="Start date"
+            end-placeholder="End date"
+            style="margin-left:-110px;"
+            size="small"
+            >
+            </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <div class="button">
+            <el-button size="small" v-model="search" type="primary" @click="dataRSearch">查询</el-button>
+            <el-button size="small" type="info" @click="dataRequire">重置</el-button>
+            <el-button size="small" type="primary">导出</el-button>
+          </div>
+        </el-form-item>
+      </el-form>
+
     </div>
     <div class="data-chart">
       <el-table
@@ -50,12 +89,12 @@
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
           style="width: 100%"
-          height="450"
+          :height="tableHeight"
       >
-        <el-table-column fixed="left" label="报警编号" prop="warnId" width="120px"/>
-        <el-table-column fixed="left" label="设备编号" prop="valveId" width="120px"/>
+        <el-table-column fixed="left" label="阀栓编号" prop="valveCode" width="120px"/>
+        <el-table-column label="阀栓类型" prop="valveType" :formatter="typeFormate2" width="120px"/>
         <el-table-column fixed="left" label="阀栓名称" prop="valveName" width="120px"/>
-        <el-table-column label="所属道路" prop="roadName" width="200px"/>
+        <el-table-column label="地址" prop="address" width="200px"/>
         <el-table-column label="报警类型" prop="warnType" :formatter="typeFormate" width="200px"/>
         <el-table-column label="状态" prop="warnStatus" :formatter="statusFormate" width="200px"/>
         <el-table-column label="报警时间" prop="warnTime" width="200px"/>
@@ -74,40 +113,49 @@
           </template>
         </el-table-column>
       </el-table>
-    </div>
-    <div class="pagination-out">
-      <div class="pagination-in">
-        <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[10, 20, 30, 50, 100]"
-            :page-size="pageSize"
-            style="margin-top: 10px;"
-            :total="tableData.length">
-        </el-pagination>
+      <div class="pagination-out">
+        <div class="pagination-in">
+          <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[10, 20, 30, 50, 100]"
+              :page-size="pageSize"
+              style="margin-top: 10px;"
+              hide-on-single-page
+              v-if="pageshow"
+              :total="tableData.length">
+          </el-pagination>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import {onMounted, ref,} from 'vue'
+import {getCurrentInstance, onMounted, reactive, ref,} from 'vue'
 import {fetchAlarmManage, fetchFindWarnInfo, fetchUpdateWarnIdById} from "./util/alarmManage.js";
 import {mountedToArrPrototype} from "../../mock";
 import {fetchSuper} from '../../apis/2.0/addr'
+import {types} from '../../utils/transform.js'
 import {ElMessage} from 'element-plus'
+import {fetchVpinformation} from "../valveInformation/util/vpinformation";
 
 /* 初始化输入变量 */
+const {proxy} = getCurrentInstance()
+let searchForm = reactive({
+  place:''
+})
+let tableHeight = window.innerHeight - 310
 let input1 = ref('') //查询阀栓名称变量初始化
-let currentData = ref([])
 let input2 = ref('') //查询阀栓状态变量初始化
 let value1 = ref('') //查询创建时间初始化
 let options = ref([]) //道路选择项初始化
 let tableData = ref([]) //表单数据初始化
 let place = ref('') //道路选择变量初始化
+let currentData = ref([])
 let currentPage = 1
-// 每页多少条
-let pageSize = 10
+let pageshow = ref(true)
+let pageSize = 10// 每页多少条
 let CarProps
 /* 初始化级联菜单选项 */
 CarProps = {
@@ -124,6 +172,10 @@ const statuss = [
   {
     value: 1,
     label: '未处理',
+  },
+  {
+    value: null,
+    label: '全部状态',
   },
 ]
 /* 初始化报警类型 */
@@ -156,15 +208,6 @@ const alarmStatus = [
     label: '确认已处理',
   }
 ]
-function handleSizeChange(val) {
-  pageSize = val;
-}
-// 当前页
-function handleCurrentChange(val) {
-  currentPage = val;
-  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-  console.log(currentPage.value)
-}
 const genTwoLengthNumberString = n => (n >= 10 ? n : '0' + n)
 const timeSolve = function (time) {
   let timeString = ref('')
@@ -195,6 +238,11 @@ const handleStatus = async item => {
     location.reload()
   }
 }
+/* 阀栓代码与文本转换 */
+const typeFormate2 = function (row) {
+  const target = types.find(i => i.value === row.valveType)
+  return target.label;
+}
 /* 阀栓类型码转文本 */
 const typeFormate = function (row) {
   const targetType = alarmType.find(i => i.value === row.warnType)
@@ -202,9 +250,15 @@ const typeFormate = function (row) {
 }
 /* 重置按钮点击事件 */
 const dataRequire = async function () {
-  if (value1.value !== '' || input1.value !== '' || input2.value !== '' || place.value.length
-      !== 0) {
-    location.reload()
+  proxy.$refs.ruleFormRef.resetFields()
+  let res = await fetchVpinformation()
+  if (res.code === '200') {
+    tableData.value = res.data;
+  }
+  if (tableData.value.length < pageSize) {
+    currentData.value = tableData.value
+  } else {
+    currentData.value = tableData.value.slice(0, pageSize)
   }
 }
 /* 查询按钮点击事件 */
@@ -227,6 +281,11 @@ const dataRSearch = async function () {
       message: '查询成功！',
     })
     tableData.value = res.data;
+    if (tableData.value.length < pageSize) {
+      currentData.value = tableData.value
+    } else {
+      currentData.value = tableData.value.slice(0, pageSize)
+    }
     console.log(res.data)
   } else {
     ElMessage({
@@ -234,6 +293,14 @@ const dataRSearch = async function () {
       message: '数据未找到！',
     })
   }
+}
+function handleSizeChange(val) {
+  pageSize = val;
+}
+// 当前页
+function handleCurrentChange(val) {
+  currentPage = val;
+  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
 }
 /* 阀栓状态码转文本 */
 const statusFormate = function (row) {
@@ -254,11 +321,12 @@ onMounted(async () => {
   }
   console.log(res.data)
   options.value = await fetchSuper()
+  console.log('sssss',options.value[0].child)
 })
 
 </script>
 <style>
-.p-page {
+.p-page2 {
   width: 100%;
   height: calc(100vh - 120px);
   overflow-y: scroll;
@@ -266,31 +334,51 @@ onMounted(async () => {
   margin: 0;
 }
 
-.p-header {
+.p2-header {
   background-color: #219ded0d;
   width: 100%;
   height: 100px;
   border: 1px solid #219ded0f;
 }
 
-.page-name {
+.page2-name {
   font-size: 20px;
   font-weight: 700;
   top: 35px;
   left: 20px;
   position: relative;
 }
-
-.button2 {
-  position: relative;
-  margin-top: -40px;
-  margin-left: 1035px;
-  width: 260px;
-}
-
 .data-chart {
   position: relative;
   top: 10px;
   overflow-y: hidden;
 }
+.button {
+  position: relative;
+  margin-left:-110px
+}
+.pagination-out{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 70px;
+}
+.searchForm{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.pagination-in{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+  background-color: white;
+  height: 50px;
+  width: 600px;
+  border-radius: 30px;
+  box-shadow: -2px 2px 2px #888888;
+}
+
 </style>

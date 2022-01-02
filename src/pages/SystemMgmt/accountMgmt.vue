@@ -7,7 +7,7 @@
     </div>
     <el-scrollbar class="data-chart">
       <el-table
-          :data="accountList"
+          :data="currentData"
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
           :cell-style="{'text-align':'center'}"
@@ -42,6 +42,21 @@
           </template>
         </el-table-column>
       </el-table>
+
+      <div class="pagination-out">
+      <div class="pagination-in">
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 50, 100]"
+            :page-size="pageSize"
+            style="margin-top: 10px;"
+            :total="tableData.length">
+        </el-pagination>
+      </div>
+    </div>
+    
     </el-scrollbar>
 
     <el-dialog v-model="modalState.add" title="新增用户" style="font-weight: 500">
@@ -101,10 +116,23 @@ import {
 } from '/src/apis/account.js'
 
 const tableData = ref([])
+let currentPage = 1
+let pageSize = 10
 const currentUser = ref({})
-const accountList = computed(() => {
-  return (tableData.value || [])
+const currentData = computed(() => {
+  return tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
 })
+
+function handleSizeChange(val) {
+  pageSize = val;
+}
+// 当前页
+function handleCurrentChange(val) {
+  currentPage = val;
+  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  console.log(currentPage)
+}
+
 const changeCurrentUser = user => {
   currentUser.value = user
   console.log('change', user)

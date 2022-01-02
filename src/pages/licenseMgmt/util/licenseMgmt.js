@@ -1,19 +1,29 @@
-import request from "../../../apis/2.0/request";
+import request from "../../../apis/3.0/request";
 
 export const fetchLicense = async () => {
   return await request.get('/license/getlicenseinfo', {
   })
 }
 
+export const searchLicense = async (addData) => {
+  console.log(addData)
+  return await request.get('/license/getlicenseinfo', {
+    params:{
+      ...addData
+      },
+  })
+}
+
 export const fetchDepartments = async () => {
-  return await request.get('/department/getdepartmentinfo', {
+  return await request.get('/department/getdepartment', {
   })
 }
 
 export const addLicense = async (addData) => {
+  console.log(addData)
   let res = await request.post('/license/insertlicenseinfo', {
     data:{
-      ...addData
+    ...addData
     },
   })
   console.log(res)
@@ -24,7 +34,7 @@ export const editLicense = async(addData) => {
   console.log(addData)
   let res = await request.put('/license/updatelicenseinfo', {
     data:{
-      ...addData
+    ...addData
     },
   })
   console.log(res)

@@ -15,6 +15,10 @@ export const statuss = [
     value: 4444,
     label: '正在报警',
   },
+  {
+    value: null,
+    label: '全部状态',
+  },
 ]
 export const alarmType = [
   {
@@ -52,6 +56,10 @@ export const types = [
   {
     value: 2,
     label: '消防栓',
+  },
+  {
+    value: null,
+    label: '全部状态',
   },
 ]
 

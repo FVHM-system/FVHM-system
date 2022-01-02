@@ -19,7 +19,7 @@
             <h1 style="position:relative;margin-top:50px;font-size: 20px;color: #409eff">
               <el-tag>{{ new Date(value1[0]).toLocaleString() }}</el-tag>
               至
-              <el-tag>{{ value1[1].toLocaleString() }}</el-tag>
+              <el-tag>{{ value1[1] }}</el-tag>
             </h1>
             <h1 style="position:relative;margin-top:20px;font-size: 20px;color: #409eff">阀栓用水量</h1>
             <h1 style="position:relative;margin-top:60px;font-size: 100px;color: #409eff">
@@ -83,17 +83,22 @@
             <div class="waterTrend">
               <div class="waterTrend-top">
                 <h1 style="position:relative;top:0px;font-size: 25px;color: #409eff">阀栓近三年用水趋势</h1>
-                <el-date-picker
-                    v-model="value3" type="year"
-                    placeholder="Pick a year"
-                    style="top: -10px;left:-30px"
-                    @change="waterTrandGet"
-                    :disabled-date="disableDate">
-                </el-date-picker>
               </div>
-              <div class="waterTrend-body" id="water-line"></div>
+              <div style="margin-top: 20px" class="waterTrend-body" :id="newID"></div>
             </div>
           </div>
+          <el-drawer size="50%" :after-close="handleClose" v-model="drawer" :with-header="false">
+            <div class="drawerDetail">
+              <el-tabs class="alarm2Detail" type="border-card">
+                <el-tab-pane label="基本信息">
+                  <basic-information :valve_id_end="valve_id"></basic-information>
+                </el-tab-pane>
+                <el-tab-pane label="实况数据">
+                  <live-data :valve_id_end="valve_id" :valve_createTime_end="valve_createTime"></live-data>
+                </el-tab-pane>
+              </el-tabs>
+            </div>
+          </el-drawer>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -108,7 +113,7 @@ import {
   fetFindvolumebyday,
   fetFindmonthvolumebyyear
 } from "./util/vpinformation";
-import {onMounted, onUnmounted, ref, defineProps} from "vue";
+import {onMounted, onUnmounted, ref, defineProps, markRaw} from "vue";
 import {dateTimeTrans} from "../../utils/mrWang";
 
 const timeTypes = [
@@ -130,15 +135,20 @@ let searchTime = ref(new Date())
 let timeActive = ref('日')
 let typeSelect = ref("")
 let value = ref("")
-let value1 = ref([new Date(), new Date()])
+let value1 = ref([0, new Date().toLocaleString()])
 let waterData = ref(0)
 let waterDataYear = ref(0)
 let waterDataTotal = ref(0)
-let value3 = ref(new Date())
-let waterYearData = ref([])
-let myChart
-let BarPic = function (test) {
-  let chartDom = document.getElementById('water-line')
+let myChart = null
+let newID = new Date().getTime()
+let year1 = (new Date().getFullYear()-2).toString()
+let year2 = (new Date().getFullYear()-1).toString()
+let year3 = new Date().getFullYear().toString()
+let year1Data = []
+let year2Data = []
+let year3Data = []
+let BarPic = function () {
+  let chartDom = markRaw(document.getElementById(newID))
   myChart = echarts.init(chartDom)
   let option = {
     tooltip: {
@@ -149,31 +159,47 @@ let BarPic = function (test) {
       },
     },
     grid: {
-      top: '10%',
+      top: 50,
       left: '3%',
-      right: '11%',
-      bottom: '10%',
+      right: '10%',
+      bottom: 60,
       containLabel: true,
     },
     xAxis: {
+      name: "月份",
       type: 'category',
       data: ['1月', '2月', '3月', '4月', '6月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
     },
     yAxis: {
+      name:'用水量(m³)',
       type: 'value'
+    },
+    legend: {
+      //data: [yValues[0].name, yValues[1].name, yValues[2].name],
+      data: [year1,year2,year3],
     },
     series: [
       {
-        data: test,
-        type: 'line'
+        name: year1,
+        data: year1Data,
+        type: 'line',
+        color: 'blue'
+      },
+      {
+        name: year2,
+        data: year2Data,
+        type: 'line',
+        color: '#55e3a5'
+      },
+      {
+        name: year3,
+        data: year3Data,
+        type: 'line',
+        color: 'yellow'
       }
     ]
   };
   myChart.setOption(option)
-}
-const disableDate = d => {
-  return d.getFullYear() < new Date().getFullYear() - 2 || d.getFullYear()
-      > new Date().getFullYear()
 }
 const getTimeWaterData = async function () {
   let res = await fetFindVolumebyTime(props.valve_id_end,
@@ -220,18 +246,19 @@ const getWaterTotal = async function () {
   console.log(res.data)
 }
 const waterTrandGet = async function () {
-  let time = new Date(value3.value).getFullYear()
-  let res = await fetFindmonthvolumebyyear(props.valve_id_end, time)
-  if (res.code === '200') {
-    waterYearData = res.data.map(item => item.volume)
+  let res1 = await fetFindmonthvolumebyyear(props.valve_id_end, '2019')
+  if (res1.code === '200') {
+    year1Data = res1.data.map(item => item.volume)
   }
-  BarPic(waterYearData)
-  console.log(props.valve_id_end)
-  console.log(waterYearData)
-  console.log(props.valve_id_end)
-  console.log(time)
-  BarPic(waterYearData)
-
+  let res2 = await fetFindmonthvolumebyyear(props.valve_id_end, '2020')
+  if (res2.code === '200') {
+    year2Data = res2.data.map(item => item.volume)
+  }
+  let res3 = await fetFindmonthvolumebyyear(props.valve_id_end, '2021')
+  if (res3.code === '200') {
+    year3Data = res3.data.map(item => item.volume)
+  }
+  BarPic()
 }
 onMounted(async () => {
   await getTimeWaterDataYear()
@@ -239,12 +266,8 @@ onMounted(async () => {
 })
 onUnmounted(() => {
   if (myChart) {
-    myChart.dispose()
-  }
-})
-onUnmounted(() => {
-  if (myChart) {
-    myChart.dispose()
+    myChart = null
+    console.log(myChart)
   }
 })
 </script>

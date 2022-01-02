@@ -58,7 +58,7 @@
         },
       ],
       grid: {
-        top: 50,
+        top: 70,
         left: '3%',
         right: '10%',
         bottom: 80,
@@ -74,11 +74,11 @@
 
   const search = async () => {
     const current = currentYear.value.getFullYear()
-    const res1 = await totalconsumedofyear({ 
+    const res1 = await totalconsumedofyear({
       year: current ,
       valveType: 1,
     })
-    const res2 = await totalconsumedofyear({ 
+    const res2 = await totalconsumedofyear({
       year: current ,
       valveType: 2,
     })

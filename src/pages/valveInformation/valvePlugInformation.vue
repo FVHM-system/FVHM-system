@@ -2,28 +2,58 @@
   <div class="p-page">
     <div class="p-header">
       <p class="page-name">阀栓信息</p>
-      <el-cascader
-          v-model="place"
-          :options="options"
-          :props="myprops"
-          ref="require"
-          placeholder="选择道路"
-          :show-all-levels="false"
-          style="margin-left: -145px;top:3px"
-          clearable></el-cascader>
-      <el-col :span="8">
-        <el-input class="device-id" v-model="input1" placeholder="请输入阀栓编号"/>
-      </el-col>
-      <el-col :span="8">
-        <el-input class="device-name" v-model="input2" placeholder="请输入阀栓名称"/>
-      </el-col>
-      <div class="button">
-        <el-button v-model="search" type="primary" @click="dataFind">查询</el-button>
-        <el-button type="info" @click="dataRequire">重置</el-button>
-        <add-valve-plug></add-valve-plug>
-        <el-button type="primary" @click="exportCSV">导出</el-button>
-      </div>
-
+      <el-form
+          ref="ruleFormRef"
+          :model="searchForm"
+          status-icon
+          :rules="rules"
+          label-width="120px"
+          class="searchForm"
+          style="margin-left: 145px;top:3px"
+      >
+        <el-form-item prop="place">
+          <el-cascader
+              v-model="searchForm.place"
+              :options="options"
+              :props="myprops"
+              ref="require"
+              placeholder="选择地址"
+              :show-all-levels="false"
+              clearable></el-cascader>
+        </el-form-item>
+        <el-form-item prop="type">
+          <el-select v-model="searchForm.type" placeholder="选择类型"
+                     style="margin-left:-100px;width: 140px;">
+            <el-option
+                v-for="item in types"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="status">
+          <el-select v-model="searchForm.status" placeholder="选择状态"
+                     style="margin-left:-100px;width: 140px;">
+            <el-option
+                v-for="item in statuss"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+              <div class="button">
+                <el-button v-model="search" type="primary" @click="dataFind">查询</el-button>
+                <el-button type="info" @click="dataRequire">重置</el-button>
+                <add-valve-plug></add-valve-plug>
+                <el-button type="primary" @click="exportCSV">导出</el-button>
+              </div>
+        </el-form-item>
+      </el-form>
     </div>
     <div class="data-chart">
       <el-table
@@ -33,7 +63,7 @@
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
           style="width: 100%"
-          height="450"
+          :height="tableHeight"
           @row-click="getValveId"
       >
         <el-table-column fixed="left" label="阀栓编号" prop="valveCode" width="120px"/>
@@ -79,6 +109,7 @@
               :current-page="currentPage"
               :page-sizes="[10, 20, 30, 50, 100]"
               :page-size="pageSize"
+              v-if="pageshow"
               style="margin-top: 10px;"
               hide-on-single-page
               :total="tableData.length">
@@ -88,7 +119,7 @@
   </div>
 </template>
 <script setup>
-import {onMounted, ref, getCurrentInstance} from 'vue'
+import {onMounted, ref, getCurrentInstance, reactive} from 'vue'
 import {fetchVpinformation, fetDeleteValveInfo, fetUpdateStatus} from "./util/vpinformation";
 import {fetchFindData} from "./util/dataSearch";
 import {types, statuss} from '../../utils/transform.js'
@@ -102,6 +133,8 @@ import {
   fetchUsername
 } from '../../utils/mrWang'
 
+const {proxy} = getCurrentInstance()
+let tableHeight = window.innerHeight - 310
 let authority=ref('')
 let buttonState=ref(false)//禁用按钮
 let input1 = ref('')
@@ -109,13 +142,13 @@ let input2 = ref('')
 let options = ref([])
 let tableData = ref([])
 let currentData = ref([])
+let currentPage = ref(1)
+let pageSize = 10// 每页多少条
 let excelData = ref([])
 let testnum = ref('')
 let require = ref(null)
 let myprops = ref()
-let currentPage = 1
-// 每页多少条
-let pageSize = 10
+let pageshow = ref(true)
 let dialogVisible = ref(false)
 myprops = {
   label: 'name',
@@ -123,10 +156,13 @@ myprops = {
   children: 'child',
   checkStrictly: true
 }
-let place = ref()
 const getValveId = function (row) {
   testnum = row.valveId
 }
+
+let searchForm = reactive({
+  place:''
+})
 
 function handleSizeChange(val) {
   pageSize = val;
@@ -172,26 +208,54 @@ const valveStatusChange = async function (row) {
 /* 查询 */
 const dataFind = async function () {
   let address = ref('')
-  if (place.value) {
-    for (let i = place.value.length - 1; i >= 0; i--) {
-      address.value = place.value[i].name + address.value
+  console.log(searchForm.place)
+  if (searchForm.place) {
+    if(searchForm.place.length>1){
+    for (let i = searchForm.place.length - 1; i >= 0; i--) {
+      address.value = searchForm.place[i].name + address.value
+    }
     }
   }
-  console.log(input2.value)
-  let res = await fetchFindData(input1.value, input2.value, address.value)
+
+  let res = await fetchFindData(searchForm.type, searchForm.status, address.value)
   if (res.code === '200') {
+    if(res.data.length>0){
     ElMessage({
       type: 'success',
       message: '查询成功！',
     })
     tableData.value = res.data;
+    if (tableData.value.length < pageSize) {
+      currentData.value = tableData.value
+    } else {
+      currentData.value = tableData.value.slice(0, pageSize)
+    }
+  }
+    else {
+      ElMessage({
+        type: 'warning',
+        message: '尚无数据！',
+      })
+    }
   }
   console.log(tableData.value)
   console.log(address.value)
 }
-/* 获取阀栓信息 */
+
 const dataRequire = async function () {
-  location.reload()
+  proxy.$refs.ruleFormRef.resetFields()
+  pageshow.value = false
+  let res = await fetchVpinformation()
+  if (res.code === '200') {
+    tableData.value = res.data;
+  }
+  if (tableData.value.length < pageSize) {
+    currentData.value = tableData.value
+  } else {
+    currentData.value = tableData.value.slice(0, pageSize)
+  }
+  pageshow.value = true
+  currentPage = 1
 }
 const deleteValve = async function (row) {
   let res = await fetDeleteValveInfo({valveId: row.valveId})
@@ -273,6 +337,7 @@ onMounted(async () => {
     currentData.value = tableData.value.slice(0, pageSize)
   }
   options.value = await fetchSuper()
+  console.log(proxy)
 })
 
 </script>
@@ -313,8 +378,6 @@ onMounted(async () => {
 
 .button {
   position: relative;
-  top: -37px;
-  left: 950px;
 }
 
 .data-chart {
@@ -345,6 +408,11 @@ onMounted(async () => {
   width: 600px;
   border-radius: 30px;
   box-shadow: -2px 2px 2px #888888;
+}
+.searchForm{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 ::-webkit-scrollbar-thumb {
   background-color: darkgray;
