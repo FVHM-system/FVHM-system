@@ -31,7 +31,7 @@
           style="width: 100%"
           :height="tableHeight"
         >
-          <el-table-column label="任务编号" prop="taskId" width="120px"/>
+          <!-- <el-table-column label="任务编号" prop="taskId" width="120px"/> -->
           <el-table-column label="巡视人" prop="people" width="120px"/>
           <el-table-column label="电话号码" prop="phone" width="200px"/>
           <!-- <el-table-column label="完成状态" prop="complete"  width="200px">
@@ -94,7 +94,12 @@
       <el-table-column label="阀栓编号" prop="valveId" width="60px" />
       <el-table-column label="阀栓名" prop="valveName" width="150px"/>
       <el-table-column label="地址" prop="address" width="180px"/>
-      <el-table-column label="完成状态" prop="complete" width="60px"/>
+      <el-table-column label="完成状态" prop="complete" width="60px">
+         <template #default="scope">
+              <el-progress type="circle" width="50" v-if="scope.row.complete*100===100" :percentage="scope.row.complete*100" status="success"/>
+              <el-progress type="circle" width="50" v-if="scope.row.complete*100===0" :percentage="scope.row.complete*100+100" status="exception"/>
+         </template>
+      </el-table-column>>
       <el-table-column label="完成时间" prop="completeTime" width="160px"/>
       <el-table-column label="备注" prop="remark" width="120px"/>
       <el-table-column  label="操作" width="180px">
@@ -326,7 +331,7 @@ const valveDetail={
       console.log("完成状态",detailForm.complete)
       console.log("完成时间",dayjs(detailForm.completeTime).format('YYYY-MM-DD HH:mm:ss'))
       console.log("备注",detailForm.remark)
-      if (!detailForm.id||!detailForm.complete||!detailForm.completeTime) {
+      if (!detailForm.id||!detailForm.completeTime) {
         ElMessage({
             type: 'info',
             message: '必要信息不能为空',
@@ -384,10 +389,10 @@ const valveDetail={
 function exportCSV() {
     const excel = {}
     excel.props = [
-      {
-        label: '任务编号',
-        name: 'taskId',
-      },
+      // {
+      //   label: '任务编号',
+      //   name: 'taskId',
+      // },
       {
         label: '巡视人',
         name: 'people',
@@ -655,7 +660,9 @@ const myFunc={
         },
     }
 const reload = async function () {
-    location.reload()
+  input1.value=''
+  input2.value=''
+  myFunc.search()
 }
 
 
