@@ -98,7 +98,7 @@
           {{ currentUser.userName }}
         </el-form-item>
         <el-form-item label="新备注">
-          <el-input v-model="form.editDesc.desc"/>
+          <el-input placeholder="可设为空" v-model="form.editDesc.desc"/>
         </el-form-item>
         <el-button type="primary" @click="userFunc.editDesc()">确定</el-button>
       </el-form>
@@ -110,7 +110,7 @@
           {{ currentUser.userName }}
         </el-form-item>
         <el-form-item label="新电话号码">
-          <el-input v-model="form.editPhone.phone"/>
+          <el-input placeholder="可设为空" v-model="form.editPhone.phone"/>
         </el-form-item>
         <el-button type="primary" @click="userFunc.editPhone()">确定</el-button>
       </el-form>
@@ -188,7 +188,7 @@ const editPasswordForm = reactive({
 })
 
 const editNameForm = reactive({
-  desc: null,
+  name: null,
 })
 
 const editDescForm = reactive({
@@ -247,7 +247,13 @@ const userFunc = {
   },
 
   async editName() {
-    console.log(currentUser.value.phone)
+    if(!editNameForm.name){
+      ElMessage({
+        type: 'info',
+        message: '用户名不能为空',
+      })
+      return
+    }
     const res = await editAccountName({
       id: currentUser.value.userId,
       name: editNameForm.name
