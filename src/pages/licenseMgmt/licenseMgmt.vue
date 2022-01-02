@@ -19,10 +19,10 @@
       <el-button style="position:relative; left:22%" type="primary" @click="reset()">重置</el-button>
       <el-button style="position:relative; left:35%; margin-top: 3px;margin-left: 10px" type="primary" @click="addModal.open()">新增许可证</el-button>
     </div>
-    <!-- <el-scrollbar class="data-chart2"> -->
-      <el-table
-          :data=currentData
-          :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
+    <el-scrollbar class="data-chart2">
+        <el-table
+            :data=currentData
+            :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
             :cell-style="{'text-align':'center'}"
             :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
@@ -51,10 +51,24 @@
                 <el-button type="danger">删除</el-button>
               </template>
             </el-popconfirm>
-          </template>
-        </el-table-column>
-      </el-table>
-    <!-- </el-scrollbar> -->
+            </template>
+          </el-table-column>
+        </el-table>
+
+      <div class="pagination-out">
+      <div class="pagination-in">
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 50, 100]"
+            :page-size="pageSize"
+            style="margin-top: 10px;"
+            :total="tableData.length">
+        </el-pagination>
+      </div>
+    </div>
+    </el-scrollbar>
 
     <el-dialog  v-model="addModal.show" title="新增许可证">
       <el-form :inline="true">
@@ -179,20 +193,7 @@
       </el-form>
       <el-button type="primary"  @click="editModal.submit()" >确定</el-button>
     </el-dialog>
-    <div class="pagination-out" style="top:1%;position:relative;">
-        <div class="pagination-in">
-          <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="currentPage"
-              :page-sizes="[10, 20, 30, 50, 100]"
-              :page-size="pageSize"
-              style="margin-top: 10px;"
-              hide-on-single-page
-              :total="tableData.length">
-          </el-pagination>
-        </div>
-      </div>
+
   </div>
 </template>
 <script setup>
@@ -211,10 +212,10 @@ let valvePlugInformation=ref()
 let input = ref('')
 let options = ref([])
 let tableData = ref([])
-let tableHeight = window.innerHeight - 310
 let currentPage = 1
 let pageSize = 10
 let currentData = ref([])
+let tableHeight = window.innerHeight - 310
 let availableoption = ref([
   {
     value: 1,
@@ -226,13 +227,7 @@ let availableoption = ref([
   }
 ])
 let deptoption = ref()
-function handleSizeChange(val) {
-  pageSize = val;
-}
-function handleCurrentChange(val) {
-  currentPage = val;
-  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-}
+
 function dateFormatter(str){//默认返回yyyy-MM-dd HH-mm-ss
 	var hasTime = arguments[1] != false ? true : false;//可传第二个参数false，返回yyyy-MM-dd
 	var d = new Date(str);
@@ -420,15 +415,10 @@ onMounted(async () => {
   if (res.code === '200') {
     valvePlugInformation.value = res.data;
   }
-  if (tableData.value.length < pageSize) {
-    currentData.value = tableData.value
-  } else {
-    currentData.value = tableData.value.slice(0, pageSize)
+  res = await fetchDepartments()
+  if (res.code === '200') {
+    deptoption.value = res.data;
   }
-  // res = await fetchDepartments()
-  // if (res.code === '200') {
-  //   deptoption.value = res.data;
-  // }
 })
 
 </script>
