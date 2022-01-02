@@ -363,17 +363,17 @@ function exportCSV() {
       name: 'place',
     },
     {
-      label: searchTimeType.value + '阀门用水量(万m³)',
+      label: searchTimeType.value + '阀门用水量(m³)',
       name: 'valveVolume',
       default: '0',
     },
     {
-      label: searchTimeType.value + '消防栓用水量(万m³)',
+      label: searchTimeType.value + '消防栓用水量(m³)',
       name: 'hydrantVolume',
       default: '0',
     },
     {
-      label: searchTimeType.value + '总用水量(万m³)',
+      label: searchTimeType.value + '总用水量(m³)',
       name: 'totalVolume',
       default: '0',
     },

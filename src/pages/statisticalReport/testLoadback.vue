@@ -65,11 +65,11 @@
       >
         <el-table-column min-width="1" align="center" prop="place" label="行政区域"></el-table-column>
         <el-table-column sortable min-width="2" align="center" prop="valveVolume"
-                         label="阀门用水量(万m³)"></el-table-column>
+                         label="阀门用水量(m³)"></el-table-column>
         <el-table-column sortable min-width="2" align="center" prop="hydrantVolume"
-                         label="消防栓用水量(万m³)"></el-table-column>
+                         label="消防栓用水量(m³)"></el-table-column>
         <el-table-column sortable min-width="2" align="center" prop="totalVolume"
-                         label="总用水量(万m³)"></el-table-column>
+                         label="总用水量(m³)"></el-table-column>
       </el-table>
     </div>
   </div>
@@ -329,17 +329,17 @@ function exportCSV() {
       name: 'place',
     },
     {
-      label: searchTimeType.value + '阀门用水量(万m³)',
+      label: searchTimeType.value + '阀门用水量(m³)',
       name: 'valveVolume',
       default: '0',
     },
     {
-      label: searchTimeType.value + '消防栓用水量(万m³)',
+      label: searchTimeType.value + '消防栓用水量(m³)',
       name: 'hydrantVolume',
       default: '0',
     },
     {
-      label: searchTimeType.value + '总用水量(万m³)',
+      label: searchTimeType.value + '总用水量(m³)',
       name: 'totalVolume',
       default: '0',
     },
