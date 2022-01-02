@@ -19,7 +19,7 @@
       <el-button style="position:relative; left:18%" type="primary" @click="reset()">重置</el-button>
       <el-button style="position:relative; left:20%; margin-top: 3px;margin-left: 10px" type="primary" @click="addModal.open()">新增许可证</el-button>
     </div>
-
+    <div class="p-body" id="box">
         <el-table
             :data=currentData
             :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
@@ -68,7 +68,7 @@
         </el-pagination>
       </div>
     </div>
-
+    </div>
     <el-dialog  v-model="addModal.show" title="新增许可证">
       <el-form :inline="true">
         <div>
@@ -202,7 +202,7 @@ import { fetchLicense, searchLicense, addLicense,
 deleteLicense, editLicense, fetchDepartments } from "./util/licenseMgmt.js"
 import {fetchVpinformation} from "../valveInformation/util/vpinformation.js"
 import {mountedToArrPrototype} from "../../mock"
-import {ElMessage} from 'element-plus'
+import {ElMessageBox,ElLoading, ElMessage} from 'element-plus'
 import { licenseStates } from "../../utils/transform";
 
 const store= useStore()
@@ -400,6 +400,7 @@ function transformSearchDate(){
 
 onMounted(async () => {
   mountedToArrPrototype()
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
   let res = await fetchLicense()
   if (res.code === '200') {
     tableData.value = res.data;
@@ -417,6 +418,7 @@ onMounted(async () => {
   if (res.code === '200') {
     deptoption.value = res.data;
   }
+  loadingInstance.close()
 })
 
 </script>
