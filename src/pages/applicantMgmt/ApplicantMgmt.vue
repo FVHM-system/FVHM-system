@@ -8,7 +8,7 @@
                   style="position:relative; left:26%; width: 250px"/>
       <el-button style="position:relative; left:28%" type="primary" @click="search.submit()">查询</el-button>
       <el-button style="position:relative; left:28%" type="primary" @click="reset()">重置</el-button>
-      <el-button style="position:relative; left:50%" type="primary" @click="addModal.open()">新增单位</el-button>
+      <el-button style="position:relative; left:40%" type="primary" @click="addModal.open()">新增单位</el-button>
     </div>
     <div id="box">
         <el-table
