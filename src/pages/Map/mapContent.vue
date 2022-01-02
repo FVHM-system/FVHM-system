@@ -1,4 +1,5 @@
 <template>
+  <div class="wholePage">
   <div class="lay-out">
 
     <div id="map-container"  class="layer"></div>
@@ -6,8 +7,6 @@
     <div id="panel"></div>
 
   </div>
-  <div class="layer box">
-    <div>
     <div class="miniCicle" v-show="miniShow2" @click="miniClick">
       <img src="../../assets/feeds.png" style="margin: 10px;width: 30px;height: 30px">
     </div>
@@ -124,7 +123,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script setup>
@@ -727,10 +725,11 @@ onUnmounted(async()=>{
 }
 
 .layer {
-  width: 100vw;
+  width: 103%;
   margin-left: -20px;
   margin-top: -20px;
   height: calc(100vh - 80px);
+
   //height:100%;
 }
 
