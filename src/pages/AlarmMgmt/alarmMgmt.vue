@@ -3,7 +3,6 @@
     <div class="p2-header">
       <p class="page2-name">报警管理</p>
       <el-form
-          ref="ruleFormRef"
           :model="searchForm"
           status-icon
           :rules="rules"
@@ -144,7 +143,11 @@ import {exportExcel} from '../../utils/exportExcel'
 /* 初始化输入变量 */
 const {proxy} = getCurrentInstance()
 let searchForm = reactive({
-  place:''
+  place:'',
+  type:'',
+  typeWarn:'',
+  status:'',
+  time:''
 })
 let tableHeight = window.innerHeight - 310
 let input1 = ref('') //查询阀栓名称变量初始化
@@ -255,7 +258,7 @@ async function exportCSV() {
   ]
 
   let temp = await fetchAlarmManage()
-  
+
   temp.data.map(item=>{
     if(item.warnType===1){
       item.warnType="水量超额"
@@ -277,7 +280,7 @@ async function exportCSV() {
       item.valveType="消防栓"
     }
   })
- 
+
   excel.body = temp.data
   excel.fileName = '报警管理表'
   exportExcel(excel)
@@ -314,7 +317,11 @@ const typeFormate = function (row) {
 }
 /* 重置按钮点击事件 */
 const dataRequire = async function () {
-  proxy.$refs.ruleFormRef.resetFields()
+  searchForm.place = ''
+  searchForm.type = ''
+  searchForm.typeWarn = ''
+  searchForm.status = ''
+  searchForm.time = ''
   pageshow.value = false
   let res = await fetchAlarmManage()
   if (res.code === '200') {
