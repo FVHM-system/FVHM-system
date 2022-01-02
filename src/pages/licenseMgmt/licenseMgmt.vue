@@ -19,7 +19,7 @@
       <el-button style="position:relative; left:22%" type="primary" @click="reset()">重置</el-button>
       <el-button style="position:relative; left:35%; margin-top: 3px;margin-left: 10px" type="primary" @click="addModal.open()">新增许可证</el-button>
     </div>
-    <el-scrollbar class="data-chart2">
+
         <el-table
             :data=currentData
             :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
@@ -68,7 +68,6 @@
         </el-pagination>
       </div>
     </div>
-    </el-scrollbar>
 
     <el-dialog  v-model="addModal.show" title="新增许可证">
       <el-form :inline="true">
