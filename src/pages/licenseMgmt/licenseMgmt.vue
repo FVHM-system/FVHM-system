@@ -265,7 +265,9 @@ const search = reactive({
     end:null,
   },
   async submit(){
+    const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
     let res = await searchLicense(this.data)
+    loadingInstance.close()
     if (res.code == '200'){
       tableData.value = res.data;
       console.log(res.data)
@@ -354,7 +356,9 @@ const editModal = reactive({
         type: 'success',
         message : '修改成功'
       })
+      const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
       res = await fetchLicense()
+      loadingInstance.close()
       if (res.code === '200') {
       tableData.value = res.data;
       currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)

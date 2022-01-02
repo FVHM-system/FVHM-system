@@ -20,14 +20,13 @@
             style="width: 100%"
             :height="tableHeight"
         >
-          <el-table-column fixed="left" label="单位ID" prop="applicantId" width="150px"/>
-          <el-table-column fixed="left"  label="单位名称" prop="applicantName" width="250px"/>
-          <el-table-column fixed="left"  label="法定代表人" prop="legalPerson" width="200px"/>
-          <el-table-column fixed="left"  label="地址" prop="address" width="200px"/>
+          <el-table-column fixed="left"  label="单位名称" prop="applicantName" width="150px"/>
+          <el-table-column fixed="left"  label="法定代表人" prop="legalPerson" width="150px"/>
+          <el-table-column fixed="left"  label="地址" prop="address" width="250px"/>
           <el-table-column fixed="left"  label="邮编" prop="code" width="150px"/>
           <el-table-column fixed="left"  label="联系人" prop="contactPerson" width="150px"/>
           <el-table-column fixed="left"  label="电话号码" prop="phone" width="200px"/>
-          <el-table-column fixed="right" label="操作" width="400">
+          <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
               <el-button @click="editModal.open(scope.row)">修改</el-button>
               <el-popconfirm
