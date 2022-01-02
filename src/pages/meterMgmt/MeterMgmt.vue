@@ -6,9 +6,9 @@
       <div style="position:relative; left:60%">
         <el-input v-model="id" placeholder="根据设备ID进行搜索"
                   style="width: 200px"/>
-        <el-button style="position:relative; left:5%" type="primary" @click="submit()">查询</el-button>
-        <el-button style="position:relative; left:5%" type="primary" @click="reset()">重置</el-button>
-        <el-button style="position:relative; left:5%" type="primary" @click="addModal.open()">新增设备</el-button>
+        <el-button style="position:relative; margin-left: 10px" type="primary" @click="submit()">查询</el-button>
+        <el-button style="position:relative; margin-left: 10px" type="primary" @click="reset()">重置</el-button>
+        <el-button style="position:relative; margin-left: 10px" type="primary" @click="addModal.open()">新增设备</el-button>
       </div>
 
     </div>
@@ -32,7 +32,7 @@
           </el-table-column>
           <el-table-column fixed="left" label="设备型号" prop="meterNoName" width="200px" />
           <el-table-column fixed="left" label="安装时间" prop="createTime" width="250px" />
-          <el-table-column fixed="right" label="操作" width="400">
+          <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
               <el-button @click="editModal.open(scope.row)">修改</el-button>
               <el-popconfirm
@@ -61,7 +61,7 @@
       </div>
     </div>
 
-    <el-dialog  v-model="addModal.show" title="新增设备">
+    <el-dialog width="25%" v-model="addModal.show" title="新增设备">
       <el-form :inline="true">
         <div>
         <el-form-item label="设备编号" required>
@@ -179,7 +179,7 @@
         </el-form-item>
         </div>
       </el-form>
-      <el-button type="primary"  @click="editModal.submit()" >确定</el-button>
+      <el-button style="right: 20px" type="primary"  @click="editModal.submit()" >确定</el-button>
     </el-dialog>
 
   </div>
