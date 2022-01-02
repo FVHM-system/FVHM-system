@@ -79,7 +79,7 @@
       </el-form>
 
     </div>
-    <div class="data-chart">
+    <div id="data-chart">
       <el-table
           v-loading="loading"
           :data=currentData
@@ -121,6 +121,7 @@
               :page-sizes="[10, 20, 30, 50, 100]"
               :page-size="pageSize"
               style="margin-top: 10px;"
+              layout="total, prev, pager, next"
               hide-on-single-page
               v-if="pageshow"
               :total="tableData.length">
@@ -136,7 +137,7 @@ import {fetchAlarmManage, fetchFindWarnInfo, fetchUpdateWarnIdById} from "./util
 import {mountedToArrPrototype} from "../../mock";
 import {fetchSuper} from '../../apis/2.0/addr'
 import {types} from '../../utils/transform.js'
-import {ElMessage} from 'element-plus'
+import {ElLoading, ElMessage} from 'element-plus'
 import {fetchVpinformation} from "../valveInformation/util/vpinformation";
 
 /* 初始化输入变量 */
@@ -162,16 +163,17 @@ CarProps = {
   label: 'name',
   value: 'message',
   children: 'child',
+  checkStrictly: true
 }
 /* 初始化报警状态 */
 const statuss = [
   {
     value: 0,
-    label: '已处理',
+    label: '未处理',
   },
   {
     value: 1,
-    label: '未处理',
+    label: '已处理',
   },
   {
     value: null,
@@ -201,11 +203,11 @@ const alarmType = [
 const alarmStatus = [
   {
     value: 0,
-    label: '取消已处理',
+    label: '确认已处理',
   },
   {
     value: 1,
-    label: '确认已处理',
+    label: '取消已处理',
   }
 ]
 const genTwoLengthNumberString = n => (n >= 10 ? n : '0' + n)
@@ -319,6 +321,7 @@ const statusFormate = function (row) {
 /* 页面初始化加载 */
 onMounted(async () => {
   mountedToArrPrototype()
+  const loadingInstance = ElLoading.service({target:document.getElementById("data-chart"),fullscreen: false})
   let res = await fetchAlarmManage()
   if (res.code === '200') {
     tableData.value = res.data;
@@ -331,6 +334,7 @@ onMounted(async () => {
   }
   console.log(res.data)
   options.value = await fetchSuper()
+  loadingInstance.close()
   console.log('sssss',options.value[0].child)
 })
 
@@ -357,11 +361,6 @@ onMounted(async () => {
   top: 35px;
   left: 20px;
   position: relative;
-}
-.data-chart {
-  position: relative;
-  top: 10px;
-  overflow-y: hidden;
 }
 .button {
   position: relative;

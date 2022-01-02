@@ -5,7 +5,7 @@
       <p class="page-name">菜单管理</p>
       <el-button class="addbutton" type="primary" @click="modal.open()">新增菜单</el-button>
     </div>
-    <el-scrollbar class="data-chart">
+
       <el-table
           :data="currentData"
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
@@ -16,6 +16,7 @@
           row-key="frontendMenuId"
           default-expand-all
           :tree-props="{ children: 'children' }"
+          :height="tableHeight"
       >
         <el-table-column prop="frontendMenuName" label="菜单名称" min-width="240"></el-table-column>
         <el-table-column prop="description" label="菜单描述" min-width="240"></el-table-column>
@@ -55,7 +56,7 @@
         </el-pagination>
       </div>
     </div>
-    </el-scrollbar>
+
     <el-dialog v-model="modalState" :title="modalTitle" style="font-weight: 500">
       <el-form :model="form" label-width="100px" :inline="false">
         <el-form-item label="菜单名称" required>
@@ -92,7 +93,7 @@ import {
   fetchMenuListByNone
 } from '/src/apis/2.0/menu.js'
 import {routerConfigs} from '/src/router'
-
+let tableHeight = window.innerHeight - 310
 const router = useRouter()
 const route = useRoute()
 const form = reactive({
@@ -341,7 +342,7 @@ onMounted(async () => {
 
 .addbutton {
   position: relative;
-  margin-left: 100px;
+  left: 85%;
   top: 8px;
 }
 

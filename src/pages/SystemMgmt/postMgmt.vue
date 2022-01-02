@@ -6,7 +6,6 @@
       <el-button class="addbutton" type="primary" @click="() => addModal.changeState(true)">新增岗位
       </el-button>
     </div>
-    <el-scrollbar class="data-chart">
       <el-table
           :data="postList"
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
@@ -35,7 +34,6 @@
           </template>
         </el-table-column>
       </el-table>
-    </el-scrollbar>
 
     <el-dialog v-model="modalState" title="新增岗位">
       <el-form :model="form" :label-col="{ span: 8 }" :wrapper-col="{ span: 14 }">
@@ -220,7 +218,7 @@ onMounted(postFunc.fetchPost)
 
 .addbutton {
   position: relative;
-  margin-left: 130px;
+  left: 85%;
   top: 8px;
 }
 

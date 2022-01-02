@@ -188,8 +188,8 @@ onMounted(() => postFunc.search())
 
 .button {
   position: relative;
-  margin-left: 100px;
-  top: -50px;
+  left: 85%;
+  bottom: 50%;
 }
 
 .data-chart {

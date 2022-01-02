@@ -4,7 +4,7 @@
       <p class="page2-name">设备类型管理</p>
       <el-button class="addbutton" type="primary" @click="addModal.open()">新增类型</el-button>
     </div>
-    <el-scrollbar class="data-chart2">
+
         <el-table
             :data=tableData
             :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
@@ -42,7 +42,6 @@
             </template>
           </el-table-column>
         </el-table>
-    </el-scrollbar>
 
     <el-dialog  v-model="addModal.show" title="新增类型">
       <el-form :inline="true">

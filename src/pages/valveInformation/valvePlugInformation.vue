@@ -55,7 +55,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="data-chart">
+    <div id="data-chart">
       <el-table
           :data=currentData
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
@@ -109,6 +109,7 @@
               :current-page="currentPage"
               :page-sizes="[10, 20, 30, 50, 100]"
               :page-size="pageSize"
+              layout="total, prev, pager, next"
               v-if="pageshow"
               style="margin-top: 10px;"
               hide-on-single-page
@@ -127,7 +128,7 @@ import ValveDetail from "./valveDetail.vue";
 import AddValvePlug from "./addValvePlug.vue";
 import {fetchSuper} from '../../apis/2.0/addr'
 import {exportExcel} from '../../utils/exportExcel'
-import {ElMessage} from 'element-plus'
+import {ElLoading, ElMessage} from 'element-plus'
 import {
   fetchAuthority ,
   fetchUsername
@@ -327,6 +328,7 @@ onMounted(async () => {
   }else{
     buttonState.value=true
   }
+  const loadingInstance = ElLoading.service({target:document.getElementById("data-chart"),fullscreen: false})
   let res = await fetchVpinformation()
   if (res.code === '200') {
     tableData.value = res.data;
@@ -336,8 +338,8 @@ onMounted(async () => {
   } else {
     currentData.value = tableData.value.slice(0, pageSize)
   }
-  console.log('ssssssssssss',currentData.value)
   options.value = await fetchSuper()
+  loadingInstance.close()
   console.log(proxy)
 })
 
@@ -379,12 +381,6 @@ onMounted(async () => {
 
 .button {
   position: relative;
-}
-
-.data-chart {
-  position: relative;
-  top: 10px;
-  overflow-y: hidden;
 }
 
 ::-webkit-scrollbar {
