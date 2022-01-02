@@ -1,7 +1,7 @@
 <template>
   <div class="basicInformation">
     <div class="BInfo">
-      <el-form ref="form" :model="formData" label-width="120px">
+      <el-form :model="formData" label-width="120px">
         <el-form-item label="阀栓名称" prop="valveName"
                       style="position:relative; left:-10px; top: 60px">
           <el-col :span="9">
@@ -35,7 +35,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="计量设备编号" style="position:relative; left:-10px; top: 110px">
+        <el-form-item label="监测设备编号" style="position:relative; left:-10px; top: 110px">
           <el-col :span="9">
             <el-input v-model="formData.meterCode" style=" width: 150px"></el-input>
           </el-col>

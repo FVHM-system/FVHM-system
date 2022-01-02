@@ -65,6 +65,7 @@
       ],
       yAxis: [
         {
+          name: '数量(个)',
           type: 'value',
           interval:1,
         },
@@ -74,7 +75,7 @@
           name: '分布数量',
           type: 'bar',
           data: coloredY,
-          barWidth: 40,
+          barWidth: 10,
         },
       ],
     }
@@ -89,6 +90,8 @@
           bottom: '5%',
           height: 3,
           showDetail: false,
+          // minSpan:5,
+          // maxSpan:9,
         },
         {
           type: 'inside',

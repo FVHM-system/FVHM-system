@@ -69,11 +69,11 @@
       >
         <el-table-column min-width="1" align="center" prop="place" label="行政区域"></el-table-column>
         <el-table-column sortable min-width="2" align="center" prop="valveVolume"
-                         label="阀门用水量(万m³)"></el-table-column>
+                         label="阀门用水量(m³)"></el-table-column>
         <el-table-column sortable min-width="2" align="center" prop="hydrantVolume"
-                         label="消防栓用水量(万m³)"></el-table-column>
+                         label="消防栓用水量(m³)"></el-table-column>
         <el-table-column sortable min-width="2" align="center" prop="totalVolume"
-                         label="总用水量(万m³)"></el-table-column>
+                         label="总用水量(m³)"></el-table-column>
       </el-table>
     </div>
   </div>

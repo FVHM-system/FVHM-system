@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from 'vue-router';
+import {createRouter, createWebHashHistory} from 'vue-router';
 import homepage from './pages/homePage/homePage.vue';
 import comprehensiveStatistics
   from './pages/comprehensiveStatistics/comprehensiveStatistics.vue'
@@ -336,7 +336,7 @@ export const funcMap = mergeMapConfigs(genType('page', cloneDeep(funcListConfigs
 
 console.log(routerConfigs)
 export const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: routerConfigs,
   linkActiveClass: 'active',
 })

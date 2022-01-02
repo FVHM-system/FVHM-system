@@ -1,12 +1,29 @@
 <template>
   <div class="lay-out">
-    
-    <div id="map-container" class="layer"></div>
-    
+
+    <div id="map-container"  class="layer"></div>
+
     <div id="panel"></div>
-    
+
   </div>
   <div class="layer box">
+    <div class="indexbox2">
+        <div class="header2"><b>阀栓选择</b></div>
+        <div class="divider2"></div>
+        <div class="inner-box2">
+          <el-cascader
+            v-model="place"
+            :options="options"
+            :props="myprops"
+            :show-all-levels="false"
+            placeholder="选择阀栓"
+            @expand-change="handleItemChange"
+            collapse-tags="true"
+            style="left: 10px;width: 220px"
+            clearable/>
+        </div>
+    </div>
+
     <div class="map-tip">
         <div class="tip-item">
           <div class="icon" :style="{ background: 'rgb(177,253,47)' }"></div>
@@ -73,7 +90,7 @@
           </el-switch>
         </div>
     </div>
-    
+
     <el-radio-group
         v-model="radio"
         size="medium"
@@ -112,12 +129,16 @@
 <script setup>
 import MapLoader from './localMap.js';
 import {ref, onMounted,onUnmounted} from 'vue'
+import { markRaw } from 'vue'
 import {fetchValveInfos} from '../../apis/2.0/newMap';
+import { fetchSuperWithValves} from '../../apis/2.0/addr'
 import floatBall from '../../components/floatBall.vue'
 
 let radio = ref("标准地图")
 let satelliteObject = ref()
 let chart
+let place = ref()
+let options = ref([])
 satelliteObject.value = null
 const echarts = globalThis.echarts
 let navmode = ref(false)//导航
@@ -139,7 +160,13 @@ let warningHydrant=ref([])
 warningWell.value=[]
 let uninstalledHydrant=ref([])
 uninstalledWell.value=[]
-
+let myprops = {
+  label: 'name',
+  value: 'message',
+  checkStrictly: false,//是否能选择任意一级选项
+  children: 'child',
+  multiple: 'true'
+}
 //
 let valveData = ref([])
 valveData.value = []
@@ -183,7 +210,7 @@ function changeMode(e) {
 
 async function loadMap() {
   if(!chart){
-    chart = echarts.init(document.getElementById('map-container'))
+    chart = markRaw(echarts.init(document.getElementById('map-container')))
     chart.on('click', e => {
     console.log("点击的", e.data)
     console.log(state.value)
@@ -217,7 +244,7 @@ async function loadMap() {
       }
     })
   }
-  
+
   if(normalFlag.value===false){
     normalWell.value=[]
     normalHydrant.value=[]
@@ -266,8 +293,8 @@ async function loadMap() {
         coordinateSystem: 'amap',
         data: normalWell.value,
         symbol:'circle',
-        /*散点形状设置: 
-        'circle’, ‘rect’, ‘roundRect’, ‘triangle’, 
+        /*散点形状设置:
+        'circle’, ‘rect’, ‘roundRect’, ‘triangle’,
         ‘diamond’, ‘pin’, 'arrow’
         */
         symbolSize: 27,
@@ -297,8 +324,8 @@ async function loadMap() {
         coordinateSystem: 'amap',
         data: normalHydrant.value,
         symbol:'rec',
-        /*散点形状设置: 
-        'circle’, ‘rect’, ‘roundRect’, ‘triangle’, 
+        /*散点形状设置:
+        'circle’, ‘rect’, ‘roundRect’, ‘triangle’,
         ‘diamond’, ‘pin’, 'arrow’
         */
         symbolSize: 27,
@@ -537,7 +564,7 @@ const fetchData = async () => {
   offlineHydrant.value=getList(item => item.status === 1003 && item.valveType === 2)
   uninstalledWell.value=getList(item => item.status === 1002 && item.valveType === 1)
   uninstalledHydrant.value=getList(item => item.status === 1002 && item.valveType === 2)
-  
+
 
   console.log("阀门正常运行", normalWell.value)
   console.log("消防栓正常运行", normalHydrant.value)
@@ -563,13 +590,15 @@ onMounted(async () => {
   if(!chart){
     await setMap()
   }
+  const temp = await fetchSuperWithValves()
+  options.value = temp
 })
 
-onUnmounted(async()=>{
-  if(chart){
-    chart.dispose()
-  }
-})
+// onUnmounted(async()=>{
+//   if(chart){
+//     chart.dispose()
+//   }
+// })
 </script>
 
 <style lang="scss" scoped>
@@ -586,7 +615,42 @@ onUnmounted(async()=>{
   height: calc(100vh - 100px);
 }
 
+.inner-box2 {
+    width: 350px;
+    height: 40px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+.indexbox2 {
+    background: rgb(255, 255, 255, 0.9);
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 250px;
+    height: 120px;
+    pointer-events: auto;
+    border: 0.5px solid rgba($color: #000000, $alpha: 0.1);
+    font-size: 140%;
+    border-radius: 15px;
+  }
+ .header2 {
+    margin: 15px;
+    margin-top: 17px;
+    margin-bottom: 13px;
+  }
 
+.divider2 {
+    border-top: 1px solid rgba($color: #969696, $alpha: 0.15);
+    height: 1px;
+    overflow: hidden;
+    width: 345px;
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
 .layer-out {
   position: relative;
   overflow: hidden;

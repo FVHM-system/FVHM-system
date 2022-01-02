@@ -10,7 +10,7 @@
       title="填写阀栓信息"
       width="50%"
       :before-close="handleClose">
-    <el-form ref="form" :model="formData" label-width="120px">
+    <el-form :model="formData" label-width="120px">
       <el-form-item label="阀栓名称" >
           <el-input v-model="formData.valveName" style="width: 190px"></el-input>
       </el-form-item>
@@ -99,7 +99,7 @@ import {fetInsertValveInfo} from "./util/vpinformation";
 import {ElMessage} from 'element-plus'
 import {fetchSuper} from '../../apis/2.0/addr'
 import axios from "axios";
-import { 
+import {
   fetchAuthority ,
   fetchUsername
 } from '../../utils/mrWang'

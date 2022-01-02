@@ -13,7 +13,7 @@ export const utils = {
   namespaced: true,
   state: () => {
     let city
-    let area
+    // let area
     let district
     let town
     let village
@@ -29,7 +29,7 @@ export const utils = {
       district,
       town,
       village,
-      area,
+      // area,
       menuCollapse,
       t,
       update,
@@ -44,7 +44,7 @@ export const utils = {
       const district = cloneDeep(state.district) || []
       const town = cloneDeep(state.town) || []
       const village = cloneDeep(state.village) || []
-      const area = cloneDeep(state.area) || []
+      // const area = cloneDeep(state.area) || []
       village.forEach(item => {
         const idx = town.findIndex(it => item.pid === it.id)
         if (idx >= 0) {
@@ -68,17 +68,17 @@ export const utils = {
           city[idx].children = (city[idx].children || []).concat(item)
         }
       })
-      area.forEach(item => {
-        const id = item.id
-        item.id = {
-          id,
-          isArea: true,
-        }
-        const idx = city.findIndex(it => item.pid === it.zoneId)
-        if (idx >= 0) {
-          city[idx].children = (city[idx].children || []).concat(item)
-        }
-      })
+      // area.forEach(item => {
+      //   const id = item.id
+      //   item.id = {
+      //     id,
+      //     isArea: true,
+      //   }
+      //   const idx = city.findIndex(it => item.pid === it.zoneId)
+      //   if (idx >= 0) {
+      //     city[idx].children = (city[idx].children || []).concat(item)
+      //   }
+      // })
       if (state.city) {
         const res = city.map(item => {
           return {
@@ -219,13 +219,13 @@ export const utils = {
       const district = (await fetchDistrictInfo()) || []
       const town = (await fetchTownInfo()) || []
       const village = (await fetchVillageInfo()) || []
-      const area = (await fetchAreaInfo()) || []
+      // const area = (await fetchAreaInfo()) || []
       context.commit('setState', {
         city,
         district,
         town,
         village,
-        area,
+        // area,
       })
     },
   },

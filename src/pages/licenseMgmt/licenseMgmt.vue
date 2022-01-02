@@ -4,28 +4,26 @@
       <p class="page2-name">许可证管理</p>
       <el-button class="addbutton" type="primary" @click="addModal.open()">新增许可证</el-button>
     </div>
-    <el-scrollbar class="data-chart2">
       <el-table
-          :data=tableData
+          :data=currentData
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
           style="width: 100%"
+          height="450"
       >
-        <el-table-column fixed="left" label="ID" prop="id" width="100px"/>
         <el-table-column fixed="left"  label="许可证编号" prop="license" width="120px"/>
-        <el-table-column fixed="left" label="阀栓ID" prop="valveId" width="100px"/>
         <el-table-column fixed="left"  label="阀栓名称" prop="valveName" width="240px"/>
-        <el-table-column fixed="left"  label="颁发时间" prop="startTime" width="120px"/>
-        <el-table-column fixed="left"  label="许可用水量" prop="licenseVolume" width="120px" />
+        <el-table-column fixed="left"  label="颁发时间" prop="startTime" width="200px"/>
+        <el-table-column fixed="left"  label="许可用水量" prop="licenseVolume" width="160px" />
         <el-table-column fixed="left"  label="可用性" prop="available" width="110px">
           <template #default="scope">
             <el-tag :type="statusFormate(scope.row)">{{['不可用','可用'][scope.row.available]}}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column fixed="left"  label="颁发机构" prop="departmentName" width="160px"/>
-        <el-table-column fixed="right" label="操作" width="500">
+        <el-table-column fixed="left"  label="颁发机构" prop="departmentName" width="200px"/>
+        <el-table-column fixed="right" label="操作" width="240">
           <template #default="scope">
             <el-button @click="editModal.open(scope.row)">修改</el-button>
             <el-popconfirm
@@ -39,7 +37,6 @@
           </template>
         </el-table-column>
       </el-table>
-    </el-scrollbar>
 
     <el-dialog  v-model="addModal.show" title="新增许可证">
       <el-form :inline="true">
@@ -170,7 +167,20 @@
       </el-form>
       <el-button type="primary"  @click="editModal.submit()" >确定</el-button>
     </el-dialog>
-
+    <div class="pagination-out" style="top:1%;position:relative;">
+        <div class="pagination-in">
+          <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[10, 20, 30, 50, 100]"
+              :page-size="pageSize"
+              style="margin-top: 10px;"
+              hide-on-single-page
+              :total="tableData.length">
+          </el-pagination>
+        </div>
+      </div>
   </div>
 </template>
 <script setup>
@@ -189,6 +199,9 @@ let valvePlugInformation=ref()
 let input = ref('')
 let options = ref([])
 let tableData = ref([])
+let currentData = ref([])
+let pageSize=6
+let currentPage = 1
 let availableoption = ref([
   {
     value: 1,
@@ -200,7 +213,13 @@ let availableoption = ref([
   }
 ])
 let deptoption = ref()
-
+function handleSizeChange(val) {
+  pageSize = val;
+}
+function handleCurrentChange(val) {
+  currentPage = val;
+  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+}
 function dateFormatter(str){//默认返回yyyy-MM-dd HH-mm-ss
   var hasTime = arguments[1] != false ? true : false;//可传第二个参数false，返回yyyy-MM-dd
   var d = new Date(str);
@@ -335,10 +354,15 @@ onMounted(async () => {
   if (res.code === '200') {
     valvePlugInformation.value = res.data;
   }
-  res = await fetchDepartments()
-  if (res.code === '200') {
-    deptoption.value = res.data;
+  if (tableData.value.length < pageSize) {
+    currentData.value = tableData.value
+  } else {
+    currentData.value = tableData.value.slice(0, pageSize)
   }
+  // res = await fetchDepartments()
+  // if (res.code === '200') {
+  //   deptoption.value = res.data;
+  // }
 })
 
 </script>
