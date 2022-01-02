@@ -9,7 +9,7 @@
           :rules="rules"
           label-width="120px"
           class="searchForm"
-          style="margin-left: 145px;top:3px"
+          style="margin-left: 305px;top:3px"
       >
         <el-form-item prop="place">
           <el-cascader
