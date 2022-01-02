@@ -83,6 +83,7 @@
     </div>
     <div class="data-chart">
       <el-table
+          v-loading="loading"
           :data=currentData
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
@@ -153,6 +154,7 @@ let options = ref([]) //道路选择项初始化
 let tableData = ref([]) //表单数据初始化
 let place = ref('') //道路选择变量初始化
 let currentData = ref([])
+let loading=ref(true)
 let currentPage = 1
 let pageshow = ref(true)
 let pageSize = 10// 每页多少条
@@ -380,5 +382,7 @@ onMounted(async () => {
   border-radius: 30px;
   box-shadow: -2px 2px 2px #888888;
 }
+
+
 
 </style>

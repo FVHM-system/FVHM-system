@@ -226,9 +226,7 @@ let availableoption = ref([
   }
 ])
 let deptoption = ref()
-function handleSizeChange(val) {
-  pageSize = val;
-}
+
 function handleCurrentChange(val) {
   currentPage = val;
   currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
@@ -252,12 +250,7 @@ function dateFormatter(str){//默认返回yyyy-MM-dd HH-mm-ss
 function handleSizeChange(val) {
   pageSize = val;
 }
-// 当前页
-function handleCurrentChange(val) {
-  currentPage = val;
-  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-  console.log(currentPage)
-}
+
 
 const statusFormate = function (row){
   return ['danger','success'][row.available]

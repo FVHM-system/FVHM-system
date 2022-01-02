@@ -11,6 +11,7 @@
       <el-button style="position:relative; left:50%" type="primary" @click="addModal.open()">新增单位</el-button>
     </div>
         <el-table
+            v-loading="loading"
             :data=currentData
             :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
@@ -147,6 +148,7 @@ let currentPage = 1
 let pageSize = 10
 let currentData = ref([])
 let tableHeight = window.innerHeight - 310
+let loading=ref(true)
 function handleSizeChange(val) {
   pageSize = val;
 }
@@ -350,5 +352,9 @@ onMounted(async () => {
   position: relative;
   top: 10px;
   overflow-y: hidden;
+}
+
+body {
+  margin: 0;
 }
 </style>
