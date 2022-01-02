@@ -7,7 +7,7 @@
     </div>
     <el-scrollbar class="data-chart">
       <el-table
-          :data="menuList"
+          :data="currentData"
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
           :cell-style="{'text-align':'center'}"
@@ -40,6 +40,21 @@
           </template>
         </el-table-column>
       </el-table>
+
+      <div class="pagination-out">
+        <div class="pagination-in">
+        <el-pagination
+            v-if="showpagination"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 50, 100]"
+            :page-size="pageSize"
+            style="margin-top: 10px;"
+            :total="tableData.length">
+        </el-pagination>
+      </div>
+    </div>
     </el-scrollbar>
     <el-dialog v-model="modalState" :title="modalTitle" style="font-weight: 500">
       <el-form :model="form" label-width="100px" :inline="false">
@@ -80,7 +95,6 @@ import {routerConfigs} from '/src/router'
 
 const router = useRouter()
 const route = useRoute()
-
 const form = reactive({
   name: '',
   desc: '',
@@ -97,9 +111,20 @@ const tableData = ref([])
 let originData
 const modalState = ref(false)
 const current = ref({})
-const menuList = computed(() => {
-  return (tableData.value || [])
-})
+let currentPage = 1
+let pageSize = 10
+let showpagination = ref(true)
+let currentData = ref([])
+
+function handleSizeChange(val) {
+  pageSize = val;
+}
+// 当前页
+function handleCurrentChange(val) {
+  currentPage = val;
+  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  console.log(currentPage)
+}
 
 const id = computed(() => route.query.id)
 
@@ -272,16 +297,21 @@ const menuFunc = {
     }
     tableData.value = genChildList(r)
     originData = r
+    currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
   },
   async delete({frontendMenuId: id}) {
     const res = await deleteMenuById({id})
     if (res.code === '200') {
+      menuFunc.search()
       helper.alertSuccessAndRefresh('删除成功')
     }
   },
 }
 
-onMounted(() => menuFunc.search())
+onMounted(async () => {
+  await menuFunc.search()
+  currentData.value = tableData.value.slice(0, pageSize)
+  })
 
 </script>
 
@@ -311,7 +341,7 @@ onMounted(() => menuFunc.search())
 
 .addbutton {
   position: relative;
-  margin-left: 1300px;
+  margin-left: 100px;
   top: 8px;
 }
 

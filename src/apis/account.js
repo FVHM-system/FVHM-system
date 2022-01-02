@@ -1,11 +1,12 @@
 import request from './2.0/request'
 
-export const addAccount = async ({ username, password, describe }) => {
+export const addAccount = async ({ username, password, describe, phone }) => {
   return await request.Ppost('/user/register', {
     data: {
       name: username,
-      passw: password,
-      des: describe,
+      password: password,
+      description: describe,
+      phone: phone
     },
   })
 }
@@ -23,13 +24,32 @@ export const deleteAccount = async ({ ids }) => {
   })
 }
 
-export const editAccountDesc = async ({ id, name, desc, password }) => {
+export const editAccountName = async ({ id, name }) => {
+  console.log(id)
   return await request.Pput('/user/updateuser', {
     data: {
-      id,
-      name,
-      des: desc,
-      passw: password,
+      userId: id,
+      name: name,
+    },
+  })
+}
+
+export const editAccountDesc = async ({ id, name, desc, password }) => {
+  console.log(id)
+  return await request.Pput('/user/updateuser', {
+    data: {
+      userId: id,
+      description: desc,
+    },
+  })
+}
+
+export const editAccountPhone = async ({ id, phone }) => {
+  console.log(phone)
+  return await request.Pput('/user/updateuser', {
+    data: {
+      userId: id,
+      phone: phone,
     },
   })
 }
@@ -37,19 +57,18 @@ export const editAccountDesc = async ({ id, name, desc, password }) => {
 export const editAccountPost = async ({ id, post }) => {
   return await request.Pput('/user/updateuser', {
     data: {
-      id,
-      post,
+      userId: id,
+      post: post,
     },
   })
 }
 
-export const editAccountPassword = async ({ id, name, desc, password }) => {
+export const editAccountPassword = async ({ id, oldPassword, password }) => {
   return await request.Pput('/user/updateuser', {
     data: {
-      id,
-      name,
-      des: desc,
-      passw: password,
+      userId: id,
+      oldPassword: oldPassword,
+      password: password,
     },
   })
 }
