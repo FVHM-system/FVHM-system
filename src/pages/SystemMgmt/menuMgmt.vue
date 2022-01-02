@@ -7,6 +7,7 @@
     </div>
 
       <el-table
+          id="box"
           :data="currentData"
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
@@ -84,7 +85,7 @@
 <script setup>
 import {ref, onMounted, reactive, computed} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
-import {ElMessage} from 'element-plus'
+import {ElMessage,ElLoading} from 'element-plus'
 import {fetchPostById} from '/src/apis/2.0/post.js'
 import {
   addMenuByConfig,
@@ -310,8 +311,10 @@ const menuFunc = {
 }
 
 onMounted(async () => {
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
   await menuFunc.search()
   currentData.value = tableData.value.slice(0, pageSize)
+  loadingInstance.close()
   })
 
 </script>

@@ -6,6 +6,7 @@
       <el-button class="addbutton" type="primary" @click="modal.open()">新增API组</el-button>
     </div>
     <el-table
+    id="box"
         :data="currentData"
         :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
@@ -16,6 +17,7 @@
         stripe
         default-expand-all
         :tree-props="{ children: 'children' }"
+        :height="tableHeight"
     >
       <el-table-column prop="backendApiName" label="API 名称" min-width="240"></el-table-column>
       <el-table-column prop="description" label="API 描述" min-width="200"></el-table-column>
@@ -92,7 +94,7 @@
 <script setup>
 import {onMounted, reactive, ref, computed} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
-import {ElMessage} from 'element-plus'
+import {ElMessage, ElLoading} from 'element-plus'
 import {fetchPostById} from '/src/apis/2.0/post.js'
 import {
   addApiByConfig,
@@ -104,7 +106,7 @@ import {
   fetchApiListByNone,
 } from '/src/apis/2.0/menu.js'
 import {routerConfigs} from '/src/router'
-
+let tableHeight = window.innerHeight - 310
 const router = useRouter()
 const route = useRoute()
 let currentPage = 1
@@ -331,8 +333,10 @@ const menuFunc = {
 }
 
 onMounted(async () => {
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
   await menuFunc.search()
   currentData.value = tableData.value.slice(0, pageSize)
+  loadingInstance.close()
   })
 </script>
 

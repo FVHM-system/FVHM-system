@@ -141,7 +141,7 @@
 <script setup>
 import {onMounted, reactive, ref, computed} from 'vue'
 import {useStore} from 'vuex'
-import {ElMessage} from 'element-plus'
+import {ElMessage, ElLoading} from 'element-plus'
 import {
   addAccount,
   deleteAccount,
@@ -375,8 +375,10 @@ const userFunc = {
 }
 
 onMounted(async () => {
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
   await userFunc.fetchUser()
   currentData.value = tableData.value.slice(0, pageSize)
+  loadingInstance.close()
   })
 </script>
 
