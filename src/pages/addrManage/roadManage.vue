@@ -42,10 +42,10 @@
   <el-dialog v-model="modalState" :title="modalTitle" center>
     <el-form :model="addForm" label-width="100px" :inline="false">
       <el-form-item label="道路名" required>
-        <el-input v-model="addForm.name" style="width: 360px"></el-input>
+        <el-input v-model="addForm.name" ></el-input>
       </el-form-item>
       <el-form-item label="所属村庄" required>
-        <el-select v-model="addForm.zoneId" clearable style="width: 330px" placeholder="请选择">
+        <el-select v-model="addForm.zoneId" clearable style="width: 617px" placeholder="请选择">
           <el-option v-for="item in villageList" :key="item.zoneId" :label="item.village"
                      :value="item.zoneId"></el-option>
         </el-select>

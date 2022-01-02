@@ -7,6 +7,7 @@
       </el-button>
     </div>
       <el-table
+          id="box"
           :data="currentData"
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
@@ -80,7 +81,7 @@
 <script setup>
 import {onMounted, reactive, ref, computed} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
-import {ElMessage} from 'element-plus'
+import {ElMessage,ElLoading} from 'element-plus'
 import {addPost, deletePost, editPostByConfig, fetchPostList} from '/src/apis/post.js'
 
 const router = useRouter()
@@ -218,7 +219,11 @@ const postFunc = {
   },
 }
 
-onMounted(postFunc.fetchPost)
+onMounted(()=>{
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
+  postFunc.fetchPost()
+  loadingInstance.close()
+  })
 </script>
 
 <style lang="scss" scoped>

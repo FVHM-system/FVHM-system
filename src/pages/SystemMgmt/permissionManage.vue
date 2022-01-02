@@ -17,7 +17,7 @@
         <el-button @click="reset">取消配置</el-button>
       </div>
     </div>
-    <div class="p-body">
+    <div id="box" class="p-body">
 
       <el-table
           :data="accountList"
@@ -55,7 +55,7 @@
 
 <script setup>
 import {computed, nextTick, onMounted, reactive, ref, watch, watchEffect} from 'vue'
-import {ElMessage} from 'element-plus'
+import {ElMessage, ElLoading} from 'element-plus'
 import {useStore} from 'vuex'
 import {fetchPostById} from '/src/apis/2.0/post'
 import {fetchMenuListById, saveMenuByList} from '/src/apis/2.0/menu'
@@ -223,7 +223,10 @@ const permissionFunc = {
   },
 }
 
-onMounted(() => permissionFunc.search())
+onMounted(() => {
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
+  permissionFunc.search()
+  loadingInstance.close()})
 </script>
 
 <style lang="scss" scoped>
