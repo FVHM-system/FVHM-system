@@ -10,13 +10,13 @@
               placeholder="选择某月"
               class="search"
               style="width: 200px"
-              v-if="searchTimeType = '月'"
+              v-if="searchTimeType = '月报'"
           ></el-date-picker>
         </div>
         <el-button type="primary" class="search-btn" @click="search">查询</el-button>
       </div>
     </div>
-    <div class="p-body">
+    <div class="p-body" id="box">
       <el-scrollbar>
         <el-table
             border
@@ -27,7 +27,8 @@
             :cell-style="{'text-align':'center'}"
             :row-style="{fontSize:'17px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
             style="width: 100%"
-            height="520"
+            :height="tableHeight"
+            empty-text=" "
             row-key="id"
             :key="fresh"
             lazy
@@ -52,6 +53,7 @@
 
 import {onMounted, ref} from 'vue'
 import {useStore} from 'vuex'
+import {ElLoading} from 'element-plus'
 import {
   fetchMonthCity,
   fetchMonthTown,
@@ -71,8 +73,9 @@ import {
 import {dateTimeTrans} from '../../utils/mrWang'
 
 let searchTime = ref(new Date())
-let searchTimeType = ref('月')
+let searchTimeType = ref('月报')
 let data = ref([])
+let tableHeight = window.innerHeight - 240
 
 const load = async (tree, treeNode, resolve) => {
   let r1 = [], r2 = [], r3 = [], r4 = [], r5 = []
@@ -197,7 +200,7 @@ const load = async (tree, treeNode, resolve) => {
 }
 
 async function search() {
-
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: true})
   let city = []
   city = await fetchCityList()
   console.log("city: ", city)
@@ -222,12 +225,11 @@ async function search() {
   })
   console.log("r: ", r)
   data.value = r
-
+  loadingInstance.close()
 }
 
 onMounted(async () => {
   search()
-
 })
 </script>
 

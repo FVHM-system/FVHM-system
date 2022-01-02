@@ -21,7 +21,7 @@
         <el-button type="primary" @click="exportCSV">导出</el-button>
       </div>
     </div>
-    <div class="data-chart2">
+    <div class="data-chart2" id="box">
         <el-table
             :data=tableData
             :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
@@ -194,6 +194,7 @@
 </template>
 
 <script setup>
+import{ElLoading} from 'element-plus'
 import { onMounted, ref,  reactive, computed} from 'vue'
 import { exportExcel } from '../../utils/exportExcel'
 import {
@@ -659,19 +660,17 @@ const reload = async function () {
 
 
 onMounted(async () => {
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
   authority.value=fetchAuthority()
   if(authority.value==='ROLE_ADMIN'){
     buttonState.value=false
   }else{
     buttonState.value=true
   }
-
   myFunc.search()
   const temp = await fetchSuperWithValves()
   options.value = temp
-  
-  console.log("name",fetchUsername())
-  console.log("tttt",place.value)
+  loadingInstance.close()
 
 })
 </script>

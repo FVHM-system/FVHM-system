@@ -33,3 +33,21 @@ export function dateTimeTrans(d, searchTimeType) {
     return yy
   }
 }
+
+export function dateTimeTrans1(d, searchTimeType) {
+  if (!d) {
+    return ''
+  }
+  let yy = d.getFullYear()
+  let MM = genTwoLengthNumberString(d.getMonth() + 1)
+  let dd = genTwoLengthNumberString(d.getDate())
+  if (searchTimeType === '日') {
+    return yy + '-' + MM + '-' + dd
+  }
+  if (searchTimeType === '月') {
+    return yy + '-' + MM
+  }
+  if (searchTimeType === '年') {
+    return yy
+  }
+}

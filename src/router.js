@@ -86,7 +86,7 @@ const configs = [
   },
   {
     path: '/applicantMgmt',
-    label: '用水户管理',
+    label: '单位管理',
     name: 'ApplicantMgmt',
     icon: 'el-icon-s-custom',
     component: ApplicantMgmt
