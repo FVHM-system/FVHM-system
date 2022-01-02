@@ -44,6 +44,7 @@
         <div class="pagination-out">
         <div class="pagination-in">
         <el-pagination
+            v-if="showpagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
@@ -141,7 +142,7 @@ import { getApplicant, searchApplicant, addApplicant,
 editApplicant, deleteApplicant } from "./util/ApplicantMgmt.js"
 import {mountedToArrPrototype} from "../../mock"
 import {ElMessage} from 'element-plus'
-
+let showpagination = ref(true)
 const store= useStore()
 let input = ref('')
 let tableData = ref([])
@@ -179,7 +180,22 @@ const search = reactive({
 })
 
 async function reset(){
-  location.reload();
+  search.data.applicantName=null
+  search.data.address=null
+  showpagination.value = false
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
+  let res = await getApplicant(this.data)
+    if (res.code == '200'){
+      tableData.value = res.data;
+    }
+  currentPage = 1
+  showpagination.value = true
+  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  loadingInstance.close()
+  ElMessage({
+        type: 'success',
+        message : '重置成功'
+      })
 }
 
 const addModal = reactive({

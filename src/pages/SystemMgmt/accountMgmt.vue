@@ -89,7 +89,14 @@
         <el-form-item label="新用户名">
           <el-input v-model="form.editName.name"/>
         </el-form-item>
-        <el-button type="primary" @click="userFunc.editName()">确定</el-button>
+        <el-popconfirm
+                :title="'确认修改用户名吗？'"
+                @confirm="userFunc.editName()"
+            >
+              <template #reference>
+                <el-button type="primary">确定</el-button>
+              </template>
+        </el-popconfirm>
       </el-form>
     </el-dialog>
 
@@ -101,7 +108,15 @@
         <el-form-item label="新备注">
           <el-input placeholder="可设为空" v-model="form.editDesc.desc"/>
         </el-form-item>
-        <el-button type="primary" @click="userFunc.editDesc()">确定</el-button>
+        <el-popconfirm
+                :title="'确认修改用户 “' + currentUser.userName + '” 的备注吗？'"
+                @confirm="userFunc.editDesc()"
+            >
+              <template #reference>
+                <el-button type="primary">确定</el-button>
+              </template>
+        </el-popconfirm>
+
       </el-form>
     </el-dialog>
 
@@ -113,7 +128,14 @@
         <el-form-item label="新电话号码">
           <el-input placeholder="可设为空" v-model="form.editPhone.phone"/>
         </el-form-item>
-        <el-button type="primary" @click="userFunc.editPhone()">确定</el-button>
+        <el-popconfirm
+                :title="'确认修改用户 “' + currentUser.userName + '” 的电话号码吗？'"
+                @confirm="userFunc.editPhone()"
+            >
+              <template #reference>
+                <el-button type="primary">确定</el-button>
+              </template>
+        </el-popconfirm>
       </el-form>
     </el-dialog>
 
@@ -131,7 +153,14 @@
         <el-form-item label="确认新密码" required>
           <el-input show-password v-model="form.editPassword.confirmPassword"/>
         </el-form-item>
-        <el-button type="primary" @click="userFunc.editPassword()">确定</el-button>
+        <el-popconfirm
+                :title="'确认修改用户 “' + currentUser.userName + '” 的密码吗？'"
+                @confirm="userFunc.editPassword()"
+            >
+              <template #reference>
+                <el-button type="primary">确定</el-button>
+              </template>
+        </el-popconfirm>
       </el-form>
     </el-dialog>
 
@@ -153,7 +182,7 @@ import {
   editAccountPost,
   fetchAccountsList,
 } from '/src/apis/account.js'
-let tableHeight = window.innerHeight - 310
+let tableHeight = window.innerHeight - 300
 const tableData = ref([])
 let currentPage = 1
 let pageSize = 10
@@ -319,7 +348,6 @@ const userFunc = {
   },
 
   async editPhone() {
-    console.log(currentUser.value.phone)
     const res = await editAccountPhone({
       id: currentUser.value.userId,
       phone: editPhoneForm.phone
