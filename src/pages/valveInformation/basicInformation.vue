@@ -82,7 +82,17 @@
           </el-col>
         </el-form-item>
         <el-form-item style="position:relative; left:-60px; top: -275px">
-          <el-button size="medium" type="primary" @click="updateInfo" :disabled="buttonState">保存修改</el-button>
+          <el-popconfirm
+              confirm-button-text="确定"
+              cancel-button-text="取消"
+              icon-color="red"
+              title="是否要保存修改?"
+              @confirm="updateInfo"
+          >
+            <template #reference>
+              <el-button size="medium" type="primary" @click="" :disabled="buttonState">保存修改</el-button>
+            </template>
+          </el-popconfirm>
         </el-form-item>
       </el-form>
 
