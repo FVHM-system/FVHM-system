@@ -114,7 +114,7 @@ import {
   fetFindmonthvolumebyyear
 } from "./util/vpinformation";
 import {onMounted, onUnmounted, ref, defineProps, markRaw} from "vue";
-import {dateTimeTrans} from "../../utils/mrWang";
+import {dateTimeTrans1} from "../../utils/mrWang";
 
 const timeTypes = [
   {
@@ -230,7 +230,7 @@ function handleChange() {
 }
 
 const getWaterTotal = async function () {
-  let time = dateTimeTrans(searchTime.value, searchTimeType.value)
+  let time = dateTimeTrans1(searchTime.value, searchTimeType.value)
   let type = ref('')
   if (searchTimeType.value === '日') {
     type = 'day'

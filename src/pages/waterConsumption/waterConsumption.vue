@@ -8,7 +8,7 @@
             placeholder="选择时间段"
             @change="handleChange"
             class="margin-right"
-            style="margin-left:220px;width: 70px"
+            style="margin-left:220px;width: 80px"
         >
           <el-option v-for="(item, index) in timeTypes" :key="index" :value="item.value">
             {{ item.lable }}
@@ -20,24 +20,24 @@
               type="day"
               placeholder="选择某日"
               class="search"
-              style="width: 200px"
-              v-if="timeActive === '日'"
+              style="min-width: 200px"
+              v-if="timeActive === '日报'"
           ></el-date-picker>
           <el-date-picker
               v-model="searchTime"
               type="month"
               placeholder="选择某月"
               class="search"
-              style="width: 200px"
-              v-if="timeActive === '月'"
+              style="min-width: 200px"
+              v-if="timeActive === '月报'"
           ></el-date-picker>
           <el-date-picker
               v-model="searchTime"
               type="year"
               placeholder="选择某年"
               class="search"
-              style="width: 200px"
-              v-if="timeActive === '年'"
+              style="min-width: 200px"
+              v-if="timeActive === '年报'"
           ></el-date-picker>
         </div>
         <div>
@@ -60,23 +60,23 @@ import whiteBlock from '../../components/whiteBlock.vue'
 import {dateTimeTrans} from '../../utils/mrWang'
 import {mountedToArrPrototype, nameGenerator, replaceEach} from '../../mock'
 
-let searchTimeType = ref('日')
+let searchTimeType = ref('日报')
 let searchTime = ref(new Date())
-let timeActive = ref('日')
+let timeActive = ref('日报')
 let citys = ref([])
 let consumption = ref([])
 const timeTypes = [
   {
-    value: '日',
-    lable: '日',
+    value: '日报',
+    lable: '日报',
   },
   {
-    value: '月',
-    lable: '月',
+    value: '月报',
+    lable: '月报',
   },
   {
-    value: '年',
-    lable: '年',
+    value: '年报',
+    lable: '年报',
   },
 ]
 
@@ -86,11 +86,11 @@ function handleChange() {
 
 async function search() {
   let type
-  if (searchTimeType.value === '年') {
+  if (searchTimeType.value === '年报') {
     type = 'year'
-  } else if (searchTimeType.value === '月') {
+  } else if (searchTimeType.value === '月报') {
     type = 'month'
-  } else if (searchTimeType.value === '日') {
+  } else if (searchTimeType.value === '日报') {
     type = 'day'
   }
   //
