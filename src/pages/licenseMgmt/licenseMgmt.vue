@@ -3,21 +3,21 @@
     <div class="p2-header">
       <p class="page2-name">许可证管理</p>
       <el-input type="number" v-model.number="search.data.valveId" placeholder="根据阀栓ID进行搜索"
-                  style="position:relative; left:19%; width: 180px"/>
+                  style="position:relative; left:15%; width: 180px"/>
       <el-input v-model="search.data.license" placeholder="根据许可证编号进行搜索"
-                  style="position:relative; left:20%; width: 190px"/>
+                  style="position:relative; left:16%; width: 190px"/>
       <el-date-picker
           v-model="daterange"
           type="daterange"
           range-separator="至"
           start-placeholder="Start date"
           end-placeholder="End date"
-          style="position:relative; left:20%; margin-top: 3px;margin-left: 10px"
+          style="position:relative; left:17%; margin-top: 3px;margin-left: 10px"
           @change="transformSearchDate"
       />
-      <el-button style="position:relative; left:22%" type="primary" @click="search.submit()">查询</el-button>
-      <el-button style="position:relative; left:22%" type="primary" @click="reset()">重置</el-button>
-      <el-button style="position:relative; left:35%; margin-top: 3px;margin-left: 10px" type="primary" @click="addModal.open()">新增许可证</el-button>
+      <el-button style="position:relative; left:18%" type="primary" @click="search.submit()">查询</el-button>
+      <el-button style="position:relative; left:18%" type="primary" @click="reset()">重置</el-button>
+      <el-button style="position:relative; left:20%; margin-top: 3px;margin-left: 10px" type="primary" @click="addModal.open()">新增许可证</el-button>
     </div>
 
         <el-table
@@ -30,7 +30,6 @@
             :height="tableHeight"
         >
           <el-table-column fixed="left"  label="许可证编号" prop="license" width="120px"/>
-          <el-table-column fixed="left" label="阀栓ID" prop="valveId" width="100px"/>
           <el-table-column fixed="left"  label="阀栓名称" prop="valveName" width="300px"/>
           <el-table-column fixed="left"  label="颁发时间" prop="startTime" width="120px"/>
           <el-table-column fixed="left"  label="许可用水量" prop="licenseVolume" width="120px" />
@@ -40,7 +39,7 @@
             </template>
           </el-table-column>
           <el-table-column fixed="left"  label="颁发部门" prop="departmentName" width="160px"/>
-          <el-table-column fixed="right" label="操作" width="500">
+          <el-table-column fixed="right" label="操作" width="300">
             <template #default="scope">
               <el-button @click="editModal.open(scope.row)">修改</el-button>
               <el-popconfirm
