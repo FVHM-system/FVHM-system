@@ -24,7 +24,7 @@
             <h1 style="position:relative;margin-top:20px;font-size: 20px;color: #409eff">阀栓用水量</h1>
             <h1 style="position:relative;margin-top:60px;font-size: 100px;color: #409eff">
               {{ waterData }}</h1>
-            <h1 style="position:relative;margin-top:50px;font-size: 30px;color: #409eff">万m³</h1>
+            <h1 style="position:relative;margin-top:50px;font-size: 30px;color: #409eff">m³</h1>
           </div>
         </el-tab-pane>
         <el-tab-pane label="阀栓年已用水量">
@@ -32,7 +32,7 @@
             <h1 style="position:relative;top:130px;font-size: 30px;color: #409eff">阀栓今年已用水量</h1>
             <h1 style="position:relative;top:190px;font-size: 100px;color: #409eff">
               {{ waterDataYear }}</h1>
-            <h1 style="position:relative;top:250px;font-size: 30px;color: #409eff">万m³</h1>
+            <h1 style="position:relative;top:250px;font-size: 30px;color: #409eff">m³</h1>
           </div>
         </el-tab-pane>
         <el-tab-pane label="阀栓累计用水量">
@@ -74,7 +74,7 @@
             <h1 style="position:relative;top:70px;font-size: 30px;color: #409eff">阀栓累计用水量</h1>
             <h1 style="position:relative;top:160px;font-size: 100px;color: #409eff">
               {{ waterDataTotal }}</h1>
-            <h1 style="position:relative;top:220px;font-size: 30px;color: #409eff">万m³</h1>
+            <h1 style="position:relative;top:220px;font-size: 30px;color: #409eff">m³</h1>
           </div>
 
         </el-tab-pane>
@@ -272,6 +272,7 @@ onUnmounted(() => {
     myChart = null
     console.log(myChart)
   }
+  getTimeWaterData()
 })
 </script>
 
