@@ -29,12 +29,19 @@
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
           style="width: 100%"
-          height="480"
+          :height="tableHeight"
         >
           <el-table-column label="任务编号" prop="taskId" width="120px"/>
           <el-table-column label="巡视人" prop="people" width="120px"/>
           <el-table-column label="电话号码" prop="phone" width="200px"/>
-          <el-table-column label="完成状态" prop="complete"  width="200px"/>
+          <!-- <el-table-column label="完成状态" prop="complete"  width="200px">
+            
+          </el-table-column> -->
+          <el-table-column label="完成状态"  width="200px">
+            <template #default="scope">
+              <el-progress type="circle" width="50" :percentage="scope.row.complete*100" />
+            </template>
+          </el-table-column>
           <el-table-column label="创建时间" prop="createTime" width="200px"/>
           <el-table-column label="任务时间" prop="inspectTime" width="200px"/>
           <el-table-column label="备注" prop="remark" width="200px"/>
@@ -240,6 +247,7 @@ let roadList=ref([])
 let mode=ref('')
 let modal = ref()
 let peopleList=ref([])
+let tableHeight = window.innerHeight - 230
 let modalTitle = computed(() => {
     let res
     if (mode.value === 'add') {

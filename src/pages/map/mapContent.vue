@@ -324,17 +324,17 @@ async function loadMap() {
     tooltip:{
       show:true,
       trigger: 'item',
-      formatter:function(param){
-        //console.log(param)
-        let res
-        res='阀栓编号: '+param.data.valveCode+"<br />"
-           +'阀栓名称: '+param.data.name+"<br />"
-           +'阀栓地址: '+param.data.address+"<br />"
-           //+'管理部门: '+param.data.applicantName+"<br />"
-           +'联系方式: '+param.data.comNumber+"<br />"
-           +'创建时间: '+param.data.createTime+"<br />"
-        return res
-      },
+      // formatter:function(param){
+      //   //console.log(param)
+      //   let res
+      //   res='阀栓编号: '+param .data.valveCode+"<br />"
+      //      +'阀栓名称: '+param.data.name+"<br />"
+      //      +'阀栓地址: '+param.data.address+"<br />"
+      //      //+'管理部门: '+param.data.applicantName+"<br />"
+      //      +'联系方式: '+param.data.comNumber+"<br />"
+      //      +'创建时间: '+param.data.createTime+"<br />"
+      //   return res
+      // },
     },
     animation: false,
     series: [
@@ -345,9 +345,18 @@ async function loadMap() {
         data: normalWell.value,
         symbol:wellPath,
         color:'rgb(177,253,47)',
-        // tooltip:{
-        //   formatter:'haha:{c}'
-        // },
+        tooltip:{
+          formatter:function(param){
+            let res
+        res='阀栓编号: '+param .data.valveCode+"<br />"
+           +'阀栓名称: '+param.data.name+"<br />"
+           +'阀栓地址: '+param.data.address+"<br />"
+           //+'管理部门: '+param.data.applicantName+"<br />"
+           +'联系方式: '+param.data.comNumber+"<br />"
+           +'创建时间: '+param.data.createTime+"<br />"
+        return res
+          }
+        },
         symbolSize: 27,
         encode: {
           value: 2,
@@ -703,6 +712,7 @@ onUnmounted(async()=>{
 .layer {
   width: 100%;
   height: calc(100vh - 100px);
+  //height:100%;
 }
 
 .inner-box2 {
