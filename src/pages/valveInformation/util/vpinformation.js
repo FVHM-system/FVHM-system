@@ -11,6 +11,14 @@ export const fetchHasNoMeterVpinformation = async () => {
   })
 }
 
+export const fetchVpinformationById = async (valveId) => {
+  return await request.get('/valveinfo/getvalveinfobyvalveid',{
+    params:{
+      valveId:valveId,
+    }
+  })
+}
+
 export const fetFindVolumebyTime = async (valveId,startTime,endTime) => {
   return await request.get('/valveinfo/findvolumebytime',{
     params:{
@@ -20,6 +28,7 @@ export const fetFindVolumebyTime = async (valveId,startTime,endTime) => {
     }
   })
 }
+
 export const fetFindvolumebyyear = async (valveId) => {
   return await request.get('/valveinfo/findvolumebyyear',{
     params:{
@@ -27,6 +36,7 @@ export const fetFindvolumebyyear = async (valveId) => {
     }
   })
 }
+
 export const fetFindvolumebyday = async (valveId,type,time) => {
   return await request.get('/valveinfo/findvolumebyday',{
     params:{

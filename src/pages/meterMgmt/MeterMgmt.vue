@@ -82,9 +82,9 @@
           <el-select style="position:relative; left:6%; width:101%" v-model="addModal.data.valveId" placeholder="请选择">
           <el-option
               v-for="item in valvePlugInformation"
-              :key="item.valveId"
-              :label="item.valveId + ' - ' + item.valveName"
-              :value="item.valveId">
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
@@ -143,9 +143,9 @@
           <el-select style="position:relative; left:6%; width:101%" v-model="editModal.data.valveId" placeholder="请选择">
           <el-option
               v-for="item in valvePlugInformation"
-              :key="item.valveId"
-              :label="item.valveId + ' - ' + item.valveName"
-              :value="item.valveId">
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
@@ -192,13 +192,13 @@ import {useStore} from 'vuex'
 import { getMeter, getMeterById, addMeter,
 editMeter, deleteMeter } from "./util/MeterMgmt.js"
 import { getMeterType } from "./util/MeterTypeMgmt.js"
-import {fetchVpinformation, fetchHasNoMeterVpinformation} from "../valveInformation/util/vpinformation.js"
+import {fetchVpinformationById, fetchHasNoMeterVpinformation} from "../valveInformation/util/vpinformation.js"
 import {mountedToArrPrototype} from "../../mock"
 import {ElMessage, ElLoading} from 'element-plus'
 let showpagination = ref(true)
 const store= useStore()
 let date=ref()
-let valvePlugInformation=ref()
+let valvePlugInformation=ref([])
 let valvePlug
 let input = ref('')
 let tableData = ref([])
@@ -303,7 +303,21 @@ const addModal = reactive({
     typeId:'',
     createTime:'',
   },
-  open(){
+  async open(){
+    const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
+    let res = await fetchHasNoMeterVpinformation()
+    if (res.code === '200') {
+    valvePlug = res.data;
+    console.log('sdsd',res.data)
+    valvePlugInformation.value = res.data.map(item=>{
+      return{
+        value:item.valveId,
+        label:item.valveName
+      }
+    })
+    }
+    console.log()
+    loadingInstance.close(valvePlugInformation.value)
     this.show = true;
   },
   async submit(){
@@ -352,7 +366,7 @@ const editModal = reactive({
     typeId:'',
     createTime:'',
   },
-  open(row){
+  async open(row){
     this.data.meterId=row.meterId
     this.data.meterCode=row.meterCode
     this.data.meterName=row.meterName
@@ -360,7 +374,32 @@ const editModal = reactive({
     this.data.status=row.status
     this.data.typeId=row.typeId
     this.data.createTime=row.createTime
+    const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
+    let res = await fetchHasNoMeterVpinformation()
+    if (res.code === '200') {
+    valvePlug = res.data;
+    console.log('sdsd',res.data)
+    valvePlugInformation.value = res.data.map(item=>{
+      return{
+        value:item.valveId,
+        label:item.valveName
+      }
+    })
+    }
+    res = await fetchVpinformationById(row.valveId)
+    if(res.code==='200'){
+      console.log('default',res.data)
+      let tmp = ref([])
+      tmp={
+        value:res.data.valveId,
+        label:res.data.valveName
+      }
+    valvePlugInformation.value.push(tmp)
+    console.log('success',valvePlugInformation.value)
+    }
+
     this.show = true;
+    loadingInstance.close()
   },
   async submit(){
     console.log(this.data)
@@ -420,8 +459,15 @@ onMounted(async () => {
   res = await fetchHasNoMeterVpinformation()
   if (res.code === '200') {
     valvePlug = res.data;
-    valvePlugInformation.value = res.data;
+    console.log('sdsd',res.data)
+    valvePlugInformation.value = res.data.map(item=>{
+      return{
+        value:item.valveId,
+        label:item.valveName
+      }
+    })
   }
+  console.log('success',valvePlugInformation.value)
   loadingInstance.close()
 })
 
