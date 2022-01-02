@@ -192,7 +192,7 @@ import {useStore} from 'vuex'
 import { getMeter, getMeterById, addMeter,
 editMeter, deleteMeter } from "./util/MeterMgmt.js"
 import { getMeterType } from "./util/MeterTypeMgmt.js"
-import {fetchVpinformation} from "../valveInformation/util/vpinformation.js"
+import {fetchVpinformation, fetchHasNoMeterVpinformation} from "../valveInformation/util/vpinformation.js"
 import {mountedToArrPrototype} from "../../mock"
 import {ElMessage, ElLoading} from 'element-plus'
 let showpagination = ref(true)
@@ -417,7 +417,7 @@ onMounted(async () => {
   if (res.code === '200') {
     meterType.value = res.data;
   }
-  res = await fetchVpinformation()
+  res = await fetchHasNoMeterVpinformation()
   if (res.code === '200') {
     valvePlug = res.data;
     valvePlugInformation.value = res.data;

@@ -5,6 +5,12 @@ export const fetchVpinformation = async () => {
   return await request.get('/valveinfo/getvalveinfos', {
   })
 }
+
+export const fetchHasNoMeterVpinformation = async () => {
+  return await request.get('/valveinfo/hasnometervalve', {
+  })
+}
+
 export const fetFindVolumebyTime = async (valveId,startTime,endTime) => {
   return await request.get('/valveinfo/findvolumebytime',{
     params:{
