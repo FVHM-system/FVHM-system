@@ -13,6 +13,11 @@ export const fetchVillageInfo = async () => {
 }
 
 // 仍在使用的旧接口
+
+export const fetchSectionPage = async () => {
+  return await request.Pget('/town/gettotalpage')
+}
+
 export const fetchTownInfo = async () => {
   return await request.Pget('/town/gettownrelationship')
 }

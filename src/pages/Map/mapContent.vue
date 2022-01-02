@@ -7,14 +7,22 @@
 
   </div>
   <div class="layer box">
-    <div class="indexbox2">
-        <div class="header2"><b>阀栓选择</b></div>
+    <div>
+    <div class="miniCicle" v-show="miniShow2" @click="miniClick">
+      <img src="../../assets/feeds.png" style="margin: 10px;width: 30px;height: 30px">
+    </div>
+    <div class="indexbox2" v-show="miniShow" >
+        <div class="header2">
+          <h1 style="font-size: 16px">阀栓选择</h1>
+          <p @click="miniClick2" style="position:absolute;right: 20px">×</p>
+        </div>
         <div class="divider2"></div>
         <div class="inner-box2" id="box">
-          <el-scrollbar height="200px">
+          <el-scrollbar  height="200px">
             <el-tree :check-strictly="false" :data="options" :props="defaultProps" :default-checked-keys="defaultKey" ref="require" @check-change="handleItemChange" node-key="id" show-checkbox="true" />
           </el-scrollbar>
         </div>
+    </div>
     </div>
 
     <div class="map-tip">
@@ -153,7 +161,8 @@ normalWell.value = []
 let normalHydrant = ref([])
 normalHydrant.value = []
 let defaultKey=ref([])
-
+let miniShow = ref(false)
+let miniShow2 = ref(true)
 let offlineWell=ref([])
 offlineWell.value=[]
 let warningWell=ref([])
@@ -321,21 +330,21 @@ async function loadMap() {
       echartsLayerInteractive: true,
       largeMode: false,
     },
-    // tooltip:{
-    //   show:true,
-    //   trigger: 'item',
-    //   formatter:function(param){
-    //     //console.log(param)
-    //     let res
-    //     res='阀栓编号: '+param .data.valveCode+"<br />"
-    //        +'阀栓名称: '+param.data.name+"<br />"
-    //        +'阀栓地址: '+param.data.address+"<br />"
-    //        //+'管理部门: '+param.data.applicantName+"<br />"
-    //        +'联系方式: '+param.data.comNumber+"<br />"
-    //        +'创建时间: '+param.data.createTime+"<br />"
-    //     return res
-    //   },
-    // },
+    tooltip:{
+      show:true,
+      trigger: 'item',
+      formatter:function(param){
+        //console.log(param)
+        let res
+        res='阀栓编号: '+param .data.valveCode+"<br />"
+           +'阀栓名称: '+param.data.name+"<br />"
+           +'阀栓地址: '+param.data.address+"<br />"
+           //+'管理部门: '+param.data.applicantName+"<br />"
+           +'联系方式: '+param.data.comNumber+"<br />"
+           +'创建时间: '+param.data.createTime+"<br />"
+        return res
+      },
+    },
     animation: false,
     series: [
       {
@@ -637,7 +646,7 @@ const fetchData = async () => {
       })
     }
   }
-  
+
   normalWell.value = getList(item => item.status === 1001 && item.valveType === 1)
   normalHydrant.value = getList(item => item.status === 1001 && item.valveType === 2)
   warningWell.value=getList(item => item.status === 4444 && item.valveType === 1)
@@ -656,6 +665,14 @@ const fetchData = async () => {
   console.log("消防栓已经废弃", offlineHydrant.value)
   console.log("阀门尚未安装", uninstalledWell.value)
   console.log("消防栓尚未安装", uninstalledHydrant.value)
+}
+function miniClick(){
+  miniShow.value = true
+  miniShow2.value = false
+}
+function miniClick2(){
+  miniShow.value = false
+  miniShow2.value = true
 }
 
 function changeLayer(e) {
@@ -702,15 +719,18 @@ onUnmounted(async()=>{
 }
 
 .layer {
-  width: 100%;
-  height: calc(100vh - 100px);
+  width: 100vw;
+  margin-left: -20px;
+  margin-top: -20px;
+  height: calc(100vh - 80px);
   //height:100%;
 }
 
 .inner-box2 {
-    width: 350px;
+    min-width: 120px;
     height: 150px;
     margin-left: 10px;
+    margin-right: 10px;
     margin-bottom: 10px;
     display: flex;
     flex-direction: column;
@@ -720,9 +740,9 @@ onUnmounted(async()=>{
 .indexbox2 {
     background: rgb(255, 255, 255, 0.9);
     position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 270px;
+    top: 20px;
+    right: 20px;
+    min-width: 120px;
     height: 220px;
     pointer-events: auto;
     border: 0.5px solid rgba($color: #000000, $alpha: 0.1);
@@ -730,6 +750,9 @@ onUnmounted(async()=>{
     border-radius: 15px;
   }
  .header2 {
+   display: flex;
+   flex-direction: row;
+   min-width: 120px;
     margin: 15px;
     margin-top: 17px;
     margin-bottom: 13px;
@@ -739,17 +762,13 @@ onUnmounted(async()=>{
     border-top: 1px solid rgba($color: #969696, $alpha: 0.15);
     height: 1px;
     overflow: hidden;
-    width: 345px;
+    min-width: 120px;
     margin-left: 10px;
+    margin-right: 10px;
     margin-top: 5px;
     margin-bottom: 5px;
   }
-.layer-out {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  height: calc(100vh - 100px);
-}
+
 
 .navtool {
   position: absolute;
@@ -834,7 +853,18 @@ onUnmounted(async()=>{
   border-bottom-right-radius: 4px;
   overflow: hidden;
 }
-
+.miniCicle{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgb(255, 255, 255, 0.9);
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+}
 .map-tip {
     position: absolute;
     bottom: 80px;
@@ -847,7 +877,7 @@ onUnmounted(async()=>{
       display: flex;
       align-items: center;
       padding: 6px;
-      
+
       .word {
         position: relative;
         left:8px;

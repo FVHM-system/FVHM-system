@@ -336,6 +336,7 @@ onMounted(async () => {
   } else {
     currentData.value = tableData.value.slice(0, pageSize)
   }
+  console.log('ssssssssssss',currentData.value)
   options.value = await fetchSuper()
   console.log(proxy)
 })

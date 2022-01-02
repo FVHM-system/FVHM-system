@@ -10,8 +10,8 @@
       <el-button style="position:relative; left:28%" type="primary" @click="reset()">重置</el-button>
       <el-button style="position:relative; left:50%" type="primary" @click="addModal.open()">新增单位</el-button>
     </div>
+    <div id="box">
         <el-table
-            v-loading="loading"
             :data=currentData
             :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
@@ -41,7 +41,7 @@
             </template>
           </el-table-column>
         </el-table>
-
+      </div>
         <div class="pagination-out">
         <div class="pagination-in">
         <el-pagination
@@ -135,6 +135,7 @@
 </template>
 <script setup>
 import {defineComponent, onMounted, ref,toRefs,reactive, computed} from 'vue'
+import { ElLoading } from 'element-plus'
 import {useStore} from 'vuex'
 import { getApplicant, searchApplicant, addApplicant,
 editApplicant, deleteApplicant } from "./util/ApplicantMgmt.js"
@@ -148,7 +149,6 @@ let currentPage = 1
 let pageSize = 10
 let currentData = ref([])
 let tableHeight = window.innerHeight - 310
-let loading=ref(true)
 function handleSizeChange(val) {
   pageSize = val;
 }
@@ -292,11 +292,13 @@ async function deleteApp(id){
 
 onMounted(async () => {
   mountedToArrPrototype()
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
   let res = await getApplicant()
   if (res.code === '200') {
     tableData.value = res.data;
     currentData.value = tableData.value.slice(0, pageSize)
   }
+  loadingInstance.close()
 })
 
 </script>

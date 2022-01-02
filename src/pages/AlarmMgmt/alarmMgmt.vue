@@ -19,13 +19,12 @@
               ref="require"
               placeholder="选择地址"
               :show-all-levels="false"
-              style="width: 110px;"
-              size="small"
+              style="width: 118px;"
               clearable></el-cascader>
         </el-form-item>
         <el-form-item prop="type">
-          <el-select v-model="searchForm.type" placeholder="选择阀栓类型"  size="small"
-                     style="margin-left:-110px;width: 130px;">
+          <el-select v-model="searchForm.type" placeholder="选择阀栓类型"
+                     style="margin-left:-110px;width: 138px;">
             <el-option
                 v-for="item in types"
                 :key="item.value"
@@ -37,7 +36,7 @@
         </el-form-item>
         <el-form-item prop="typeWarn">
           <el-select v-model="searchForm.typeWarn" placeholder="选择报警类型"
-                     size="small" style="margin-left:-110px;width: 140px;">
+                     style="margin-left:-110px;width: 138px;">
             <el-option
                 v-for="item in alarmType"
                 :key="item.value"
@@ -49,7 +48,7 @@
         </el-form-item>
         <el-form-item prop="status">
           <el-select v-model="searchForm.status" placeholder="选择处理状态"
-                     size="small" style="margin-left:-110px;width: 140px;">
+                     style="margin-left:-110px;width: 138px;">
             <el-option
                 v-for="item in statuss"
                 :key="item.value"
@@ -66,16 +65,15 @@
             range-separator="至"
             start-placeholder="Start date"
             end-placeholder="End date"
-            style="margin-left:-110px;"
-            size="small"
+            style="margin-left:-110px;width: 360px"
             >
             </el-date-picker>
         </el-form-item>
         <el-form-item>
           <div class="button">
-            <el-button size="small" v-model="search" type="primary" @click="dataRSearch">查询</el-button>
-            <el-button size="small" type="info" @click="dataRequire">重置</el-button>
-            <el-button size="small" type="primary">导出</el-button>
+            <el-button v-model="search" type="primary" @click="dataRSearch">查询</el-button>
+            <el-button type="info" @click="dataRequire">重置</el-button>
+            <el-button type="primary">导出</el-button>
           </div>
         </el-form-item>
       </el-form>
@@ -316,6 +314,7 @@ onMounted(async () => {
   if (res.code === '200') {
     tableData.value = res.data;
   }
+  console.log("嘎嘎嘎嘎嘎g",res.data)
   if (tableData.value.length < pageSize) {
     currentData.value = tableData.value
   } else {
