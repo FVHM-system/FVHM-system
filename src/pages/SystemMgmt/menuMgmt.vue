@@ -341,7 +341,7 @@ onMounted(async () => {
 
 .addbutton {
   position: relative;
-  margin-left: 100px;
+  left: 85%;
   top: 8px;
 }
 

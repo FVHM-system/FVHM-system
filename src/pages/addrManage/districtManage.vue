@@ -17,13 +17,13 @@
         </div>
       </div>
     </div>
-    <div class="p-body">
+    <div class="p-body" id="box">
       <el-table
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
-          :data="districtList" style="margin-top:10px;width: 100%" size="medium" stripe>
+          :data="districtList" style="margin-top:10px;width: 100%" size="medium" :height="tableHeight" empty-text=" " stripe>
         <el-table-column prop="district" label="区县名" min-width="150"></el-table-column>
         <el-table-column prop="city" sortable label="所属城市" min-width="150"></el-table-column>
         <el-table-column fixed="right" label="操作" width="230">
@@ -58,7 +58,7 @@
 <script setup>
 import {ref, onMounted, computed, reactive} from 'vue'
 import {functions} from 'lodash'
-import {ElMessageBox, ElMessage} from 'element-plus'
+import {ElMessageBox, ElMessage,ElLoading} from 'element-plus'
 import {
   fetchCityList,
   fetchDistrictList,
@@ -79,6 +79,7 @@ let modal = ref()
 let modalState = ref(false)
 let mode = ref('')
 let currentItem = ref()
+let tableHeight = window.innerHeight - 240
 let modalTitle = computed(() => {
   let res
   if (mode.value === 'add') {
@@ -211,6 +212,7 @@ const editModal = {
 }
 
 onMounted(() => {
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
   authority.value=fetchAuthority()
   if(authority.value==='ROLE_ADMIN'){
     buttonState.value=false
@@ -218,6 +220,7 @@ onMounted(() => {
     buttonState.value=true
   }
   myFunc.search()
+  loadingInstance.close()
 })
 </script>
 

@@ -17,13 +17,13 @@
         </div>
       </div>
     </div>
-    <div class="p-body">
+    <div class="p-body" id="box">
       <el-table :data="townList"
                 :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
                 :cell-style="{'text-align':'center'}"
                 :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
-                style="margin-top:10px;width: 100%" size="medium" stripe>
+                style="margin-top:10px;width: 100%" size="medium" :height="tableHeight" empty-text=" " stripe>
         <el-table-column prop="town" label="乡镇名" min-width="150"></el-table-column>
         <el-table-column prop="district" sortable label="所属区县" min-width="150"></el-table-column>
         <el-table-column prop="city" sortable label="所属城市" min-width="150"></el-table-column>
@@ -59,7 +59,7 @@
 <script setup>
 import {ref, onMounted, computed, reactive} from 'vue'
 import {functions} from 'lodash'
-import {ElMessageBox, ElMessage} from 'element-plus'
+import {ElMessageBox, ElMessage,ElLoading} from 'element-plus'
 import {
   fetchCityList,
   fetchDistrictList,
@@ -77,11 +77,11 @@ let authority=ref('')
 let buttonState=ref(false)//禁用按钮
 let townList = ref([])
 let districtList = ref([])
-let cityList = ref([])
 let modal = ref()
 let modalState = ref(false)
 let mode = ref('')
 let currentItem = ref()
+let tableHeight = window.innerHeight - 240
 let modalTitle = computed(() => {
   let res
   if (mode.value === 'add') {
@@ -99,8 +99,6 @@ const myFunc = {
   async search() {
     const temp1 = await fetchTownList()
     townList.value = temp1
-    const temp2 = await fetchCityList()
-    cityList.value = temp2
     const temp3 = await fetchDistrictList()
     districtList.value = temp3
   },
@@ -216,6 +214,7 @@ const editModal = {
 }
 
 onMounted(() => {
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
   authority.value=fetchAuthority()
   if(authority.value==='ROLE_ADMIN'){
     buttonState.value=false
@@ -223,6 +222,7 @@ onMounted(() => {
     buttonState.value=true
   }
   myFunc.search()
+  loadingInstance.close()
 })
 </script>
 

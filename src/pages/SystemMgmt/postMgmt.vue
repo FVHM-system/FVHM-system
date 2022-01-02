@@ -220,7 +220,7 @@ onMounted(postFunc.fetchPost)
 
 .addbutton {
   position: relative;
-  margin-left: 130px;
+  left: 85%;
   top: 8px;
 }
 

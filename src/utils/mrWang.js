@@ -23,13 +23,13 @@ export function dateTimeTrans(d, searchTimeType) {
   let yy = d.getFullYear()
   let MM = genTwoLengthNumberString(d.getMonth() + 1)
   let dd = genTwoLengthNumberString(d.getDate())
-  if (searchTimeType === '日') {
+  if (searchTimeType === '日报') {
     return yy + '-' + MM + '-' + dd
   }
-  if (searchTimeType === '月') {
+  if (searchTimeType === '月报') {
     return yy + '-' + MM
   }
-  if (searchTimeType === '年') {
+  if (searchTimeType === '年报') {
     return yy
   }
 }
