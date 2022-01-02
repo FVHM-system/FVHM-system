@@ -17,14 +17,14 @@
         </div>
       </div>
     </div>
-    <div class="p-body">
+    <div class="p-body" id="box">
       <el-table
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
-          :data="sectionList" style="margin-top:10px;width: 100%" size="medium" stripe>
-        <el-table-column prop="section" label="路段名" min-width="150"></el-table-column>
+          :data="sectionList" :height="tableHeight" empty-text=" " style="margin-top:10px;width: 100%" size="medium" stripe>
+        <el-table-column prop="section" sortable label="路段名" min-width="150"></el-table-column>
         <el-table-column prop="road" sortable label="所属道路" min-width="150"></el-table-column>
         <el-table-column prop="village" sortable label="所属村庄" min-width="150"></el-table-column>
         <el-table-column prop="town" sortable label="所属乡镇" min-width="150"></el-table-column>
@@ -38,7 +38,6 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="p-foot"></div>
   </div>
   <el-dialog v-model="modalState" :title="modalTitle" center>
     <el-form :model="addForm" label-width="100px" :inline="false">
@@ -62,7 +61,7 @@
 <script setup>
 import {ref, onMounted, computed, reactive} from 'vue'
 import {functions} from 'lodash'
-import {ElMessageBox, ElMessage} from 'element-plus'
+import {ElMessageBox, ElMessage,ElLoading} from 'element-plus'
 import {
   fetchCityList,
   fetchVillageList,
@@ -83,14 +82,11 @@ let authority=ref('')
 let buttonState=ref(false)//禁用按钮
 let sectionList=ref([])
 let roadList = ref([])
-let villageList = ref([])
-let townList = ref([])
-let districtList = ref([])
-let cityList = ref([])
 let modal = ref()
 let modalState = ref(false)
 let mode = ref('')
 let currentItem = ref()
+let tableHeight = window.innerHeight - 240
 let modalTitle = computed(() => {
   let res
   if (mode.value === 'add') {
@@ -100,24 +96,23 @@ let modalTitle = computed(() => {
   }
   return res
 })
+function handleSizeChange(val) {
+  pageSize = val;
+}
+function handleCurrentChange(val) {
+  currentPage = val;
+  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+}
 const addForm = reactive({
   name: '',
   zoneId: '',
 })
 const myFunc = {
   async search() {
-    const temp1 = await fetchRoadList()
-    roadList.value = temp1
-    const temp2 = await fetchCityList()
-    cityList.value = temp2
-    const temp3 = await fetchDistrictList()
-    districtList.value = temp3
-    const temp4 = await fetchTownList()
-    townList.value = temp4
-    const temp5 = await fetchVillageList()
-    villageList.value = temp5
     const temp6 = await fetchSectionList()
     sectionList.value = temp6
+    const temp1 = await fetchRoadList()
+    roadList.value = temp1
   },
   async add() {
     const r = await AddSectionInfoByConfig({
@@ -231,6 +226,7 @@ const editModal = {
 }
 
 onMounted(() => {
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
   authority.value=fetchAuthority()
   if(authority.value==='ROLE_ADMIN'){
     buttonState.value=false
@@ -238,6 +234,7 @@ onMounted(() => {
     buttonState.value=true
   }
   myFunc.search()
+  loadingInstance.close()
 })
 </script>
 

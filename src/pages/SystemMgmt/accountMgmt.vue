@@ -14,19 +14,26 @@
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
           style="width: 100%"
       >
-        <el-table-column prop="userName" label="用户名" width="280"></el-table-column>
-        <el-table-column label="备注" min-width="280">
+        <el-table-column prop="userName" label="用户名" width="200"></el-table-column>
+        <el-table-column label="备注" min-width="200">
           <template #default="scope">
             {{ scope.row.description || '暂无备注' }}
           </template>
         </el-table-column>
-        <el-table-column width="700px" label="操作" fixed="right">
+        <el-table-column prop="phone" label="电话号码" width="200"></el-table-column>
+        <el-table-column width="600px" label="操作" fixed="right">
           <template #default="scope">
             <!-- <el-button type="primary" @click="changeModal.editPost(true) && changeCurrentUser(scope.row)"
             >修改岗位</el-button
           > -->
             <el-button type="primary"
+                       @click="changeModal.editName(true) && changeCurrentUser(scope.row)">修改用户名
+            </el-button>
+            <el-button type="primary"
                        @click="changeModal.editDesc(true) && changeCurrentUser(scope.row)">修改备注
+            </el-button>
+            <el-button type="primary"
+                       @click="changeModal.editPhone(true) && changeCurrentUser(scope.row)">修改电话
             </el-button>
             <el-button type="primary"
                        @click="changeModal.editPassword(true) && changeCurrentUser(scope.row)">修改密码
@@ -46,6 +53,7 @@
       <div class="pagination-out">
       <div class="pagination-in">
         <el-pagination
+            v-if="showpagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
@@ -74,6 +82,18 @@
       </el-form>
     </el-dialog>
 
+    <el-dialog v-model="modalState.editName" title="修改用户名">
+      <el-form :model="form.editDesc" :label-col="{ span: 8 }" :wrapper-col="{ span: 14 }">
+        <el-form-item label="用户名">
+          {{ currentUser.userName }}
+        </el-form-item>
+        <el-form-item label="新用户名">
+          <el-input v-model="form.editName.name"/>
+        </el-form-item>
+        <el-button type="primary" @click="userFunc.editName()">确定</el-button>
+      </el-form>
+    </el-dialog>
+
     <el-dialog v-model="modalState.editDesc" title="修改备注">
       <el-form :model="form.editDesc" :label-col="{ span: 8 }" :wrapper-col="{ span: 14 }">
         <el-form-item label="用户名">
@@ -86,13 +106,31 @@
       </el-form>
     </el-dialog>
 
+    <el-dialog v-model="modalState.editPhone" title="修改电话">
+      <el-form :model="form.editDesc" :label-col="{ span: 8 }" :wrapper-col="{ span: 14 }">
+        <el-form-item label="用户名">
+          {{ currentUser.userName }}
+        </el-form-item>
+        <el-form-item label="新电话号码">
+          <el-input v-model="form.editPhone.phone"/>
+        </el-form-item>
+        <el-button type="primary" @click="userFunc.editPhone()">确定</el-button>
+      </el-form>
+    </el-dialog>
+
     <el-dialog v-model="modalState.editPassword" title="修改密码">
       <el-form :model="form.editPassword" :label-col="{ span: 8 }" :wrapper-col="{ span: 14 }">
         <el-form-item label="用户名">
           {{ currentUser.userName }}
         </el-form-item>
+        <el-form-item label="原密码" required>
+          <el-input show-password v-model="form.editPassword.oldPassword"/>
+        </el-form-item>
         <el-form-item label="新密码" required>
-          <el-input v-model="form.editPassword.password"/>
+          <el-input show-password v-model="form.editPassword.password"/>
+        </el-form-item>
+        <el-form-item label="确认新密码" required>
+          <el-input show-password v-model="form.editPassword.confirmPassword"/>
         </el-form-item>
         <el-button type="primary" @click="userFunc.editPassword()">确定</el-button>
       </el-form>
@@ -109,8 +147,10 @@ import {ElMessage} from 'element-plus'
 import {
   addAccount,
   deleteAccount,
+  editAccountName,
   editAccountPassword,
   editAccountDesc,
+  editAccountPhone,
   editAccountPost,
   fetchAccountsList,
 } from '/src/apis/account.js'
@@ -119,9 +159,8 @@ const tableData = ref([])
 let currentPage = 1
 let pageSize = 10
 const currentUser = ref({})
-const currentData = computed(() => {
-  return tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-})
+let currentData = ref([])
+let showpagination = ref(true)
 
 function handleSizeChange(val) {
   pageSize = val;
@@ -138,39 +177,56 @@ const changeCurrentUser = user => {
   console.log('change', user)
 }
 const addForm = reactive({
-  username: '',
-  password: '',
-  describe: '',
-  post: '',
+  username: null,
+  password: null,
+  describe: null,
+  phone: null,
+  post: null,
 })
 const editPasswordForm = reactive({
-  password: '',
+  oldPassword:null,
+  password: null,
+  confirmPassword: null,
 })
+
+const editNameForm = reactive({
+  desc: null,
+})
+
 const editDescForm = reactive({
-  desc: '',
+  desc: null,
+})
+const editPhoneForm = reactive({
+  phone: null,
 })
 const editPostForm = reactive({
-  post: '',
+  post: null,
 })
 const form = {
   add: addForm,
+  editName: editNameForm,
   editPassword: editPasswordForm,
   editPost: editPostForm,
   editDesc: editDescForm,
+  editPhone: editPhoneForm,
 }
 
 const modalState = reactive({
   add: false,
+  editName: false,
   editPassword: false,
   editDesc: false,
   editPost: false,
+  editPhone: false,
 })
 
 const changeModal = {
   add: e => (modalState.add = e),
+  editName: e => (modalState.editName = e),
   editPassword: e => (modalState.editPassword = e),
   editPost: e => (modalState.editPost = e),
   editDesc: e => (modalState.editDesc = e),
+  editPhone: e => (modalState.editPhone = e),
 }
 
 const helper = {
@@ -184,12 +240,37 @@ const helper = {
   },
 }
 
+
+
 const userFunc = {
   async fetchUser() {
     const data = (await fetchAccountsList()) || []
     tableData.value = data
   },
+
+  async editName() {
+    console.log(currentUser.value.phone)
+    const res = await editAccountName({
+      id: currentUser.value.userId,
+      name: editNameForm.name
+    })
+    if (res) {
+      helper.alertSuccessAndRefresh('修改用户名成功！')
+      editNameForm.name = ''
+      changeModal.editName(false)
+      await this.fetchUser()
+      currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+    }
+  },
+
   async editPassword() {
+    if (!editPasswordForm.oldPassword) {
+      ElMessage({
+        type: 'info',
+        message: '原密码不能为空',
+      })
+      return
+    }
     if (!editPasswordForm.password) {
       ElMessage({
         type: 'info',
@@ -197,10 +278,16 @@ const userFunc = {
       })
       return
     }
+    if (!(editPasswordForm.password==editPasswordForm.confirmPassword)) {
+      ElMessage({
+        type: 'info',
+        message: '两次输入的新密码不同',
+      })
+      return
+    }
     const res = await editAccountPassword({
       id: currentUser.value.userId,
-      name: currentUser.value.userName,
-      desc: currentUser.value.description,
+      oldPassword: editPasswordForm.oldPassword,
       password: editPasswordForm.password,
     })
     if (res) {
@@ -221,7 +308,23 @@ const userFunc = {
       helper.alertSuccessAndRefresh('修改备注成功！')
       editDescForm.desc = ''
       changeModal.editDesc(false)
-      this.fetchUser()
+      await this.fetchUser()
+      currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+    }
+  },
+
+  async editPhone() {
+    console.log(currentUser.value.phone)
+    const res = await editAccountPhone({
+      id: currentUser.value.userId,
+      phone: editPhoneForm.phone
+    })
+    if (res) {
+      helper.alertSuccessAndRefresh('修改电话成功！')
+      editPhoneForm.phone = ''
+      changeModal.editPhone(false)
+      await this.fetchUser()
+      currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
     }
   },
   // async editPost() {
@@ -240,7 +343,8 @@ const userFunc = {
     const res = await deleteAccount({ids: id})
     if (res) {
       helper.alertSuccessAndRefresh('删除用户成功！')
-      this.fetchUser()
+      await this.fetchUser()
+      currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
     }
   },
   async addUser() {
@@ -251,6 +355,7 @@ const userFunc = {
       })
       return
     }
+    console.log(addForm)
     const res = await addAccount({
       ...addForm,
     })
@@ -259,11 +364,16 @@ const userFunc = {
       addForm.username = ''
       addForm.password = ''
       changeModal.add(false)
-      this.fetchUser()
+      await this.fetchUser()
+      currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
     }
   },
 }
-onMounted(userFunc.fetchUser)
+
+onMounted(async () => {
+  await userFunc.fetchUser()
+  currentData.value = tableData.value.slice(0, pageSize)
+  })
 </script>
 
 <style lang="scss" scoped>

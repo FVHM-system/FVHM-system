@@ -228,6 +228,10 @@ let availableoption = ref([
 ])
 let deptoption = ref()
 
+function handleCurrentChange(val) {
+  currentPage = val;
+  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+}
 function dateFormatter(str){//默认返回yyyy-MM-dd HH-mm-ss
 	var hasTime = arguments[1] != false ? true : false;//可传第二个参数false，返回yyyy-MM-dd
 	var d = new Date(str);
@@ -247,12 +251,7 @@ function dateFormatter(str){//默认返回yyyy-MM-dd HH-mm-ss
 function handleSizeChange(val) {
   pageSize = val;
 }
-// 当前页
-function handleCurrentChange(val) {
-  currentPage = val;
-  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-  console.log(currentPage)
-}
+
 
 const statusFormate = function (row){
   return ['danger','success'][row.available]

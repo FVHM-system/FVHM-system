@@ -24,8 +24,8 @@
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
                 :cell-style="{'text-align':'center'}"
                 :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
-                size="medium" stripe>
-        <el-table-column prop="village" label="村庄名" min-width="150"></el-table-column>
+                size="medium" :height="tableHeight" empty-text=" " stripe>
+        <el-table-column prop="village" sortable label="村庄名" min-width="150"></el-table-column>
         <el-table-column prop="town" sortable label="所属乡镇" min-width="150"></el-table-column>
         <el-table-column prop="district" sortable label="所属区县" min-width="150"></el-table-column>
         <el-table-column prop="city" sortable label="所属城市" min-width="150"></el-table-column>
@@ -61,7 +61,7 @@
 <script setup>
 import {ref, onMounted, computed, reactive} from 'vue'
 import {functions} from 'lodash'
-import {ElMessageBox, ElMessage} from 'element-plus'
+import {ElMessageBox, ElMessage,ElLoading} from 'element-plus'
 import {
   fetchCityList,
   fetchDistrictList,
@@ -86,6 +86,7 @@ let modal = ref()
 let modalState = ref(false)
 let mode = ref('')
 let currentItem = ref()
+let tableHeight = window.innerHeight - 240
 let modalTitle = computed(() => {
   let res
   if (mode.value === 'add') {
@@ -222,6 +223,7 @@ const editModal = {
 }
 
 onMounted(() => {
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
   authority.value=fetchAuthority()
   if(authority.value==='ROLE_ADMIN'){
     buttonState.value=false
@@ -229,6 +231,7 @@ onMounted(() => {
     buttonState.value=true
   }
   myFunc.search()
+  loadingInstance.close()
 })
 </script>
 
