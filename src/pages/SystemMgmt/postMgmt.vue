@@ -7,7 +7,7 @@
       </el-button>
     </div>
       <el-table
-          :data="postList"
+          :data="currentData"
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
           :cell-style="{'text-align':'center'}"
@@ -34,6 +34,21 @@
           </template>
         </el-table-column>
       </el-table>
+
+      <div class="pagination-out">
+      <div class="pagination-in">
+        <el-pagination
+            v-if="showpagination"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 50, 100]"
+            :page-size="pageSize"
+            style="margin-top: 10px;"
+            :total="tableData.length">
+        </el-pagination>
+      </div>
+    </div>
 
     <el-dialog v-model="modalState" title="新增岗位">
       <el-form :model="form" :label-col="{ span: 8 }" :wrapper-col="{ span: 14 }">
@@ -70,6 +85,21 @@ import {addPost, deletePost, editPostByConfig, fetchPostList} from '/src/apis/po
 
 const router = useRouter()
 
+let currentData = ref([])
+let showpagination = ref(true)
+let currentPage = 1
+let pageSize = 10
+function handleSizeChange(val) {
+  pageSize = val;
+}
+// 当前页
+function handleCurrentChange(val) {
+  currentPage = val;
+  currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  console.log(currentPage)
+}
+
+
 const form = reactive({
   name: '',
   desc: '',
@@ -82,9 +112,7 @@ const tableData = ref([])
 const modalState = ref(false)
 const editState = ref(false)
 const current = ref({})
-const postList = computed(() => {
-  return (tableData.value || [])
-})
+
 
 const changeCurrent = c => {
   current.value = c
@@ -186,6 +214,7 @@ const postFunc = {
     const data = (await fetchPostList()) || []
     // console.log("data", data)
     tableData.value = data
+    currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
   },
 }
 
