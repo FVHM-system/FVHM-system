@@ -314,7 +314,7 @@ async function exportCSV() {
   
   let temp=await fetchVpinformation()
   temp.data.map(item=>{
-    if(item.valveType===1){
+    if(item.valveType===1){//
       item.valveType="阀门"
     }else if(item.valveType===2){
       item.valveType="消防栓"
