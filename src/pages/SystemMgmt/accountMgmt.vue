@@ -5,7 +5,6 @@
       <p class="page-name">用户管理</p>
       <el-button class="addbutton" type="primary" @click="changeModal.add(true)">新增用户</el-button>
     </div>
-    <el-scrollbar class="data-chart">
       <el-table
           :data="currentData"
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
@@ -64,8 +63,6 @@
         </el-pagination>
       </div>
     </div>
-    
-    </el-scrollbar>
 
     <el-dialog v-model="modalState.add" title="新增用户" style="font-weight: 500">
       <el-form :model="form.add" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">

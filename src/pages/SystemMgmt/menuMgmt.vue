@@ -5,7 +5,7 @@
       <p class="page-name">菜单管理</p>
       <el-button class="addbutton" type="primary" @click="modal.open()">新增菜单</el-button>
     </div>
-    <el-scrollbar class="data-chart">
+
       <el-table
           :data="currentData"
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
@@ -55,7 +55,7 @@
         </el-pagination>
       </div>
     </div>
-    </el-scrollbar>
+
     <el-dialog v-model="modalState" :title="modalTitle" style="font-weight: 500">
       <el-form :model="form" label-width="100px" :inline="false">
         <el-form-item label="菜单名称" required>
