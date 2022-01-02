@@ -2,7 +2,7 @@
   <div class="p-page">
     <div class="p-header">
       <p class="page-name">统计报表</p>
-      <div class="op-flex">
+      <div class="op-flex" id="box2">
         <el-cascader
             v-model="place"
             :options="options"
@@ -12,14 +12,14 @@
             placeholder="选择行政区域"
             @expand-change="handleItemChange"
             collapse-tags="true"
-            style="left: 390px;width: 200px"
+            style="left: 370px;min-width: 220px;max-height:40px"
             clearable/>
         <el-select
             v-model="searchTimeType"
             placeholder="选择时间段"
             @change="handleChange"
             class="margin-right"
-            style="left:380px;width: 70px"
+            style="left:360px;min-width: 90px"
         >
           <el-option v-for="(item, index) in timeTypes" :key="index" :value="item.value">
             {{ item.lable }}
@@ -31,8 +31,8 @@
               type="date"
               placeholder="选择某天"
               class="search"
-              style="left:390px;width: 200px"
-              v-if="timeActive === '日'"
+              style="left:370px;min-width: 200px"
+              v-if="timeActive === '日报'"
           ></el-date-picker>
           <el-date-picker
               v-model="searchTime"
@@ -40,7 +40,7 @@
               placeholder="选择某月"
               class="search"
               style="left:390px;width: 200px"
-              v-if="timeActive === '月'"
+              v-if="timeActive === '月报'"
           ></el-date-picker>
           <el-date-picker
               v-model="searchTime"
@@ -48,14 +48,14 @@
               placeholder="选择某年"
               class="search"
               style="left:390px;width: 200px"
-              v-if="timeActive === '年'"
+              v-if="timeActive === '年报'"
           ></el-date-picker>
         </div>
         <el-button type="primary" class="search-btn" @click="search">查询</el-button>
         <el-button type="primary" class="export-btn" @click="exportCSV">导出</el-button>
       </div>
     </div>
-    <div class="p-body">
+    <div class="p-body" id="box">
       <el-table
           :data="data"
           height="70vh"
@@ -65,7 +65,7 @@
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
           stripe
-          style="width: 100%"
+          style="width: 100%"  empty-text=" "
       >
         <el-table-column min-width="1" align="center" prop="place" label="行政区域"></el-table-column>
         <el-table-column sortable min-width="2" align="center" prop="valveVolume"
@@ -82,6 +82,7 @@
 <script setup>
 import {multiply} from 'lodash'
 import {getCurrentInstance, onMounted, ref} from 'vue'
+import {ElLoading} from 'element-plus'
 import {
   fetchCityList,
   fetchDistrictList,
@@ -107,23 +108,23 @@ let options = ref([])
 let require = ref(null)
 let myprops = ref()
 let place = ref()
-let searchTimeType = ref('日')
+let searchTimeType = ref('日报')
 let searchTime = ref(new Date())
-let timeActive = ref('日')
+let timeActive = ref('日报')
 let data = ref([])
 let allData = ref([])
 const {proxy} = getCurrentInstance()
 const timeTypes = [
   {
-    value: '日',
+    value: '日报',
     lable: '日报',
   },
   {
-    value: '月',
+    value: '月报',
     lable: '月报',
   },
   {
-    value: '年',
+    value: '年报',
     lable: '年报',
   },
 ]
@@ -385,11 +386,11 @@ function exportCSV() {
 async function init() {
   let myData = ([1]).map(async (item) => {
     let valveVolume, hydrantVolume, totalVolume, type
-    if (searchTimeType.value === '年') {
+    if (searchTimeType.value === '年报') {
       type = 'year'
-    } else if (searchTimeType.value === '月') {
+    } else if (searchTimeType.value === '月报') {
       type = 'month'
-    } else if (searchTimeType.value === '日') {
+    } else if (searchTimeType.value === '日报') {
       type = 'day'
     }
     const temp1 = await fetchCityReport({
@@ -416,13 +417,14 @@ async function init() {
 async function search() {
   console.log("options", options)
   console.log("我的当前选择", fetchMychoice())
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
   let myData = (fetchMychoice() || []).map(async (item) => {
     let valveVolume, hydrantVolume, totalVolume, type
-    if (searchTimeType.value === '年') {
+    if (searchTimeType.value === '年报') {
       type = 'year'
-    } else if (searchTimeType.value === '月') {
+    } else if (searchTimeType.value === '月报') {
       type = 'month'
-    } else if (searchTimeType.value === '日') {
+    } else if (searchTimeType.value === '日报') {
       type = 'day'
     }
     if (item.type === 'city') {
@@ -509,14 +511,16 @@ async function search() {
   //console.log("测试测试",myData)
   data.value = await Promise.all(myData)//important
   console.log("测试测试",data.value)
+  loadingInstance.close()
 }
 
 onMounted(async () => {
+  const loadingInstance = ElLoading.service({fullscreen: true})
   // getNodes()
-  init()
   const temp = await fetchSuper()
-  console.log("啊啊啊啊", temp)
   options.value = temp
+  init()
+  loadingInstance.close()
 })
 </script>
 

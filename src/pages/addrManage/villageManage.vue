@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <div class="p-body">
+    <div class="p-body" id="box">
       <el-table :data="villageList"
                 style="margin-top:10px;width: 100%"
                 :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
