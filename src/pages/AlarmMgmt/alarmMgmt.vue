@@ -9,7 +9,7 @@
           :rules="rules"
           label-width="120px"
           class="searchForm"
-          style="margin-left: 50px;top:3px"
+          style="margin-left: 10px;top:3px"
       >
         <el-form-item prop="place">
           <el-cascader
@@ -23,7 +23,7 @@
               clearable></el-cascader>
         </el-form-item>
         <el-form-item prop="type">
-          <el-select v-model="searchForm.type" placeholder="选择类型"
+          <el-select v-model="searchForm.type" placeholder="选择阀栓类型"
                      style="margin-left:-110px;width: 140px;">
             <el-option
                 v-for="item in types"
@@ -34,8 +34,20 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item prop="typeWarn">
+          <el-select v-model="searchForm.typeWarn" placeholder="选择报警类型"
+                     style="margin-left:-110px;width: 140px;">
+            <el-option
+                v-for="item in alarmType"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item prop="status">
-          <el-select v-model="searchForm.status" placeholder="选择状态"
+          <el-select v-model="searchForm.status" placeholder="选择处理状态"
                      style="margin-left:-110px;width: 140px;">
             <el-option
                 v-for="item in statuss"
@@ -77,10 +89,10 @@
           style="width: 100%"
           :height="tableHeight"
       >
-        <el-table-column fixed="left" label="报警编号" prop="warnId" width="120px"/>
-        <el-table-column fixed="left" label="设备编号" prop="valveId" width="120px"/>
+        <el-table-column fixed="left" label="阀栓编号" prop="valveCode" width="120px"/>
+        <el-table-column label="阀栓类型" prop="valveType" :formatter="typeFormate2" width="120px"/>
         <el-table-column fixed="left" label="阀栓名称" prop="valveName" width="120px"/>
-        <el-table-column label="所属道路" prop="roadName" width="200px"/>
+        <el-table-column label="地址" prop="address" width="200px"/>
         <el-table-column label="报警类型" prop="warnType" :formatter="typeFormate" width="200px"/>
         <el-table-column label="状态" prop="warnStatus" :formatter="statusFormate" width="200px"/>
         <el-table-column label="报警时间" prop="warnTime" width="200px"/>
@@ -109,6 +121,7 @@
               :page-size="pageSize"
               style="margin-top: 10px;"
               hide-on-single-page
+              v-if="pageshow"
               :total="tableData.length">
           </el-pagination>
         </div>
@@ -139,6 +152,7 @@ let tableData = ref([]) //表单数据初始化
 let place = ref('') //道路选择变量初始化
 let currentData = ref([])
 let currentPage = 1
+let pageshow = ref(true)
 let pageSize = 10// 每页多少条
 let CarProps
 /* 初始化级联菜单选项 */
@@ -221,6 +235,11 @@ const handleStatus = async item => {
     })
     location.reload()
   }
+}
+/* 阀栓代码与文本转换 */
+const typeFormate2 = function (row) {
+  const target = types.find(i => i.value === row.valveType)
+  return target.label;
 }
 /* 阀栓类型码转文本 */
 const typeFormate = function (row) {

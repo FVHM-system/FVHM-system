@@ -109,6 +109,7 @@
               :current-page="currentPage"
               :page-sizes="[10, 20, 30, 50, 100]"
               :page-size="pageSize"
+              v-if="pageshow"
               style="margin-top: 10px;"
               hide-on-single-page
               :total="tableData.length">
@@ -141,12 +142,13 @@ let input2 = ref('')
 let options = ref([])
 let tableData = ref([])
 let currentData = ref([])
-let currentPage = 1
+let currentPage = ref(1)
 let pageSize = 10// 每页多少条
 let excelData = ref([])
 let testnum = ref('')
 let require = ref(null)
 let myprops = ref()
+let pageshow = ref(true)
 let dialogVisible = ref(false)
 myprops = {
   label: 'name',
@@ -242,6 +244,7 @@ const dataFind = async function () {
 
 const dataRequire = async function () {
   proxy.$refs.ruleFormRef.resetFields()
+  pageshow.value = false
   let res = await fetchVpinformation()
   if (res.code === '200') {
     tableData.value = res.data;
@@ -251,6 +254,8 @@ const dataRequire = async function () {
   } else {
     currentData.value = tableData.value.slice(0, pageSize)
   }
+  pageshow.value = true
+  currentPage = 1
 }
 const deleteValve = async function (row) {
   let res = await fetDeleteValveInfo({valveId: row.valveId})
