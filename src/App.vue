@@ -26,10 +26,8 @@
 
           <el-container>
             <div class="scroll-out">
-              <el-scrollbar>
-                <el-main>
+              <el-scrollbar style="background-color: #F8F8F8">
                   <router-view></router-view>
-                </el-main>
               </el-scrollbar>
             </div>
           </el-container>

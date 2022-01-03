@@ -5,23 +5,29 @@
     </div>
     <div class="content">
       <div class="sum">
-        <div style="text-align: center">
-          <span class="number">{{ counts.total }}</span>
-          <span>个</span>
+        <div style="width:100%;display: flex;flex-direction: column;align-items: center">
+          <div style="display: flex;justify-content: center;align-items: center;">
+            <span class="number">{{ counts.total }}</span>
+            <span>个</span>
+          </div>
           <span class="explain middle">(安装总量)</span>
         </div>
       </div>
       <div class="finish">
-        <div style="text-align: center">
+        <div style="width:100%;display: flex;flex-direction: column;align-items: center">
+          <div style="display: flex;justify-content: center;align-items: center;">
           <span class="number">{{ counts.installedCounts }}</span>
           <span>个</span>
+            </div>
           <span class="explain middle">(已安装)</span>
         </div>
       </div>
       <div class="finish">
-        <div style="text-align: center">
+        <div style="width:100%;display: flex;flex-direction: column;align-items: center">
+          <div style="display: flex;justify-content: center;align-items: center;">
           <span class="number">{{ counts.unInstallCounts }}</span>
           <span>个</span>
+          </div>
           <span class="explain middle">(未安装)</span>
         </div>
       </div>
@@ -77,8 +83,7 @@
     width: 100%;
   }
   #title {
-    color: rgba(0, 0, 0, 0.9);
-    /* background-color: #015293; */
+    color: #2c3e50;
     text-align: center;
     font-size: 22px;
     font-weight: 700;
@@ -86,10 +91,13 @@
   }
   .sum,
   .finish {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     width: 100%;
     margin-top: 15px;
     background-color: rgba($color: #409eff, $alpha: 0.1);
     width: 90%;
-    height: 7vh;
+    height: 25%;
   }
 </style>
