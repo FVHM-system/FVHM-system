@@ -2,13 +2,13 @@
   <div class="p-page">
     <div class="p-header">
       <p class="page-name">报警管理</p>
-      <div >
+      
       <el-form
           :model="searchForm"
           status-icon
           :rules="rules"
           label-width="120px"
-          style="position:absolute;right:-32px;top:50px"
+          style="margin-left: 305px;top:3px"
       >
         <el-form-item prop="place">
           <el-cascader
@@ -75,7 +75,6 @@
           </div>
         </el-form-item>
       </el-form>
-    </div>
     </div>
     <div id="data-chart">
       <el-table
@@ -428,9 +427,8 @@ onMounted(async () => {
   font-weight: 700;
   top: 35px;
   left: 20px;
-  width: 100px;
   position: relative;
-}
+}//
 .button {
   position: relative;
   margin-left:-110px
