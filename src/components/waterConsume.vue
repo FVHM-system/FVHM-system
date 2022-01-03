@@ -58,11 +58,11 @@
         },
       ],
       grid: {
-        top: 40,
-        left: '3%',
+        top: 60,
+        left: '2%',
         right: '10%',
-        height:180,
-        width:720,
+        height: '75%',
+        width:'100%',
         bottom: 80,
         containLabel: true,
       },
@@ -122,6 +122,7 @@
     top:-11px;
     padding: 10px;
     display: flex;
+    height: 100%;
     flex-direction: column;
     &-top {
       display: flex;
@@ -134,7 +135,7 @@
     &-body {
       position: relative;
       flex-grow: 1;
-      height: 330px;
+      height: 100%;
       width: 100%;
     }
   }

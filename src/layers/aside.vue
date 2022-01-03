@@ -91,6 +91,7 @@ const route = useRoute()
 }
 .layout-scrollbar{
   height: calc(100vh - 80px);
+  border-right: 1px solid #F4F4F4;
 }
 .el-menu-item {
   font-size: 16px;

@@ -8,14 +8,14 @@
       <el-table
         :data="tableData.slice(0, 20)"
         height="90%"
-        style="width: 100%"
+        style="width: 95%"
         stripe
         :row-style="{ height: '42px' }"
         :cell-style="{ padding: '0px', fontSize: '14px' }"
       >
-        <el-table-column prop="villageName" width="120" label="村庄名称"> </el-table-column>
-        <el-table-column prop="roadName" width="120" label="道路名称"> </el-table-column>
-        <el-table-column prop="volume" width="125" label="用水量(m³)"> </el-table-column>
+        <el-table-column prop="villageName" style="width:33%" label="村庄名称"> </el-table-column>
+        <el-table-column prop="roadName" style="width:33%"  label="道路名称"> </el-table-column>
+        <el-table-column prop="volume" style="width:33%"  label="用水量(m³)"> </el-table-column>
       </el-table>
     </div>
   </div>
@@ -42,6 +42,7 @@
 <style lang="scss" scoped>
   .wrapper {
     padding: 0 14px;
+    width: 100%;
     .head {
       width: 100%;
       display: flex;

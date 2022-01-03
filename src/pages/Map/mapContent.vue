@@ -699,7 +699,7 @@ function changeLayer(e) {
 }
 
 onMounted(async () => {
-  
+
   await fetchData()
   if(!chart){
     await setMap()
@@ -736,12 +736,8 @@ onUnmounted(async()=>{
 }
 
 .layer {
-  width: 103%;
-  margin-left: -20px;
-  margin-top: -20px;
+  width: 100%;
   height: calc(100vh - 80px);
-
-  //height:100%;
 }
 
 .inner-box2 {
@@ -892,7 +888,6 @@ onUnmounted(async()=>{
     background: white;
     border-radius: 6px;
     .tip-item {
-      display: flex;
       align-items: center;
       padding: 6px;
 

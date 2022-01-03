@@ -46,11 +46,11 @@
         },
       },
       grid: {
-        top: '10%',
+        top: '15%',
         left: '3%',
         right: '11%',
         bottom: '10%',
-        width:340,
+        width:"100%",
         containLabel: true,
       },
       xAxis: [
