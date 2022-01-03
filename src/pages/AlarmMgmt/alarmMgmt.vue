@@ -2,7 +2,7 @@
   <div class="p-page">
     <div class="p-header">
       <p class="page-name">报警管理</p>
-      
+
       <el-form
           :model="searchForm"
           status-icon
@@ -115,7 +115,7 @@
           <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :current-page="currentPage"
+              v-model:currentPage="currentPage"
               :page-sizes="[10, 20, 30, 50, 100]"
               :page-size="pageSize"
               style="margin-top: 10px;"
