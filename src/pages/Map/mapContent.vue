@@ -905,7 +905,7 @@ onUnmounted(async()=>{
 				padding-top: 10%;
 				border: 1px solid rgb(252, 250, 250);
 				background: #dd6d73;
-      }
+      }//
       .triangle-grey {
         width: 10%;
 				height: 0;
