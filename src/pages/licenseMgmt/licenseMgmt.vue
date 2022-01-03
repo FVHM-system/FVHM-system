@@ -2,6 +2,7 @@
   <div class="p-page2">
     <div class="p2-header">
       <p class="page2-name">许可证管理</p>
+      <div style="position:absolute;right:230px;top:50px">
       <el-input type="number" v-model.number="search.data.valveId" placeholder="根据阀栓ID进行搜索"
                   style="position:relative; left:15%; width: 180px"/>
       <el-input v-model="search.data.license" placeholder="根据许可证编号进行搜索"
@@ -16,8 +17,9 @@
           @change="transformSearchDate"
       />
       <el-button style="position:relative; left:18%" type="primary" @click="search.submit()">查询</el-button>
-      <el-button style="position:relative; left:18%" type="primary" @click="reset()">重置</el-button>
-      <el-button style="position:relative; left:20%; margin-top: 3px;margin-left: 10px" type="primary" @click="addModal.open()">新增许可证</el-button>
+      <el-button style="position:relative; left:18%" type="info" @click="reset()">重置</el-button>
+      <el-button style="position:relative; left:18%; margin-top: 3px;margin-left: 10px" type="success" @click="addModal.open()">新增</el-button>
+      </div>
     </div>
     <div class="p-body" id="box">
         <el-table
@@ -29,11 +31,11 @@
             style="width: 100%"
             :height="tableHeight"
         >
-          <el-table-column fixed="left"  label="许可证编号" prop="license" width="120px"/>
-          <el-table-column fixed="left"  label="阀栓名称" prop="valveName" width="300px"/>
-          <el-table-column fixed="left"  label="颁发时间" prop="startTime" width="120px"/>
-          <el-table-column fixed="left"  label="许可用水量" prop="licenseVolume" width="120px" />
-          <el-table-column fixed="left"  label="可用性" prop="available" width="110px">
+          <el-table-column fixed="left"  label="许可证编号" prop="license" min-width="120px"/>
+          <el-table-column fixed="left"  label="阀栓名称" prop="valveName" min-width="300px"/>
+          <el-table-column fixed="left"  label="颁发时间" prop="startTime" min-width="120px"/>
+          <el-table-column fixed="left"  label="许可用水量" prop="licenseVolume" min-width="120px" />
+          <el-table-column fixed="left"  label="可用性" prop="available" min-width="110px">
             <template #default="scope">
               <el-tag :type="statusFormate(scope.row)">{{['不可用','可用'][scope.row.available]}}</el-tag>
             </template>

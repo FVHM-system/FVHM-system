@@ -4,16 +4,16 @@
       <p class="page2-name">道路管理</p>
       <div class="p-operation">
         <div class="p-row">
-          <div class="op-flex">
+          
             <el-button
-                type="primary"
-                icon="el-icon-plus"
+                type="success"
                 @click="addModal.open()"
                 :disabled="buttonState"
+                style="position:absolute;right:60px;top:50px"
             >
-              新增道路
+              新增
             </el-button>
-          </div>
+          
         </div>
       </div>
     </div>

@@ -4,16 +4,14 @@
       <p class="page2-name">路段管理</p>
       <div class="p-operation">
         <div class="p-row">
-          <div class="op-flex">
             <el-button
-                type="primary"
-                icon="el-icon-plus"
+                type="success"
                 @click="addModal.open()"
                 :disabled="buttonState"
+                style="position:absolute;right:60px;top:50px"
             >
-              新增路段
+              新增
             </el-button>
-          </div>
         </div>
       </div>
     </div>
@@ -239,24 +237,24 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.op-flex {
-  display: flex;
-  position: relative;
-  top: 4px;
-  right: -1100px;
-  width: 1000px;
+// .op-flex {
+//   display: flex;
+//   position: relative;
+//   top: 4px;
+//   right: -1100px;
+//   width: 1000px;
 
-  .margin-right {
-    position: relative;
-    margin-left: 20px;
-  }
+//   .margin-right {
+//     position: relative;
+//     margin-left: 20px;
+//   }
 
-  .search {
-    position: relative;
-    margin-left: 20px;
+//   .search {
+//     position: relative;
+//     margin-left: 20px;
 
-  }
-}
+//   }
+// }
 
 .page2-name {
   font-size: 20px;

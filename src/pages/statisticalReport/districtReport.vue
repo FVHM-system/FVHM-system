@@ -2,7 +2,7 @@
   <div class="p-page">
     <div class="p-header">
       <p class="page-name">统计报表</p>
-      <div class="op-flex" id="box2">
+      <div class="op-flex" id="box2" style="position:absolute;right:140px;top:50px">
         <el-cascader
             v-model="place"
             :options="options"
@@ -58,14 +58,12 @@
     <div class="p-body" id="box">
       <el-table
           :data="data"
-          height="70vh"
-          border
           :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
-          stripe
-          style="width: 100%"  empty-text=" "
+          style="margin-top:10px;width: 100%" size="medium" :height="tableHeight" empty-text=" " stripe
+
       >
         <el-table-column min-width="1" align="center" prop="place" label="行政区域"></el-table-column>
         <el-table-column sortable min-width="2" align="center" prop="valveVolume"
@@ -112,6 +110,7 @@ let searchTimeType = ref('日报')
 let searchTime = ref(new Date())
 let timeActive = ref('日报')
 let data = ref([])
+let tableHeight = window.innerHeight - 240
 let allData = ref([])
 const {proxy} = getCurrentInstance()
 const timeTypes = [
@@ -515,7 +514,7 @@ async function search() {
 }
 
 onMounted(async () => {
-  const loadingInstance = ElLoading.service({fullscreen: true})
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: true})
   // getNodes()
   const temp = await fetchSuper()
   options.value = temp

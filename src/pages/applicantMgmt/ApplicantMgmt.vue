@@ -1,16 +1,18 @@
 <template>
   <div class="p-page2">
-    <div class="p2-header">
+    <div class="p2-header" >
       <p class="page2-name">单位管理</p>
+      <div style="position:absolute;right:250px;top:50px">
       <el-input v-model="search.data.applicantName" placeholder="根据单位名称进行搜索"
                   style="position:relative; left:25%; width: 200px"/>
       <el-input v-model="search.data.address" placeholder="根据地址进行搜索"
                   style="position:relative; left:26%; width: 250px"/>
       <el-button style="position:relative; left:28%" type="primary" @click="search.submit()">查询</el-button>
-      <el-button style="position:relative; left:28%" type="primary" @click="reset()">重置</el-button>
-      <el-button style="position:relative; left:40%" type="primary" @click="addModal.open()">新增单位</el-button>
+      <el-button style="position:relative; left:28%" type="info" @click="reset()">重置</el-button>
+      <el-button style="position:relative; left:28%" type="success" @click="addModal.open()">新增</el-button>
+      </div>
     </div>
-    <div id="box">
+    <div id="box" class="p-body">
         <el-table
             :data=currentData
             :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
@@ -20,13 +22,13 @@
             style="width: 100%"
             :height="tableHeight"
         >
-          <el-table-column fixed="left"  label="单位名称" prop="applicantName" width="150px"/>
-          <el-table-column fixed="left"  label="法定代表人" prop="legalPerson" width="150px"/>
-          <el-table-column fixed="left"  label="地址" prop="address" width="250px"/>
-          <el-table-column fixed="left"  label="邮编" prop="code" width="150px"/>
-          <el-table-column fixed="left"  label="联系人" prop="contactPerson" width="150px"/>
-          <el-table-column fixed="left"  label="电话号码" prop="phone" width="200px"/>
-          <el-table-column fixed="right" label="操作" width="200">
+          <el-table-column fixed="left"  label="单位名称" prop="applicantName" min-width="150px"/>
+          <el-table-column fixed="left"  label="法定代表人" prop="legalPerson" min-width="150px"/>
+          <el-table-column fixed="left"  label="地址" prop="address" min-width="250px"/>
+          <el-table-column fixed="left"  label="邮编" prop="code" min-width="150px"/>
+          <el-table-column fixed="left"  label="联系人" prop="contactPerson" min-width="150px"/>
+          <el-table-column fixed="left"  label="电话号码" prop="phone" min-width="200px"/>
+          <el-table-column fixed="right" label="操作" min-width="200">
             <template #default="scope">
               <el-button @click="editModal.open(scope.row)">修改</el-button>
               <el-popconfirm
@@ -374,5 +376,8 @@ onMounted(async () => {
 
 body {
   margin: 0;
+}
+.p-body {
+  margin-top: 10px;
 }
 </style>

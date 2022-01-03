@@ -2,7 +2,7 @@
   <div class="p-page">
     <div class="p-header">
       <p class="page-name">月度综合统计</p>
-      <div class="op-flex">
+      <div class="op-flex" style="position:absolute;right:170px;top:50px">
         <div>
           <el-date-picker
               v-model="searchTime"
@@ -19,16 +19,12 @@
     <div class="p-body" id="box">
       <el-scrollbar>
         <el-table
-            border
-            highlight-current-row
             :data="data"
             :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
-            :cell-style="{'text-align':'center'}"
-            :row-style="{fontSize:'17px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
-            style="width: 100%"
-            :height="tableHeight"
-            empty-text=" "
+          :cell-style="{'text-align':'center'}"
+          :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
+          style="margin-top:10px;width: 100%" size="medium" :height="tableHeight" empty-text=" " stripe
             row-key="id"
             :key="fresh"
             lazy

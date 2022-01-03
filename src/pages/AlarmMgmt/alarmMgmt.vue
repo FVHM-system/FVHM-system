@@ -2,13 +2,13 @@
   <div class="p-page">
     <div class="p-header">
       <p class="page-name">报警管理</p>
+      <div >
       <el-form
           :model="searchForm"
           status-icon
           :rules="rules"
           label-width="120px"
-          class="searchForm"
-          style="top:3px"
+          style="position:absolute;right:-32px;top:50px"
       >
         <el-form-item prop="place">
           <el-cascader
@@ -75,7 +75,7 @@
           </div>
         </el-form-item>
       </el-form>
-
+    </div>
     </div>
     <div id="data-chart">
       <el-table
@@ -89,13 +89,13 @@
           :height="tableHeight"
       >
         <el-table-column fixed="left" label="阀栓编号" prop="valveCode" width="120px"/>
-        <el-table-column label="阀栓类型" prop="valveType" :formatter="typeFormate2" width="120px"/>
-        <el-table-column fixed="left" label="阀栓名称" prop="valveName" width="120px"/>
-        <el-table-column label="地址" prop="address" width="200px"/>
-        <el-table-column label="报警类型" prop="warnType" :formatter="typeFormate" width="200px"/>
-        <el-table-column label="状态" prop="warnStatus" :formatter="statusFormate" width="200px"/>
-        <el-table-column label="报警时间" prop="warnTime" width="200px"/>
-        <el-table-column fixed="right" label="操作" width="200">
+        <el-table-column label="阀栓类型" prop="valveType" :formatter="typeFormate2" min-width="120px"/>
+        <el-table-column fixed="left" label="阀栓名称" prop="valveName" min-width="120px"/>
+        <el-table-column label="地址" prop="address" min-width="200px"/>
+        <el-table-column label="报警类型" prop="warnType" :formatter="typeFormate" min-width="200px"/>
+        <el-table-column label="状态" prop="warnStatus" :formatter="statusFormate" min-width="200px"/>
+        <el-table-column label="报警时间" prop="warnTime" min-width="200px"/>
+        <el-table-column fixed="right" label="操作" min-width="200px">
           <template #default="scope">
             <el-button type="warning" v-if="scope.row.warnStatus===0"
                        @click="handleStatus(scope.row)">{{
@@ -428,6 +428,7 @@ onMounted(async () => {
   font-weight: 700;
   top: 35px;
   left: 20px;
+  width: 100px;
   position: relative;
 }
 .button {
@@ -441,11 +442,11 @@ onMounted(async () => {
   width: 100%;
   height: 70px;
 }
-.searchForm{
+/* .searchForm{
   display: flex;
   flex-direction: row;
   align-items: center;
-}
+} */
 .pagination-in{
   display: flex;
   flex-direction: column;

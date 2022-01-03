@@ -3,9 +3,9 @@
 
     <div class="p-header">
       <p class="page-name">菜单管理</p>
-      <el-button class="addbutton" type="primary" @click="modal.open()">新增菜单</el-button>
+      <el-button  type="success" style="position:absolute;right:60px;top:50px" @click="modal.open()">新增</el-button>
     </div>
-
+    <div class="data-chart2" id="box">
       <el-table
           id="box"
           :data="currentData"
@@ -42,7 +42,7 @@
           </template>
         </el-table-column>
       </el-table>
-
+    </div>
       <div class="pagination-out">
         <div class="pagination-in">
         <el-pagination
@@ -343,11 +343,7 @@ onMounted(async () => {
   position: relative;
 }
 
-.addbutton {
-  position: relative;
-  left: 85%;
-  top: 8px;
-}
+
 
 .data-chart {
   position: relative;

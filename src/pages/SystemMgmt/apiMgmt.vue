@@ -3,8 +3,10 @@
 
     <div class="p-header">
       <p class="page-name">API管理</p>
-      <el-button class="addbutton" type="primary" @click="modal.open()">新增API组</el-button>
+      <el-button type="success" @click="modal.open()"  style="position:absolute;right:60px;top:50px">新增</el-button>
+      <!-- <el-button class="addbutton" type="success" @click="modal.open()">新增</el-button> -->
     </div>
+    <div class="data-chart2" id="box">
     <el-table
     id="box"
         :data="currentData"
@@ -28,7 +30,7 @@
         <template #default="scope">
           <el-button v-if="!scope.row.pid" type="primary" icon="el-icon-plus"
                      @click="addModal.open(scope.row)"
-          >新增API
+          >新增
           </el-button
           >
           <el-button @click="editModal.open(scope.row)">编辑</el-button>
@@ -43,7 +45,7 @@
         </template>
       </el-table-column>
     </el-table>
-
+    </div>
     <div class="pagination-out">
       <div class="pagination-in">
         <el-pagination
@@ -361,13 +363,14 @@ onMounted(async () => {
   font-weight: 700;
   top: 35px;
   left: 20px;
+  width: 50%;
   position: relative;
 }
 
 .addbutton {
-  position: relative;
-  left: 85%;
-  top: 8px;
+  position: absolute;
+  right: 10px;
+  // top: 8px;
 }
 
 .data-chart {

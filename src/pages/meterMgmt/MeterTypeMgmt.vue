@@ -1,10 +1,10 @@
 <template>
   <div class="p-page2">
     <div class="p2-header">
-      <p class="page2-name">设备类型管理</p>
-      <el-button class="addbutton" type="primary" @click="addModal.open()">新增类型</el-button>
+      <p class="page2-name">设备型号管理</p>
+      <el-button  type="success" style="position:absolute;right:60px;top:50px" @click="addModal.open()">新增</el-button>
     </div>
-
+      <div class="p-body" id="box">
         <el-table
             :data=tableData
             :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
@@ -12,6 +12,7 @@
             :cell-style="{'text-align':'center'}"
             :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
             style="width: 100%"
+            :height="tableHeight"
         >
           <el-table-column fixed="left" label="ID" prop="id" width="100px"/>
           <el-table-column fixed="left"  label="型号编号" prop="meterNo" width="200px"/>
@@ -42,7 +43,7 @@
             </template>
           </el-table-column>
         </el-table>
-
+      </div>
     <el-dialog  v-model="addModal.show" title="新增类型">
       <el-form :inline="true">
         <div>
@@ -153,6 +154,7 @@
 </template>
 <script setup>
 import {defineComponent, onMounted, ref,toRefs,reactive, computed} from 'vue'
+import {ElLoading} from 'element-plus'
 import {useStore} from 'vuex'
 import { getMeterType, addMeterType,
 editMeterType, deleteMeterType } from "./util/MeterTypeMgmt.js"
@@ -165,6 +167,7 @@ let date=ref()
 let valvePlugInformation=ref()
 let input = ref('')
 let tableData = ref([])
+let tableHeight = window.innerHeight - 240
 
 let meterVc = ref([])
 meterVc.value=[
@@ -326,11 +329,12 @@ async function deleteMetType(id){
 
 onMounted(async () => {
   mountedToArrPrototype()
+  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: true})
   let res = await getMeterType()
   if (res.code === '200') {
     tableData.value = res.data;
   }
-
+  loadingInstance.close()
 })
 
 </script>
@@ -386,5 +390,8 @@ onMounted(async () => {
   position: relative;
   top: 10px;
   overflow-y: hidden;
+}
+.p-body {
+  margin-top: 10px;
 }
 </style>

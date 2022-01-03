@@ -15,7 +15,6 @@
               v-model="searchForm.place"
               :options="options"
               :props="myprops"
-              ref="require"
               placeholder="选择地址"
               :show-all-levels="false"
               clearable></el-cascader>
@@ -146,7 +145,6 @@ let currentPage = ref(1)
 let pageSize = 10// 每页多少条
 let excelData = ref([])
 let testnum = ref('')
-let require = ref(null)
 let myprops = ref()
 let pageshow = ref(true)
 let dialogVisible = ref(false)

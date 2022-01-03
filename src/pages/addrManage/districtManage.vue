@@ -4,16 +4,14 @@
       <p class="page2-name">区县管理</p>
       <div class="p-operation">
         <div class="p-row">
-          <div class="op-flex">
-            <el-button
-                type="primary"
-                icon="el-icon-plus"
+          <el-button
+                type="success"
                 @click="addModal.open()"
                 :disabled="buttonState"
+                style="position:absolute;right:60px;top:50px"
             >
-              新增区县
+              新增
             </el-button>
-          </div>
         </div>
       </div>
     </div>

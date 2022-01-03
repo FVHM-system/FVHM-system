@@ -2,13 +2,13 @@
   <div class="p-page">
     <div class="p-header">
       <p class="page2-name">用水统计</p>
-      <div class="op-flex">
+      <div class="op-flex" style="position:absolute;right:40px;top:50px">
         <el-select
             v-model="searchTimeType"
             placeholder="选择时间段"
             @change="handleChange"
             class="margin-right"
-            style="margin-left:220px;width: 80px"
+            style="right:10px;width: 80px"
         >
           <el-option v-for="(item, index) in timeTypes" :key="index" :value="item.value">
             {{ item.lable }}
@@ -45,9 +45,9 @@
         </div>
       </div>
     </div>
-    <div class="e-chart-C">
-      <div class="p-body" style="height:520px" id="water-bar">
-      </div>
+    <div class="e-chart-C" id="water-bar" >
+      <!-- <div class="p-body" style="height:520px" id="water-bar">
+      </div> -->
     </div>
   </div>
 </template>
@@ -228,7 +228,7 @@ onUnmounted(() => {
 .e-chart-C {
   margin-top: 10px;
   background-color: white;
-  height: 100%;
+  height: 85%;
   width: 100%;
 }
 </style>

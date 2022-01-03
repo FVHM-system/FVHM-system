@@ -3,9 +3,10 @@
 
     <div class="p-header">
       <p class="page-name">岗位管理</p>
-      <el-button class="addbutton" type="primary" @click="() => addModal.changeState(true)">新增岗位
+      <el-button  type="success" style="position:absolute;right:60px;top:50px" @click="() => addModal.changeState(true)">新增
       </el-button>
     </div>
+    <div class="data-chart2" id="box">
       <el-table
           id="box"
           :data="currentData"
@@ -14,10 +15,11 @@
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
           style="width: 100%"
+          :height="tableHeight"
       >
-        <el-table-column prop="roleName" label="岗位名称" width="180"></el-table-column>
+        <el-table-column prop="roleName" label="岗位名称" min-width="180"></el-table-column>
         <el-table-column prop="description" min-width="400" label="岗位描述"></el-table-column>
-        <el-table-column label="操作" width="650" fixed="right">
+        <el-table-column label="操作" min-width="650" fixed="right">
           <template #default="scope">
             <el-button @click="postFunc.goAccount2Post(scope.row)" type="warning">分配用户</el-button>
             <el-button @click="postFunc.goPost(scope.row)" type="primary">菜单权限</el-button>
@@ -35,7 +37,7 @@
           </template>
         </el-table-column>
       </el-table>
-
+    </div>
       <div class="pagination-out">
       <div class="pagination-in">
         <el-pagination
@@ -85,7 +87,7 @@ import {ElMessage,ElLoading} from 'element-plus'
 import {addPost, deletePost, editPostByConfig, fetchPostList} from '/src/apis/post.js'
 
 const router = useRouter()
-
+let tableHeight = window.innerHeight - 300
 let currentData = ref([])
 let showpagination = ref(true)
 let currentPage = 1

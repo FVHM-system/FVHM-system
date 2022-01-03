@@ -25,7 +25,6 @@
             v-model="place"
             :options="optionss"
             :props="myprops"
-            ref="require"
             placeholder="选择地址"
             :show-all-levels="false"
             style="width: 190px"

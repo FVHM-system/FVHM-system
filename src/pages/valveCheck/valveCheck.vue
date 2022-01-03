@@ -2,9 +2,9 @@
   <div class="p-page">
     <div class="p-header">
       <p class="page-name">巡视安排</p>
-      <el-col :span="8">
-        <el-input v-model="input1" placeholder="请输入巡视人" style="margin-left: 170px;top:3px;width: 150px"/>
-      </el-col>
+      <div style="position:absolute;right:-32px;top:50px">
+      <el-input v-model="input1" placeholder="请输入巡视人" style="margin-left: 170px;margin-top:3px;width: 150px"/>
+      
       <el-select v-model="input2" placeholder="选择状态" style="margin-left:10px;width: 120px;margin-top: 3px">
         <el-option
             v-for="item in status"
@@ -14,11 +14,12 @@
         >
         </el-option>
       </el-select>
-      <div class="button-group">
+      <div class="button-group" style="margin-left:460px">
         <el-button v-model="search" type="primary" @click="dataSearch" >查询</el-button>
-        <el-button type="primary" @click="addModal.open()" :disabled="buttonState">新增</el-button>
+        <el-button type="success" @click="addModal.open()" :disabled="buttonState">新增</el-button>
         <el-button type="info" @click="reload">重置</el-button>
         <el-button type="primary" @click="exportCSV">导出</el-button>
+      </div>
       </div>
     </div>
     <div class="data-chart2" id="box">
@@ -32,20 +33,20 @@
           :height="tableHeight"
         >
           <!-- <el-table-column label="任务编号" prop="taskId" width="120px"/> -->
-          <el-table-column label="巡视人" prop="people" width="120px"/>
-          <el-table-column label="电话号码" prop="phone" width="200px"/>
+          <el-table-column label="巡视人" prop="people" min-width="120px"/>
+          <el-table-column label="电话号码" prop="phone" min-width="200px"/>
           <!-- <el-table-column label="完成状态" prop="complete"  width="200px">
             
           </el-table-column> -->
-          <el-table-column label="完成状态"  width="200px">
+          <el-table-column label="完成状态"  min-width="200px">
             <template #default="scope">
               <el-progress type="circle" width="50" :percentage="scope.row.complete*100" />
             </template>
           </el-table-column>
-          <el-table-column label="创建时间" prop="createTime" width="200px"/>
-          <el-table-column label="任务时间" prop="inspectTime" width="200px"/>
-          <el-table-column label="备注" prop="remark" width="200px"/>
-          <el-table-column fixed="right" label="操作" width="300">
+          <el-table-column label="创建时间" prop="createTime" min-width="200px"/>
+          <el-table-column label="任务时间" prop="inspectTime" min-width="200px"/>
+          <el-table-column label="备注" prop="remark" min-width="200px"/>
+          <el-table-column fixed="right" label="操作" min-width="300">
             <template #default="scope">
               <el-button type="primary" @click="editModal.open(scope.row)" :disabled="buttonState">编辑</el-button>
               <el-button type="primary" @click="detailModal.open(scope.row)">详情</el-button>
@@ -718,5 +719,13 @@ onMounted(async () => {
   position: relative;
   top: 10px;
   overflow-y: hidden;
+}
+.page-name {
+  font-size: 20px;
+  font-weight: 700;
+  top: 35px;
+  left: 20px;
+  width: 100px;
+  position: relative;
 }
 </style>

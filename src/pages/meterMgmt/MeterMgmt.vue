@@ -3,15 +3,16 @@
     <div class="p2-header">
       <p class="page2-name">监测设备管理</p>
 
-      <div style="position:relative; left:60%">
+      <div style="position:absolute;right:60px;top:50px">
         <el-input v-model="id" placeholder="根据设备ID进行搜索"
                   style="width: 200px"/>
         <el-button style="position:relative; margin-left: 10px" type="primary" @click="submit()">查询</el-button>
-        <el-button style="position:relative; margin-left: 10px" type="primary" @click="reset()">重置</el-button>
-        <el-button style="position:relative; margin-left: 10px" type="primary" @click="addModal.open()">新增设备</el-button>
+        <el-button style="position:relative; margin-left: 10px" type="info" @click="reset()">重置</el-button>
+        <el-button style="position:relative; margin-left: 10px" type="success" @click="addModal.open()">新增</el-button>
       </div>
 
     </div>
+    <div class="p-body">
         <el-table
             id="box"
             :data=currentData
@@ -22,11 +23,11 @@
             style="width: 100%"
             :height="tableHeight"
         >
-          <el-table-column fixed="left" label="ID" prop="meterId" width="100px"/>
-          <el-table-column fixed="left"  label="设备编号" prop="meterCode" width="200px"/>
-          <el-table-column fixed="left"  label="设备名称" prop="meterName" width="200px"/>
-          <el-table-column fixed="left" label="阀栓ID" prop="valveId" width="100px" />
-          <el-table-column fixed="left" label="状态" prop="status" width="100px">
+          <el-table-column fixed="left" label="ID" prop="meterId" min-width="100px"/>
+          <el-table-column fixed="left"  label="设备编号" prop="meterCode" min-width="200px"/>
+          <el-table-column fixed="left"  label="设备名称" prop="meterName" min-width="200px"/>
+          <el-table-column fixed="left" label="阀栓ID" prop="valveId" min-width="100px" />
+          <el-table-column fixed="left" label="状态" prop="status" min-width="100px">
             <template #default="scope">
               <el-tag :type="statusFormate(scope.row.status)">{{['不正常','正常'][scope.row.status]}}</el-tag>
             </template>
@@ -47,7 +48,7 @@
             </template>
           </el-table-column>
         </el-table>
-
+     </div>
         <div class="pagination-out">
         <div class="pagination-in">
         <el-pagination
@@ -57,6 +58,7 @@
             :current-page="currentPage"
             :page-sizes="[10, 20, 30, 50, 100]"
             :page-size="pageSize"
+            layout="total, prev, pager, next"
             style="margin-top: 10px;"
             :total="tableData.length">
         </el-pagination>
@@ -524,5 +526,8 @@ onMounted(async () => {
   position: relative;
   top: 10px;
   overflow-y: hidden;
+}
+.p-body {
+  margin-top: 10px;
 }
 </style>
