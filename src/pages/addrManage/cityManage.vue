@@ -8,7 +8,7 @@
                 type="success"
                 @click="addModal.open()"
                 :disabled="buttonState"
-                style="position:absolute;right:60px;top:50px"
+                style="position:absolute;right:60px;top:30px"
             >
               新增
             </el-button>

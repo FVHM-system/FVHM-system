@@ -3,7 +3,7 @@
 
     <div class="p-header">
       <p class="page-name">用户管理</p>
-      <el-button  type="success" @click="changeModal.add(true)" style="position:absolute;right:60px;top:50px">新增</el-button>
+      <el-button  type="success" @click="changeModal.add(true)" style="position:absolute;right:60px;top:30px">新增</el-button>
     </div>
     <div class="data-chart2" id="box">
       <el-table

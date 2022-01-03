@@ -2,7 +2,7 @@
   <div class="p-page2">
     <div class="p2-header">
       <p class="page2-name">设备型号管理</p>
-      <el-button  type="success" style="position:absolute;right:60px;top:50px" @click="addModal.open()">新增</el-button>
+      <el-button  type="success" style="position:absolute;right:60px;top:30px" @click="addModal.open()">新增</el-button>
     </div>
       <div class="p-body" id="box">
         <el-table

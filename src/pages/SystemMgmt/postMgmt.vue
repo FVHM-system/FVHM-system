@@ -3,7 +3,7 @@
 
     <div class="p-header">
       <p class="page-name">岗位管理</p>
-      <el-button  type="success" style="position:absolute;right:60px;top:50px" @click="() => addModal.changeState(true)">新增
+      <el-button  type="success" style="position:absolute;right:60px;top:30px" @click="() => addModal.changeState(true)">新增
       </el-button>
     </div>
     <div class="data-chart2" id="box">

@@ -2,7 +2,7 @@
   <div class="p-page">
     <div class="p-header">
       <p class="page2-name">用水统计</p>
-      <div class="op-flex" style="position:absolute;right:40px;top:50px">
+      <div class="op-flex" style="position:absolute;right:40px;top:30px">
         <el-select
             v-model="searchTimeType"
             placeholder="选择时间段"

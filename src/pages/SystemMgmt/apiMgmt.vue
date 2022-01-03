@@ -3,7 +3,7 @@
 
     <div class="p-header">
       <p class="page-name">API管理</p>
-      <el-button type="success" @click="modal.open()"  style="position:absolute;right:60px;top:50px">新增</el-button>
+      <el-button type="success" @click="modal.open()"  style="position:absolute;right:60px;top:30px">新增</el-button>
       <!-- <el-button class="addbutton" type="success" @click="modal.open()">新增</el-button> -->
     </div>
     <div class="data-chart2" id="box">

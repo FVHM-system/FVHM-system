@@ -16,7 +16,7 @@
             <el-button type="primary" style="position:relative;left: 10px;margin-top: 15px"
                        @click="getTimeWaterData">查询
             </el-button>
-            <h1 style="position:relative;margin-top:50px;font-size: 20px;color: #409eff">
+            <h1 style="position:relative;margin-top:30px;font-size: 20px;color: #409eff">
               <el-tag>{{ new Date(value1[0]).toLocaleString() }}</el-tag>
               至
               <el-tag>{{ new Date(value1[1]).toLocaleString() }}</el-tag>
@@ -24,7 +24,7 @@
             <h1 style="position:relative;margin-top:20px;font-size: 20px;color: #409eff">阀栓用水量</h1>
             <h1 style="position:relative;margin-top:60px;font-size: 100px;color: #409eff">
               {{ waterData }}</h1>
-            <h1 style="position:relative;margin-top:50px;font-size: 30px;color: #409eff">m³</h1>
+            <h1 style="position:relative;margin-top:30px;font-size: 30px;color: #409eff">m³</h1>
           </div>
         </el-tab-pane>
         <el-tab-pane label="阀栓年已用水量">

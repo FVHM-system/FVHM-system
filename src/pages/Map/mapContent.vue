@@ -873,9 +873,10 @@ onUnmounted(async()=>{
     background: white;
     border-radius: 6px;
     .tip-item {
+      display: flex;
       align-items: center;
       padding: 6px;
-
+      
       .word {
         position: relative;
         left:8px;

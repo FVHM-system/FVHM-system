@@ -3,7 +3,7 @@
     <div class="p2-header">
       <p class="page2-name">监测设备管理</p>
 
-      <div style="position:absolute;right:60px;top:50px">
+      <div style="position:absolute;right:60px;top:30px">
         <el-input v-model="id" placeholder="根据设备ID进行搜索"
                   style="width: 200px"/>
         <el-button style="position:relative; margin-left: 10px" type="primary" @click="submit()">查询</el-button>

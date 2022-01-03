@@ -2,7 +2,7 @@
   <div class="p-page">
     <div class="p-header">
       <p class="page-name">月度综合统计</p>
-      <div class="op-flex" style="position:absolute;right:170px;top:50px">
+      <div class="op-flex" style="position:absolute;right:170px;top:30px">
         <div>
           <el-date-picker
               v-model="searchTime"

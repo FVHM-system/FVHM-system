@@ -3,7 +3,7 @@
 
     <div class="p-header">
       <p class="page-name">菜单管理</p>
-      <el-button  type="success" style="position:absolute;right:60px;top:50px" @click="modal.open()">新增</el-button>
+      <el-button  type="success" style="position:absolute;right:60px;top:30px" @click="modal.open()">新增</el-button>
     </div>
     <div class="data-chart2" id="box">
       <el-table
