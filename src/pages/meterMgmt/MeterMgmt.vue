@@ -55,7 +55,7 @@
             v-if="showpagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="currentPage"
+            v-model:currentPage="currentPage"
             :page-sizes="[10, 20, 30, 50, 100]"
             :page-size="pageSize"
             layout="total, prev, pager, next"
