@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0860faa7-64e9-4c12-896b-a6168196ef60" name="Changes" comment="88" />
+    <list default="true" id="6bd22d39-3be7-4edc-a1a6-9407debf2133" name="更改" comment="添加设备类型">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/AlarmMgmt/alarmMgmt.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/AlarmMgmt/alarmMgmt.vue" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,29 +13,222 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="21NDlKTG314FJm9BJsudhBGTstg" />
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="C:\Users\Mr.Yang\.m2\repository" />
+        <option name="userSettingsFile" value="C:\Users\Mr.Yang\.m2\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="22xMF0OsjTQISgBjFrXfVHpSHzz" />
   <component name="ProjectViewState">
+    <option name="flattenPackages" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+    <option name="showVisibilityIcons" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/assets" />
     <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="RebelAgentSelection">
+    <selection>jr</selection>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="H:\RUTW\Vue\water-management\src\assets" />
+      <recent name="H:\RUTW\Vue\water-management" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="H:\RUTW\Vue\water-management\src\pages\licenseMgmt" />
+      <recent name="H:\RUTW\Vue\water-management\src\pages\meterMgmt\util" />
+      <recent name="H:\RUTW\Vue\water-management\src\pages\meterMgmt" />
+      <recent name="H:\RUTW\Vue\water-management\src\pages\applicantMgmt" />
+      <recent name="H:\RUTW\Vue\water-management\src\pages\applicantMgmt\util" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="0860faa7-64e9-4c12-896b-a6168196ef60" name="Changes" comment="" />
-      <created>1637772807653</created>
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="6bd22d39-3be7-4edc-a1a6-9407debf2133" name="更改" comment="" />
+      <created>1640774682091</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1637772807653</updated>
-      <workItem from="1637772809344" duration="863000" />
+      <updated>1640774682091</updated>
+      <workItem from="1640774685680" duration="4837000" />
+      <workItem from="1640782792136" duration="1132000" />
+      <workItem from="1640890226018" duration="7186000" />
+      <workItem from="1640908988397" duration="1798000" />
+      <workItem from="1640932553937" duration="3628000" />
+      <workItem from="1641033712903" duration="3327000" />
+      <workItem from="1641040134531" duration="947000" />
+      <workItem from="1641047339736" duration="1451000" />
+      <workItem from="1641053323818" duration="48561000" />
     </task>
+    <task id="LOCAL-00001" summary="修复近三年用水趋势bug">
+      <created>1640898499694</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1640898499694</updated>
+    </task>
+    <task id="LOCAL-00002" summary="修复近三年用水趋势bug">
+      <created>1641090567511</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1641090567511</updated>
+    </task>
+    <task id="LOCAL-00003" summary="修复近三年用水趋势bug">
+      <created>1641097115119</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1641097115119</updated>
+    </task>
+    <task id="LOCAL-00004" summary="修复近三年用水趋势bug">
+      <created>1641097944514</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1641097944514</updated>
+    </task>
+    <task id="LOCAL-00005" summary="修复实况数据时间问题">
+      <created>1641098901096</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1641098901096</updated>
+    </task>
+    <task id="LOCAL-00006" summary="修复实况数据时间问题">
+      <created>1641099801091</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1641099801091</updated>
+    </task>
+    <task id="LOCAL-00007" summary="修改一张图阀栓选择">
+      <created>1641103654485</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1641103654485</updated>
+    </task>
+    <task id="LOCAL-00008" summary="修改一张图阀栓选择">
+      <created>1641105362369</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1641105362369</updated>
+    </task>
+    <task id="LOCAL-00009" summary="修改首页布局">
+      <created>1641114713018</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1641114713018</updated>
+    </task>
+    <task id="LOCAL-00010" summary="完成报警管理">
+      <created>1641116243693</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1641116243693</updated>
+    </task>
+    <task id="LOCAL-00011" summary="完成报警管理">
+      <created>1641116580483</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1641116580483</updated>
+    </task>
+    <task id="LOCAL-00012" summary="完成报警管理">
+      <created>1641117650727</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1641117650727</updated>
+    </task>
+    <task id="LOCAL-00013" summary="完成报警管理">
+      <created>1641118064080</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1641118064080</updated>
+    </task>
+    <task id="LOCAL-00014" summary="完成报警管理">
+      <created>1641118806964</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1641118806964</updated>
+    </task>
+    <task id="LOCAL-00015" summary="完成报警管理">
+      <created>1641119832441</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1641119832441</updated>
+    </task>
+    <task id="LOCAL-00016" summary="添加修改提示">
+      <created>1641120172710</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1641120172710</updated>
+    </task>
+    <task id="LOCAL-00017" summary="添加修改提示">
+      <created>1641123130977</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1641123130977</updated>
+    </task>
+    <task id="LOCAL-00018" summary="添加修改提示">
+      <created>1641125100374</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1641125100374</updated>
+    </task>
+    <task id="LOCAL-00019" summary="添加修改提示">
+      <created>1641125437323</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1641125437323</updated>
+    </task>
+    <task id="LOCAL-00020" summary="添加修改提示">
+      <created>1641126570278</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1641126570278</updated>
+    </task>
+    <task id="LOCAL-00021" summary="添加设备类型">
+      <created>1641126967297</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1641126967298</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -48,5 +244,16 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="修复近三年用水趋势bug" />
+    <MESSAGE value="修复实况数据时间问题" />
+    <MESSAGE value="修改一张图阀栓选择" />
+    <MESSAGE value="修改首页布局" />
+    <MESSAGE value="完成报警管理" />
+    <MESSAGE value="添加修改提示" />
+    <MESSAGE value="添加设备类型" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加设备类型" />
   </component>
 </project>
