@@ -94,10 +94,9 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 100%;
     margin-top: 15px;
     background-color: rgba($color: #409eff, $alpha: 0.1);
     width: 90%;
-    height: 25%;
+    height: 23%;
   }
 </style>

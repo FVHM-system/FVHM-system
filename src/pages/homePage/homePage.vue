@@ -15,13 +15,13 @@
         >
     </div>
     <div style="margin-top:20px;height:47%;display: flex;flex-direction: row;align-items: center">
-        <white-block style="margin-left:20px;margin-top:10px;width:24%;">
+        <white-block style="margin-left:20px;margin-top:10px;width:30%;">
           <use-rank></use-rank>
         </white-block>
-        <white-block  style="margin-left:20px;margin-top:10px;width:38%;">
+        <white-block  style="margin-left:20px;margin-top:10px;width:35%;">
           <valve-distribution></valve-distribution>
         </white-block>
-        <white-block style="margin-left:20px;margin-top:10px;width:38%;margin-right: 20px">
+        <white-block style="margin-left:20px;margin-top:10px;width:35%;margin-right: 20px">
           <hydrant-distribution></hydrant-distribution>
         </white-block
         >

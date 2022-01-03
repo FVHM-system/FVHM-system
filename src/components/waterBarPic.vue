@@ -45,11 +45,11 @@
         },
       },
       grid: {
-        top: '15%',
+        top: '10%',
         left: '3%',
         right: '11%',
         bottom: '10%',
-        width:"100%",
+        width:'100%',
         containLabel: true,
       },
       xAxis: [
@@ -146,7 +146,7 @@
     &-body {
       position: relative;
       flex-grow: 1;
-      height: 330px;
+      height: 280px;
       width: 100%;
     }
   }
