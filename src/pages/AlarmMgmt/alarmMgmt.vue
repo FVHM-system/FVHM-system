@@ -9,7 +9,7 @@
           :rules="rules"
           label-width="120px"
           class="searchForm"
-          style="position: absolute;top:30px;right: 40px;"
+          
       >
         <el-form-item prop="place">
           <el-cascader
@@ -429,7 +429,7 @@ onMounted(async () => {
   top: 35px;
   left: 20px;
   position: relative;
-}//
+}
 .button {
   position: relative;
   margin-left:-110px
