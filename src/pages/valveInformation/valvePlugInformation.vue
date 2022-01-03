@@ -8,7 +8,7 @@
           :rules="rules"
           label-width="120px"
           class="searchForm"
-          style="margin-left: 305px;top:3px"
+          style="position: absolute;top:30px;right: 40px;"
       >
         <el-form-item prop="place">
           <el-cascader
@@ -21,7 +21,7 @@
         </el-form-item>
         <el-form-item prop="type">
           <el-select v-model="searchForm.type" placeholder="选择类型"
-                     style="margin-left:-100px;width: 140px;">
+                     style="margin-left:-110px;width: 140px;">
             <el-option
                 v-for="item in types"
                 :key="item.value"
@@ -33,7 +33,7 @@
         </el-form-item>
         <el-form-item prop="status">
           <el-select v-model="searchForm.status" placeholder="选择状态"
-                     style="margin-left:-100px;width: 140px;">
+                     style="margin-left:-110px;width: 140px;">
             <el-option
                 v-for="item in statuss"
                 :key="item.value"
@@ -60,7 +60,7 @@
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
-          style="width: 100%"
+          style="margin-top:10px;width: 100%"
           :height="tableHeight"
           @row-click="getValveId"
       >
@@ -104,13 +104,12 @@
           <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :current-page="currentPage"
+              v-model:currentPage="currentPage"
               :page-sizes="[10, 20, 30, 50, 100]"
               :page-size="pageSize"
               layout="total, prev, pager, next"
               v-if="pageshow"
               style="margin-top: 10px;"
-              hide-on-single-page
               :total="tableData.length">
           </el-pagination>
         </div>
@@ -141,7 +140,7 @@ let input2 = ref('')
 let options = ref([])
 let tableData = ref([])
 let currentData = ref([])
-let currentPage = ref(1)
+let currentPage = reactive(1)
 let pageSize = 10// 每页多少条
 let excelData = ref([])
 let testnum = ref('')
@@ -312,7 +311,7 @@ async function exportCSV() {
       name:'applicantName'
     }
   ]
-  
+
   let temp=await fetchVpinformation()
   temp.data.map(item=>{
     if(item.valveType===1){//
@@ -363,7 +362,7 @@ onMounted(async () => {
 </script>
 <style>
 .p-page {
-  width: 100%;
+  width: 90%;
   height: calc(100vh - 120px);
   overflow-y: scroll;
   overflow-x: hidden;
