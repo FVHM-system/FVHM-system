@@ -9,8 +9,7 @@ import locale from 'element-plus/lib/locale/lang/zh-cn' //中文
 
 
 const app = createApp(App);
-app.use(ElementPlus);
+app.use(ElementPlus,{locale});
 app.use(router);
 app.use(store);
-app.use(locale)
 app.mount('#app');

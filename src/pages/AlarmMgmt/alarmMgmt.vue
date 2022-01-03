@@ -1,7 +1,7 @@
 <template>
-  <div class="p-page2">
-    <div class="p2-header">
-      <p class="page2-name">报警管理</p>
+  <div class="p-page">
+    <div class="p-header">
+      <p class="page-name">报警管理</p>
       <el-form
           :model="searchForm"
           status-icon
@@ -15,7 +15,6 @@
               v-model="searchForm.place"
               :options="options"
               :props="CarProps"
-              ref="require"
               placeholder="选择地址"
               :show-all-levels="false"
               style="width: 118px;"
@@ -409,7 +408,7 @@ onMounted(async () => {
 
 </script>
 <style>
-.p-page2 {
+.p-page {
   width: 100%;
   height: calc(100vh - 120px);
   overflow-y: scroll;
@@ -417,14 +416,14 @@ onMounted(async () => {
   margin: 0;
 }
 
-.p2-header {
+.p-header {
   background-color: #219ded0d;
   width: 100%;
   height: 100px;
   border: 1px solid #219ded0f;
 }
 
-.page2-name {
+.page-name {
   font-size: 20px;
   font-weight: 700;
   top: 35px;
