@@ -2,7 +2,7 @@
   <div class="p-page2">
     <div class="p2-header" >
       <p class="page2-name">单位管理</p>
-      <div style="position:absolute;right:250px;top:50px">
+      <div style="position:absolute;right:250px;top:30px">
       <el-input v-model="search.data.applicantName" placeholder="根据单位名称进行搜索"
                   style="position:relative; left:25%; width: 200px"/>
       <el-input v-model="search.data.address" placeholder="根据地址进行搜索"

@@ -2,7 +2,7 @@
   <div class="p-page">
     <div class="p-header">
       <p class="page-name">巡视安排</p>
-      <div style="position:absolute;right:-32px;top:50px">
+      <div style="position:absolute;right:-32px;top:30px">
       <el-input v-model="input1" placeholder="请输入巡视人" style="margin-left: 170px;margin-top:3px;width: 150px"/>
       
       <el-select v-model="input2" placeholder="选择状态" style="margin-left:10px;width: 120px;margin-top: 3px">

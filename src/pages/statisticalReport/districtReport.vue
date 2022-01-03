@@ -2,7 +2,7 @@
   <div class="p-page">
     <div class="p-header">
       <p class="page-name">统计报表</p>
-      <div class="op-flex" id="box2" style="position:absolute;right:140px;top:50px">
+      <div class="op-flex" id="box2" style="position:absolute;right:140px;top:30px">
         <el-cascader
             v-model="place"
             :options="options"

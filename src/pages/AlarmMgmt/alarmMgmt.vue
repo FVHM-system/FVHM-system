@@ -8,7 +8,8 @@
           status-icon
           :rules="rules"
           label-width="120px"
-          style="margin-left: 305px;top:3px"
+          class="searchForm"
+          style="position: absolute;top:30px;right: 40px;"
       >
         <el-form-item prop="place">
           <el-cascader

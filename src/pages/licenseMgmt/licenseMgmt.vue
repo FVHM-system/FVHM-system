@@ -2,7 +2,7 @@
   <div class="p-page2">
     <div class="p2-header">
       <p class="page2-name">许可证管理</p>
-      <div style="position:absolute;right:230px;top:50px">
+      <div style="position:absolute;right:230px;top:30px">
       <el-input type="number" v-model.number="search.data.valveId" placeholder="根据阀栓ID进行搜索"
                   style="position:relative; left:15%; width: 180px"/>
       <el-input v-model="search.data.license" placeholder="根据许可证编号进行搜索"
