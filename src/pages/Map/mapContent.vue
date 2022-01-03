@@ -148,7 +148,7 @@ let loading=ref(true)
 let radio = ref("标准地图")
 let satelliteObject = ref()
 let chart
-let place = ref()
+// let place = ref()
 let options = ref([])
 let require = ref(null)
 satelliteObject.value = null
@@ -187,8 +187,6 @@ let defaultProps={
     disabled: 'disabled',
 }
 
-let valveData = ref([])
-valveData.value = []
 let startLngLat = []
 let endLngLat = []
 let clicklocation = ref([])
@@ -213,21 +211,21 @@ const {proxy} = getCurrentInstance()
 
 
 async function changeSwitch(e){
-  let place = proxy.$refs.require.getCheckedNodes().filter((item) => {
-    if(item.message.type==='hydrant'||item.message.type==='valve'){
-      return true
-    }else{
-      return false
-    }
-  })
-  console.log("place",place)
-  myData.value=place.map(item=>{
-        let myId
-          if(item.message.type==='hydrant'||item.message.type==='valve'){
-            myId=item.message.zoneId
-          }
-        return myId
-      })
+  // let place = proxy.$refs.require.getCheckedNodes().filter((item) => {
+  //   if(item.message.type==='hydrant'||item.message.type==='valve'){
+  //     return true
+  //   }else{
+  //     return false
+  //   }
+  // })
+  // console.log("place",place)
+  // myData.value=place.map(item=>{
+  //       let myId
+  //         if(item.message.type==='hydrant'||item.message.type==='valve'){
+  //           myId=item.message.zoneId
+  //         }
+  //       return myId
+  //     })
   await fetchData()
   await setMap()
 }
@@ -622,7 +620,6 @@ const setMap = async () => {
 }
 const fetchData = async () => {
   let res = await fetchValveInfos()
-  valveData.value = res
   let getList
   console.log("myData",myData.value)
   if(judge===true){
@@ -650,7 +647,7 @@ const fetchData = async () => {
             return {
             valveId: item.valveId,
             name: item.valveName,
-            value: [item.longitude, item.latitude,item.valveId,item.applicantName],
+            value: [item.longitude, item.latitude],
             applicantName:item.applicantName,
             valveCode:item.valveCode,
             address:item.address,
@@ -699,13 +696,18 @@ function changeLayer(e) {
 }
 
 onMounted(async () => {
+  
   await fetchData()
   if(!chart){
     await setMap()
   }
+  let res=await fetchValveInfos()
+  myData.value=res.map(item=>{
+    return item.valveId
+  })
+  console.log("mymymy",myData.value)
   const temp = await fetchSuperWithValves()
   options.value = temp
-  console.log(options.value)
   for(let i=0;i<=options.value[0].id;i++){
     defaultKey.value.splice(0,0,i)
   }
