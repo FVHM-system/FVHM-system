@@ -14,22 +14,22 @@
             style="width: 100%"
             :height="tableHeight"
         >
-          <el-table-column fixed="left" label="ID" prop="id" width="100px"/>
-          <el-table-column fixed="left"  label="型号编号" prop="meterNo" width="200px"/>
-          <el-table-column fixed="left"  label="类型名称" prop="meterNoName" width="200px"/>
-          <el-table-column fixed="left" label="用途" prop="meterType" width="150px">
+          <el-table-column fixed="left" label="ID" prop="id" min-width="100px"/>
+          <el-table-column fixed="left"  label="型号编号" prop="meterNo" min-width="150px"/>
+          <el-table-column fixed="left"  label="类型名称" prop="meterNoName" min-width="150px"/>
+          <el-table-column fixed="left" label="用途" prop="meterType" min-width="150px">
             <template #default="scope">
               {{['流量计','压力计'][scope.row.meterType-1]}}
             </template>
           </el-table-column>
-          <el-table-column fixed="left" label="水表口径" prop="meterCaliber" width="150px" />
-          <el-table-column fixed="left" label="带阀控" prop="meterVc" width="150px">
+          <el-table-column fixed="left" label="水表口径" prop="meterCaliber" min-width="120px" />
+          <el-table-column fixed="left" label="带阀控" prop="meterVc" min-width="120px">
             <template #default="scope">
               {{['是','否'][scope.row.meterVc-1]}}
             </template>
           </el-table-column>
-          <el-table-column fixed="left" label="创建时间" prop="createTime" width="250px" />
-          <el-table-column fixed="right" label="操作" width="400">
+          <el-table-column fixed="left" label="创建时间" prop="createTime" min-width="250px" />
+          <el-table-column  label="操作" min-width="200">
             <template #default="scope">
               <el-button @click="editModal.open(scope.row)">修改</el-button>
               <el-popconfirm
