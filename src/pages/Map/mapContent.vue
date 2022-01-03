@@ -210,21 +210,6 @@ let wellPath='path://M972.110701 459.803197c-4.526083-59.69252-20.843724-117.172
 
 
 async function changeSwitch(e){
-  // let place = proxy.$refs.require.getCheckedNodes().filter((item) => {
-  //   if(item.message.type==='hydrant'||item.message.type==='valve'){
-  //     return true
-  //   }else{
-  //     return false
-  //   }
-  // })
-  // console.log("place",place)
-  // myData.value=place.map(item=>{
-  //       let myId
-  //         if(item.message.type==='hydrant'||item.message.type==='valve'){
-  //           myId=item.message.zoneId
-  //         }
-  //       return myId
-  //     })
   await fetchData()
   await setMap()
 }
