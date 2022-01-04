@@ -46,10 +46,10 @@
         },
       },
       grid: {
-        top: '10%',
+        top: '15%',
         left: '3%',
         right: '11%',
-        bottom: '10%',
+        bottom: '15%',
         width:'100%',
         containLabel: true,
       },
@@ -133,6 +133,7 @@
   .home {
     position: relative;
     top: -8px;
+    height:100%;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -147,7 +148,7 @@
     &-body {
       position: relative;
       flex-grow: 1;
-      height: 280px;
+      height: 50%;
       width: 100%;
     }
   }
