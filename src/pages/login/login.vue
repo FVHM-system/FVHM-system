@@ -204,7 +204,7 @@ export default {
   cursor: pointer;
   position: relative;
   top: -10%;
-  right:10%;
+  right:10%;//狗头保命
 }
 
 .boxTop {
