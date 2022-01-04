@@ -9,7 +9,7 @@
           :rules="rules"
           label-width="120px"
           class="searchForm"
-
+          style="position:absolute;right: 20px"
       >
         <el-form-item prop="place">
           <el-cascader
