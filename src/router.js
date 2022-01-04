@@ -222,6 +222,7 @@ const configs = [
       {
         path: '/menu_management',
         label: '菜单管理',
+        hide: true,
         component: MenuMgmt
       },
       {
