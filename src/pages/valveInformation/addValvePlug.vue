@@ -24,7 +24,7 @@
         <el-cascader
             v-model="place"
             :options="optionss"
-            :props="myprops"
+            :props="mypropss"
             placeholder="选择地址"
             :show-all-levels="false"
             style="width: 190px"
@@ -56,7 +56,7 @@
       <el-form-item label="阀栓类型" style="margin-left: 40px;">
         <el-select v-model="formData.valveType" placeholder="选择类型" style="width: 120px">
           <el-option
-              v-for="item in options"
+              v-for="item in optionsss"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -69,7 +69,7 @@
       <el-form-item label="状态">
         <el-select v-model="formData.status" placeholder="选择状态" style="width: 140px">
           <el-option
-              v-for="item in statuss"
+              v-for="item in statussss"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -127,7 +127,7 @@ let dialogVisible = ref(false)
 let formData = ref({});
 let input = ref('')
 let applicantList = ref([])
-let options = ref([
+let optionsss = ref([
   {
     value: 1,
     label: '阀门',
@@ -138,14 +138,14 @@ let options = ref([
   }
 ])
 let place = ref()
-let myprops = ref()
-myprops = {
+let mypropss = ref()
+mypropss = {
   label: 'name',
   value: 'message',
   children: 'child',
 }
 let optionss = ref([])
-const statuss = [
+const statussss = [
   {
     value: 1001,
     label: '正常运行',

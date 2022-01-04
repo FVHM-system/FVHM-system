@@ -44,12 +44,16 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-              <div class="button">
-                <el-button v-model="search" type="primary" @click="dataFind">查询</el-button>
-                <el-button type="info" @click="dataRequire">重置</el-button>
-                <add-valve-plug></add-valve-plug>
-                <el-button type="primary" @click="exportCSV">导出</el-button>
-              </div>
+          <div class="button">
+            <el-button v-model="search" type="primary" @click="dataFind">查询</el-button>
+            <el-button type="info" @click="dataRequire">重置</el-button>
+            <el-button type="success"
+                       @click="add"
+                       :disabled="buttonState"
+            >新增
+            </el-button>
+            <el-button type="primary" @click="exportCSV">导出</el-button>
+          </div>
         </el-form-item>
       </el-form>
     </div>
@@ -69,7 +73,7 @@
         <el-table-column label="阀栓名称" prop="valveName" width="120px"/>
         <el-table-column label="地址" prop="address" width="200px"/>
         <el-table-column label="阀栓状态" prop="status" :formatter="statusFormate" width="200px"/>
-        <el-table-column label="阀栓设置时间"  prop="createTime"
+        <el-table-column label="阀栓设置时间" prop="createTime"
                          width="200px"/>
         <el-table-column label="计量设备型号" prop="meterCode" width="200px"/>
         <el-table-column label="通讯编号" prop="comNumber" width="200px"/>
@@ -98,25 +102,129 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-dialog
+          v-model="dialogVisible"
+          title="填写阀栓信息"
+          width="50%"
+          :before-close="handleClose">
+        <el-form :model="formData" label-width="120px">
+          <div style="display: flex;flex-direction: row">
+            <el-form-item label="阀栓名称">
+              <el-input v-model="formData.valveName" style="width: 190px"></el-input>
+            </el-form-item>
+            <el-form-item label="阀栓编号">
+              <el-input v-model="formData.valveCode" style="width: 190px"></el-input>
+            </el-form-item>
+          </div>
+          <div style="margin-top:10px;display: flex;flex-direction: row">
+            <el-form-item label="所在位置">
+              <el-cascader
+                  v-model="place"
+                  :options="optionss"
+                  :props="mypropss"
+                  placeholder="选择地址"
+                  :show-all-levels="false"
+                  style="width: 190px"
+                  clearable></el-cascader>
+            </el-form-item>
+            <el-form-item label="阀栓创建时间">
+              <el-date-picker
+                  value-format="YYYY-MM-DD HH:mm:ss"
+                  v-model="formData.createTime"
+                  type="datetime"
+                  placeholder="选择阀栓创建时间"
+                  style="width: 190px"
+              >
+              </el-date-picker>
+            </el-form-item>
+          </div>
+          <div style="display: flex;margin-top:10px;flex-direction: row;">
+            <el-form-item label="经度">
+              <el-input v-model="formData.longitude" style="width: 150px"></el-input>
+            </el-form-item>
+            <el-form-item label="通讯编号" style="margin-left: 40px">
+              <el-input v-model="formData.comNumber" style="width: 190px"></el-input>
+            </el-form-item>
+          </div>
+          <div style="display: flex;margin-top:10px;flex-direction: row">
+            <el-form-item label="纬度">
+              <el-input v-model="formData.latitude" style=" width: 150px"></el-input>
+            </el-form-item>
+            <el-form-item label="阀栓类型" style="margin-left: 40px;">
+              <el-select v-model="formData.valveType" placeholder="选择类型" style="width: 120px">
+                <el-option
+                    v-for="item in optionsss"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <div style="display: flex;margin-top:10px;flex-direction: row">
+            <el-form-item label="状态">
+              <el-select v-model="formData.status" placeholder="选择状态" style="width: 140px">
+                <el-option
+                    v-for="item in statuss"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="所属单位" style="margin-left: 50px;">
+              <el-select v-model="formData.applicantId" placeholder="选择所属单位" style="width: 190px">
+                <el-option
+                    v-for="item in applicantList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <div style="display: flex;margin-top:10px;flex-direction: row">
+            <el-form-item label="备注">
+              <el-input v-model="formData.remark" style="width: 190px"></el-input>
+            </el-form-item>
+          </div>
+        </el-form>
+        <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirm"
+        >确认</el-button
+        >
+      </span>
+          <p style="font-size: 3px;color: red">(注：除备注外其他项均不可为空)</p>
+        </template>
+      </el-dialog>
+    </div>
+    <div class="pagination-out">
+      <div class="pagination-in">
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            v-model:currentPage="currentPage"
+            :page-sizes="[10, 20, 30, 50, 100]"
+            :page-size="pageSize"
+            layout="total, prev, pager, next"
+            v-if="pageshow"
+            style="margin-top: 10px;"
+            :total="tableData.length">
+        </el-pagination>
       </div>
-      <div class="pagination-out">
-        <div class="pagination-in">
-          <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              v-model:currentPage="currentPage"
-              :page-sizes="[10, 20, 30, 50, 100]"
-              :page-size="pageSize"
-              layout="total, prev, pager, next"
-              v-if="pageshow"
-              style="margin-top: 10px;"
-              :total="tableData.length">
-          </el-pagination>
-        </div>
-      </div>
+    </div>
   </div>
 </template>
 <script setup>
+import {ElMessageBox} from 'element-plus'
+import {fetInsertValveInfo} from "./util/vpinformation";
+import axios from "axios";
+import {getApplicant} from "../applicantMgmt/util/ApplicantMgmt";
 import {onMounted, ref, getCurrentInstance, reactive} from 'vue'
 import {fetchVpinformation, fetDeleteValveInfo, fetUpdateStatus} from "./util/vpinformation";
 import {fetchFindData} from "./util/dataSearch";
@@ -127,14 +235,34 @@ import {fetchSuper} from '../../apis/2.0/addr'
 import {exportExcel} from '../../utils/exportExcel'
 import {ElLoading, ElMessage} from 'element-plus'
 import {
-  fetchAuthority ,
+  fetchAuthority,
   fetchUsername
 } from '../../utils/mrWang'
 
+let formData = ref({});
+let input = ref('')
+let applicantList = ref([])
+let optionsss = ref([
+  {
+    value: 1,
+    label: '阀门',
+  },
+  {
+    value: 2,
+    label: '消防栓',
+  }
+])
+let place = ref()
+let mypropss = ref()
+mypropss = {
+  label: 'name',
+  value: 'message',
+  children: 'child',
+}
 const {proxy} = getCurrentInstance()
 let tableHeight = window.innerHeight - 310
-let authority=ref('')
-let buttonState=ref(false)//禁用按钮
+let authority = ref('')
+let buttonState = ref(false)//禁用按钮
 let input1 = ref('')
 let input2 = ref('')
 let options = ref([])
@@ -147,31 +275,136 @@ let testnum = ref('')
 let myprops = ref()
 let pageshow = ref(true)
 let dialogVisible = ref(false)
-myprops = {
-  label: 'name',
-  value: 'message',
-  children: 'child',
-  checkStrictly: true
-}
+
 const getValveId = function (row) {
   testnum = row.valveId
 }
 
 let searchForm = reactive({
-  place:'',
-  type:'',
-  status:''
+  place: '',
+  type: '',
+  status: ''
 })
 
 function handleSizeChange(val) {
   pageSize = val;
 }
+
 // 当前页
 function handleCurrentChange(val) {
   currentPage = val;
   currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
 }
+let optionss = ref([])
+const statussss = [
+  {
+    value: 1001,
+    label: '正常运行',
+  },
+  {
+    value: 1002,
+    label: '尚未安装',
+  },
+  {
+    value: 1003,
+    label: '已经停用',
+  },
+  {
+    value: 4444,
+    label: '正在报警',
+  },
+]
+const add = function () {
+  dialogVisible.value = true
+}
+let valveInfo
+const stringJudge = function (input) {
+  if (!input) {
+    return ''
+  } else {
+    return input.toString()
+  }
+}
+const confirm = async function () {
+  console.log(formData.value.createTime)
 
+  if (formData.value.comNumber && formData.value.createTime && formData.value.latitude
+      && formData.value.longitude  && formData.value.applicantId
+      && formData.value.status && formData.value.valveCode && formData.value.valveName
+      && formData.value.valveType && place.value.length > 0) {
+    valveInfo = {}
+    valveInfo.zoneId = place.value[4].zoneId
+    valveInfo.applicantId = formData.value.applicantId
+    valveInfo.comNumber = stringJudge(formData.value.comNumber)
+    valveInfo.createTime = formData.value.createTime
+    valveInfo.latitude = parseFloat(formData.value.latitude)
+    valveInfo.longitude = parseFloat(formData.value.longitude)
+    valveInfo.remark = stringJudge(formData.value.remark)
+    valveInfo.status = formData.value.status
+    valveInfo.valveCode = stringJudge(formData.value.valveCode)
+    valveInfo.valveId = 0
+    valveInfo.zoneType = 2
+    valveInfo.valveName = stringJudge(formData.value.valveName)
+    valveInfo.valveType = formData.value.valveType
+    valveInfo = JSON.stringify(valveInfo)
+    let res = await fetInsertValveInfo(valveInfo)
+    if (res.code === '200') {
+      ElMessage({
+        type: 'success',
+        message: '操作成功！',
+      })
+      dialogVisible.value = false
+      let res = await fetchVpinformation()
+      if (res.code === '200') {
+        tableData.value = res.data;
+      }
+      if (tableData.value.length < pageSize) {
+        currentData.value = tableData.value
+      } else {
+        currentData.value = tableData.value.slice(0, pageSize)
+      }
+    }
+    else{
+      ElMessage({
+        type: 'error',
+        message: '添加失败！',
+      })
+      return
+    }
+  } else {
+    ElMessage({
+      type: 'error',
+      message: '未填写完整数据！',
+    })
+  }
+}
+
+function dateTimeTrans(d) {
+  if (typeof d === 'string') {
+    return d
+  }
+  if (!d) {
+    return ''
+  }
+}
+async function getApplicantList() {
+  let res = await getApplicant()
+  applicantList.value = res.data.map(item=>{
+    return {
+      value:item.applicantId,
+      label:item.applicantName
+    }
+  })
+}
+const handleClose = (done) => {
+  ElMessageBox.confirm('是否要退出编辑？')
+  .then(() => {
+    done()
+  })
+  .catch(() => {
+    // catch error
+  })
+}
 /* 阀栓代码与文本转换 */
 const typeFormate = function (row) {
   const target = types.find(i => i.value === row.valveType)
@@ -209,28 +442,27 @@ const dataFind = async function () {
   let address = ref('')
   console.log(searchForm.place)
   if (searchForm.place) {
-    if(searchForm.place.length>1){
-    for (let i = searchForm.place.length - 1; i >= 0; i--) {
-      address.value = searchForm.place[i].name + address.value
-    }
+    if (searchForm.place.length > 1) {
+      for (let i = searchForm.place.length - 1; i >= 0; i--) {
+        address.value = searchForm.place[i].name + address.value
+      }
     }
   }
   console.log(searchForm.type, searchForm.status, address.value)
   let res = await fetchFindData(searchForm.type, searchForm.status, address.value)
   if (res.code === '200') {
-    if(res.data.length>0){
-    ElMessage({
-      type: 'success',
-      message: '查询成功！',
-    })
-    tableData.value = res.data;
-    if (tableData.value.length < pageSize) {
-      currentData.value = tableData.value
+    if (res.data.length > 0) {
+      ElMessage({
+        type: 'success',
+        message: '查询成功！',
+      })
+      tableData.value = res.data;
+      if (tableData.value.length < pageSize) {
+        currentData.value = tableData.value
+      } else {
+        currentData.value = tableData.value.slice(0, pageSize)
+      }
     } else {
-      currentData.value = tableData.value.slice(0, pageSize)
-    }
-  }
-    else {
       ElMessage({
         type: 'warning',
         message: '尚无当前所查数据！',
@@ -242,9 +474,9 @@ const dataFind = async function () {
 }
 
 const dataRequire = async function () {
-  searchForm.place=''
-  searchForm.type=''
-  searchForm.status=''
+  searchForm.place = ''
+  searchForm.type = ''
+  searchForm.status = ''
   pageshow.value = false
   let res = await fetchVpinformation()
   if (res.code === '200') {
@@ -308,26 +540,26 @@ async function exportCSV() {
     },
     {
       label: '所属单位',
-      name:'applicantName'
+      name: 'applicantName'
     }
   ]
 
-  let temp=await fetchVpinformation()
-  temp.data.map(item=>{
-    if(item.valveType===1){//
-      item.valveType="阀门"
-    }else if(item.valveType===2){
-      item.valveType="消防栓"
+  let temp = await fetchVpinformation()
+  temp.data.map(item => {
+    if (item.valveType === 1) {//
+      item.valveType = "阀门"
+    } else if (item.valveType === 2) {
+      item.valveType = "消防栓"
     }
 
-    if(item.status===1001){
-      item.status="正在运行"
-    }else if(item.status===1002){
-      item.status="尚未安装"
-    }else if(item.status===1003){
-      item.status="已经停用"
-    }else if(item.status===4444){
-      item.status="正在报警"
+    if (item.status === 1001) {
+      item.status = "正在运行"
+    } else if (item.status === 1002) {
+      item.status = "尚未安装"
+    } else if (item.status === 1003) {
+      item.status = "已经停用"
+    } else if (item.status === 4444) {
+      item.status = "正在报警"
     }
 
   })
@@ -338,13 +570,14 @@ async function exportCSV() {
 }
 
 onMounted(async () => {
-  authority.value=fetchAuthority()
-  if(authority.value==='ROLE_ADMIN'){
-    buttonState.value=false
-  }else{
-    buttonState.value=true
+  authority.value = fetchAuthority()
+  if (authority.value === 'ROLE_ADMIN') {
+    buttonState.value = false
+  } else {
+    buttonState.value = true
   }
-  const loadingInstance = ElLoading.service({target:document.getElementById("data-chart"),fullscreen: false})
+  const loadingInstance = ElLoading.service(
+      {target: document.getElementById("data-chart"), fullscreen: false})
   let res = await fetchVpinformation()
   if (res.code === '200') {
     tableData.value = res.data;
@@ -355,6 +588,8 @@ onMounted(async () => {
     currentData.value = tableData.value.slice(0, pageSize)
   }
   options.value = await fetchSuper()
+  optionss.value = await fetchSuper()
+  await getApplicantList()
   loadingInstance.close()
   console.log(proxy)
 })
@@ -383,6 +618,7 @@ onMounted(async () => {
   left: 20px;
   position: relative;
 }
+
 .device-id {
   position: relative;
   top: 3px;
@@ -404,14 +640,16 @@ onMounted(async () => {
   height: 8px;
   border-radius: 4px;
 }
-.pagination-out{
+
+.pagination-out {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   height: 70px;
 }
-.pagination-in{
+
+.pagination-in {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -422,11 +660,13 @@ onMounted(async () => {
   border-radius: 30px;
   box-shadow: -2px 2px 2px #888888;
 }
-.searchForm{
+
+.searchForm {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
+
 ::-webkit-scrollbar-thumb {
   background-color: darkgray;
   border-radius: 4px;
