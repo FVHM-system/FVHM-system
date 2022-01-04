@@ -40,7 +40,7 @@
   <el-dialog v-model="modalState" :title="modalTitle" center>
     <el-form :model="addForm" label-width="100px" :inline="false">
       <el-form-item label="村庄名" required>
-        <el-input v-model="addForm.name"></el-input>//
+        <el-input v-model="addForm.name"></el-input>
       </el-form-item>
       <el-form-item label="所属乡镇" required>
         <el-select v-model="addForm.zoneId" clearable style="width: 617px" placeholder="请选择">
@@ -69,7 +69,7 @@ import {
   editVillageInfoByConfig,
   deleteVillageInfoById
 } from '../../apis/2.0/addr'
-import { 
+import {
   fetchAuthority ,
   fetchUsername
 } from '../../utils/mrWang'
