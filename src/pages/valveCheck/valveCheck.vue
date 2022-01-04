@@ -4,7 +4,7 @@
       <p class="page-name">巡视安排</p>
       <div style="position:absolute;right:-32px;top:30px">
       <el-input v-model="input1" placeholder="请输入巡视人" style="margin-left: 170px;margin-top:3px;width: 150px"/>
-      
+
       <el-select v-model="input2" placeholder="选择状态" style="margin-left:10px;width: 120px;margin-top: 3px">
         <el-option
             v-for="item in status"
@@ -36,7 +36,7 @@
           <el-table-column label="巡视人" prop="people" min-width="120px"/>
           <el-table-column label="电话号码" prop="phone" min-width="200px"/>
           <!-- <el-table-column label="完成状态" prop="complete"  width="200px">
-            
+
           </el-table-column> -->
           <el-table-column label="完成状态"  min-width="200px">
             <template #default="scope">
@@ -66,7 +66,7 @@
         <el-form-item label="任务时间" >
             <el-date-picker
                     v-model="addForm.inspectTime"
-                    value-format="yyyy-MM-dd HH:mm:ss"
+                    value-format="YYYY-MM-DD HH:mm:ss"
                     type="datetime"
                     placeholder="请选择"
                     >
@@ -83,7 +83,7 @@
    </el-dialog>
   <el-dialog v-model="detailState" :title="modalTitle"  center width="70%">
     <el-button type="primary" class="detail-btn" @click="valveDetail.detailAdd()" :disabled="buttonState">新增任务阀栓</el-button>
-    <el-table 
+    <el-table
       :data="taskData"
       :header-cell-style="{background:'#EFF7FD', fontFamily:'Helvetica,Arial,sans-serif',fontSize:'17px',
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
@@ -121,7 +121,7 @@
         <el-form-item label="完成时间" required>
             <el-date-picker
                     v-model="detailForm.completeTime"
-                    value-format="yyyy-MM-dd HH:mm:ss"
+                    value-format="YYYY-MM-DD HH:mm:ss"
                     type="datetime"
                     placeholder="请选择"
                     >
@@ -151,7 +151,7 @@
             style="left: 100px;width: 220px"
             clearable/>
         </el-form-item>
-        
+
         </el-form>
         <template #footer>
         <el-button type="primary" class="search-btn" @click="valveDetail.submitAdd()">保存</el-button>
@@ -160,7 +160,7 @@
    </el-dialog>
    <el-dialog v-model="modalState" title="新增任务"  center>
         <el-form :model="addForm" label-width="100px" :inline="false">
-        
+
         <el-form-item label="选择阀栓" required>
             <el-cascader
             v-model="place"
@@ -190,7 +190,7 @@
                     >
             </el-date-picker>
         </el-form-item>
-        
+
         </el-form>
         <template #footer>
         <el-button type="primary" class="search-btn" @click="addModal.submit()">保存</el-button>
@@ -221,7 +221,7 @@ import {
 } from '../../apis/2.0/addr'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import dayjs from 'dayjs'
-import { 
+import {
   fetchAuthority ,
   fetchUsername
 } from '../../utils/mrWang'
@@ -277,7 +277,7 @@ let myprops = {
 const addForm = reactive({
     taskId: '',
     peopleId:'',
-    people: '', 
+    people: '',
     phone: '',
     createTime: '',
     inspectTime:'',
@@ -483,11 +483,11 @@ const myFunc={
             })
             console.log("本人",tableData.value)
           }
-          
+
           const temp1=await fetchRoadList()
           roadList.value=temp1
           console.log("所有信息",roadList.value)
-          
+
           const temp2=await fetchPeopleList({role:'ROLE_INSPECT'})//获取所有巡视人
           if(temp2.code==='200'){
             peopleList.value=temp2.data
@@ -495,7 +495,7 @@ const myFunc={
           }else{
             console.log("失败")
           }
-          
+
         },
         async add() {
             let myData=place.value.map(item=>{
@@ -639,7 +639,7 @@ const myFunc={
         addForm.createTime=item.createTime
         addForm.inspectTime=item.inspectTime
         addForm.complete=item.complete
-        addForm.remark=item.remark                                     
+        addForm.remark=item.remark
         addForm.valveIds=item.valveIds
         console.log("hahahaha",addForm)
     },

@@ -6,8 +6,8 @@
         <el-date-picker
           v-model="currentYear"
           type="year"
+          value-format="YYYY"
           placeholder="选择年份"
-          format="YYYY 年"
           @change="search"
           :disabled-date="disableDate"
         ></el-date-picker>

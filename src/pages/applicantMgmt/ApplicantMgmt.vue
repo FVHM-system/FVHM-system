@@ -5,7 +5,7 @@
       <div style="position:absolute;right:250px;top:30px">
       <el-input v-model="search.data.applicantName" placeholder="根据单位名称进行搜索"
                   style="position:relative; left:25%; width: 200px"/>
-      <el-input v-model="search.data.address" placeholder="根据地址进行搜索"
+      <el-input v-model="search.data.address" placeholder="根据地址进行搜索(支持模糊查找)"
                   style="position:relative; left:26%; width: 250px"/>
       <el-button style="position:relative; left:28%" type="primary" @click="search.submit()">查询</el-button>
       <el-button style="position:relative; left:28%" type="info" @click="reset()">重置</el-button>
@@ -170,7 +170,19 @@ const search = reactive({
   async submit(){
     let res = await searchApplicant(this.data)
     if (res.code == '200'){
-      tableData.value = res.data;
+      if(res.data.length!==0){
+        ElMessage({
+          type: 'success',
+          message : '查询成功'
+        })
+        tableData.value = res.data;
+      }
+      else {
+        ElMessage({
+          type: 'warning',
+          message : '尚无当前所查数据'
+        })
+      }
       console.log(res.data)
       currentData.value = tableData.value.slice(0, pageSize)
     }

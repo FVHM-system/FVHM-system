@@ -32,7 +32,7 @@
       </el-form-item>
       <el-form-item label="阀栓创建时间" >
         <el-date-picker
-            value-format="yyyy-MM-dd HH:mm:ss"
+            value-format="YYYY-MM-DD HH:mm:ss"
             v-model="formData.createTime"
             type="datetime"
             placeholder="选择阀栓创建时间"
@@ -174,16 +174,8 @@ const stringJudge = function (input) {
     return input.toString()
   }
 }
-const genTwoLengthNumberString = n => (n >= 10 ? n : '0' + n)
-const timeSolve = function (time) {
-  let timeString = ref('')
-  timeString.value = timeString.value + time.getFullYear() + '-'
-  timeString.value = timeString.value + genTwoLengthNumberString(time.getMonth()+1) + '-'
-  timeString.value = timeString.value + genTwoLengthNumberString(time.getDate()) + ' '
-  timeString.value = timeString.value + time.toString().split(' ')[4]
-  return timeString.value
-}
 const confirm = async function () {
+  console.log(formData.value.createTime)
   if (formData.value.comNumber && formData.value.createTime && formData.value.latitude
       && formData.value.longitude  && formData.value.applicantId
       && formData.value.status && formData.value.valveCode && formData.value.valveName
@@ -192,7 +184,7 @@ const confirm = async function () {
     valveInfo.zoneId = place.value[4].zoneId
     valveInfo.applicantId = formData.value.applicantId
     valveInfo.comNumber = stringJudge(formData.value.comNumber)
-    valveInfo.createTime = timeSolve(formData.value.createTime)
+    valveInfo.createTime = formData.value.createTime
     valveInfo.latitude = parseFloat(formData.value.latitude)
     valveInfo.longitude = parseFloat(formData.value.longitude)
     valveInfo.remark = stringJudge(formData.value.remark)

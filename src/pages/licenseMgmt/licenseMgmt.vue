@@ -3,16 +3,15 @@
     <div class="p2-header">
       <p class="page2-name">许可证管理</p>
       <div style="position:absolute;right:230px;top:30px">
-      <el-input type="number" v-model.number="search.data.valveId" placeholder="根据阀栓ID进行搜索"
-                  style="position:relative; left:15%; width: 180px"/>
       <el-input v-model="search.data.license" placeholder="根据许可证编号进行搜索"
                   style="position:relative; left:16%; width: 190px"/>
       <el-date-picker
           v-model="daterange"
           type="daterange"
           range-separator="至"
-          start-placeholder="Start date"
-          end-placeholder="End date"
+          value-format="YYYY-MM-DD HH:mm:ss"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
           style="position:relative; left:17%; margin-top: 3px;margin-left: 10px"
           @change="transformSearchDate"
       />
@@ -98,7 +97,6 @@
           type="date"
           v-model="addModal.data.startTime"
           placeholder="选择日期"
-          @change="transformAddDate()"
           value-format="yyyy-MM-dd">
           </el-date-picker>
         </el-form-item>
@@ -160,7 +158,6 @@
           type="date"
           v-model="editModal.data.startTime"
           placeholder="选择日期"
-          @change="transformEditDate()"
           value-format="yyyy-MM-dd">
           </el-date-picker>
         </el-form-item>
@@ -234,21 +231,6 @@ function handleCurrentChange(val) {
   currentPage = val;
   currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
 }
-function dateFormatter(str){//默认返回yyyy-MM-dd HH-mm-ss
-	var hasTime = arguments[1] != false ? true : false;//可传第二个参数false，返回yyyy-MM-dd
-	var d = new Date(str);
-	var year = d.getFullYear();
-	var month = (d.getMonth()+1)<10 ? '0'+(d.getMonth()+1) : (d.getMonth()+1);
-	var day = d.getDate()<10 ? '0'+d.getDate() : d.getDate();
-	var hour = d.getHours()<10 ? '0'+d.getHours() : d.getHours();
-	var minute = d.getMinutes()<10 ? '0'+d.getMinutes() : d.getMinutes();
-	var second = d.getSeconds()<10 ? '0'+d.getSeconds() : d.getSeconds();
-	//if(hasTime){
-		//return [year, month, day].join('-') + " " + [hour, minute, second].join(':');
-	//}else{
-		return [year, month, day].join('-');
-	//}
-}
 
 function handleSizeChange(val) {
   pageSize = val;
@@ -262,7 +244,6 @@ const statusFormate = function (row){
 let daterange = ref([])
 const search = reactive({
   data:{
-    valveId:null,
     license:null,
     start:null,
     end:null,
@@ -284,7 +265,6 @@ const search = reactive({
 })
 
 async function reset(){
-  search.data.valveId=null
   search.data.license=null
   daterange.value=[]
   search.data.start=null
@@ -407,18 +387,9 @@ async function deleteLic(id){
     }
   }
 }
-
-function transformAddDate(){
-  addModal.data.startTime=dateFormatter(addModal.data.startTime)
-}
-
-function transformEditDate(){
-  editModal.data.startTime=dateFormatter(editModal.data.startTime)
-}
-
 function transformSearchDate(){
-  search.data.start=dateFormatter(daterange.value[0])
-  search.data.end=dateFormatter(daterange.value[1])
+  search.data.start=daterange.value[0]
+  search.data.end=daterange.value[1]
   console.log(search.data.start)
   console.log(search.data.end)
 }
