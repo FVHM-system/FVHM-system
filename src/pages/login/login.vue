@@ -15,8 +15,8 @@
                       placeholder="密码"/>
           </div>
           <div class="boxOperation">
-            <div>
-              <p>需要新建用户？请联系管理员</p>
+            <div style="position:relative;left:58px;top:-10%;">
+              <p >需要新建用户？<br/>请联系管理员</p>
             </div>
             <button class="boxConfirm" @click="login">登录</button>
           </div>
@@ -204,6 +204,7 @@ export default {
   cursor: pointer;
   position: relative;
   top: -10%;
+  right:10%;
 }
 
 .boxTop {

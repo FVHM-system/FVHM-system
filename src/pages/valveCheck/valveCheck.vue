@@ -81,7 +81,7 @@
         <el-button @click="modal.cancel()">取消</el-button>
         </template>
    </el-dialog>
-  <el-dialog v-model="detailState" :title="modalTitle"  center width="65%">
+  <el-dialog v-model="detailState" :title="modalTitle"  center width="70%">
     <el-button type="primary" class="detail-btn" @click="valveDetail.detailAdd()" :disabled="buttonState">新增任务阀栓</el-button>
     <el-table
       :data="taskData"
@@ -92,18 +92,18 @@
       style="width: 100%"
       height="350"
     >
-      <el-table-column label="阀栓编号" prop="valveId" width="60px" />
-      <el-table-column label="阀栓名" prop="valveName" width="150px"/>
-      <el-table-column label="地址" prop="address" width="180px"/>
-      <el-table-column label="完成状态" prop="complete" width="60px">
+      <el-table-column label="阀栓编号" prop="valveCode" min-width="60px" />
+      <el-table-column label="阀栓名" prop="valveName" min-width="150px"/>
+      <el-table-column label="地址" prop="address" min-width="190px"/>
+      <el-table-column label="完成状态" prop="complete" min-width="60px">
          <template #default="scope">
               <el-progress type="circle" width="50" v-if="scope.row.complete*100===100" :percentage="scope.row.complete*100" status="success"/>
               <el-progress type="circle" width="50" v-if="scope.row.complete*100===0" :percentage="scope.row.complete*100+100" status="exception"/>
          </template>
       </el-table-column>>
-      <el-table-column label="完成时间" prop="completeTime" width="160px"/>
-      <el-table-column label="备注" prop="remark" width="120px"/>
-      <el-table-column  label="操作" width="180px">
+      <el-table-column label="完成时间" prop="completeTime" min-width="160px"/>
+      <el-table-column label="备注" prop="remark" min-width="120px"/>
+      <el-table-column  label="操作" min-width="180px">
             <template #default="scope">
               <el-button type="primary" @click="valveDetail.detailEdit(scope.row)" >编辑</el-button>
               <el-button type="danger" @click="valveDetail.detailDelete(scope.row)" :disabled="buttonState">删除</el-button>

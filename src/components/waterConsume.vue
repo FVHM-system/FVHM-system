@@ -21,8 +21,9 @@
   import { ref, onMounted, onUnmounted } from 'vue'
   import * as echarts from 'echarts'
   import { totalconsumedofyear } from '../apis/2.0/home'
+  import dayjs from 'dayjs'
   let counts = ref([])
-  let currentYear = ref(new Date())
+  let currentYear = ref(dayjs(new Date()).format('YYYY'))
   let myChart
   let linePic = function (yValues) {
     const lineDom = document.getElementById('water-consume')
@@ -75,7 +76,7 @@
   }
 
   const search = async () => {
-    const current = currentYear.value.getFullYear()
+    const current = currentYear.value
     const res1 = await totalconsumedofyear({
       year: current ,
       valveType: 1,

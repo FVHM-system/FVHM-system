@@ -7,6 +7,7 @@
           <el-date-picker
               v-model="searchTime"
               type="month"
+              value-format="YYYY-MM"
               placeholder="选择某月"
               class="search"
               style="width: 200px"
@@ -67,8 +68,9 @@ import {
   fetchSectionList,
 } from '../../apis/2.0/addr'
 import {dateTimeTrans} from '../../utils/mrWang'
+import dayjs from 'dayjs'
 
-let searchTime = ref(new Date())
+let searchTime = ref(dayjs(new Date()).format('YYYY-MM'))
 let searchTimeType = ref('月报')
 let data = ref([])
 let tableHeight = window.innerHeight - 240
@@ -81,7 +83,7 @@ const load = async (tree, treeNode, resolve) => {
     const district = (await fetchDistrictList() || []).filter(item => item.pid == tree.zoneId)
     console.log("district: ", district)
     res = (await fetchMonthDistrict({
-      month: dateTimeTrans(searchTime.value, searchTimeType.value),
+      month: searchTime.value,
       list: district.map(item => {
         return item.zoneId;
       }),
@@ -104,7 +106,7 @@ const load = async (tree, treeNode, resolve) => {
     const town = (await fetchTownList() || []).filter(item => item.pid == tree.zoneId)
     console.log("town: ", town)
     res = (await fetchMonthTown({
-      month: dateTimeTrans(searchTime.value, searchTimeType.value),
+      month: searchTime.value,
       list: town.map(item => {
         return item.zoneId;
       }),
@@ -127,7 +129,7 @@ const load = async (tree, treeNode, resolve) => {
     const village = (await fetchVillageList() || []).filter(item => item.pid == tree.zoneId)
     console.log("village: ", village)
     res = (await fetchMonthVillage({
-      month: dateTimeTrans(searchTime.value, searchTimeType.value),
+      month: searchTime.value,
       list: village.map(item => {
         return item.zoneId;
       }),
@@ -150,7 +152,7 @@ const load = async (tree, treeNode, resolve) => {
     const road = (await fetchRoadList() || []).filter(item => item.pid == tree.zoneId)
     console.log("road: ", road)
     res = (await fetchMonthRoad({
-      month: dateTimeTrans(searchTime.value, searchTimeType.value),
+      month: searchTime.value,
       list: road.map(item => {
         return item.zoneId;
       }),
@@ -173,7 +175,7 @@ const load = async (tree, treeNode, resolve) => {
     const section = (await fetchSectionList() || []).filter(item => item.pid == tree.zoneId)
     console.log("section: ", section)
     res = (await fetchMonthSection({
-      month: dateTimeTrans(searchTime.value, searchTimeType.value),
+      month: searchTime.value,
       list: section.map(item => {
         return item.zoneId;
       }),
@@ -196,13 +198,14 @@ const load = async (tree, treeNode, resolve) => {
 }
 
 async function search() {
+  console.log("测试",searchTime.value)
   const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: true})
   let city = []
   city = await fetchCityList()
   console.log("city: ", city)
 
   const res = await fetchMonthCity({
-    month: dateTimeTrans(searchTime.value, searchTimeType.value),
+    month: searchTime.value,
     list: city.map(item => {
       return item.zoneId;
     }),

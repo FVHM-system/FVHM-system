@@ -28,6 +28,7 @@
         <div>
           <el-date-picker
               v-model="searchTime"
+              value-format="YYYY-MM-DD"
               type="date"
               placeholder="选择某天"
               class="search"
@@ -36,6 +37,7 @@
           ></el-date-picker>
           <el-date-picker
               v-model="searchTime"
+              value-format="YYYY-MM"
               type="month"
               placeholder="选择某月"
               class="search"
@@ -44,6 +46,7 @@
           ></el-date-picker>
           <el-date-picker
               v-model="searchTime"
+              value-format="YYYY"
               type="year"
               placeholder="选择某年"
               class="search"
@@ -79,7 +82,7 @@
 
 <script setup>
 import {multiply} from 'lodash'
-import {getCurrentInstance, onMounted, ref} from 'vue'
+import { onMounted, ref} from 'vue'
 import {ElLoading} from 'element-plus'
 import {
   fetchCityList,
@@ -100,6 +103,7 @@ import {
 } from '../../apis/2.0/newReport'
 import {exportExcel} from '../../utils/exportExcel'
 import {dateTimeTrans} from '../../utils/mrWang'
+import dayjs from 'dayjs'
 
 emits: ['handleItemChange']
 let options = ref([])
@@ -107,12 +111,12 @@ let require = ref(null)
 let myprops = ref()
 let place = ref()
 let searchTimeType = ref('日报')
-let searchTime = ref(new Date())
+let searchTime = ref(dayjs(new Date()).format('YYYY-MM-DD'))
+
 let timeActive = ref('日报')
 let data = ref([])
 let tableHeight = window.innerHeight - 240
 let allData = ref([])
-const {proxy} = getCurrentInstance()
 const timeTypes = [
   {
     value: '日报',
@@ -339,12 +343,12 @@ const getNodes = async (val) => {
 }
 const handleItemChange = async (val) => {
   console.log("点击的val", val)
-  fetchMychoice()
+  //fetchMychoice()
   getNodes(val)//加速，非必要
 }
 
 function fetchMychoice() {//important
-  let ineed = proxy.$refs.require.getCheckedNodes().map((item) => {
+  let ineed = require.value.getCheckedNodes().map((item) => {
     return item.data.message
   })
   return ineed
@@ -394,7 +398,7 @@ async function init() {
     }
     const temp1 = await fetchCityReport({
       type: type,
-      currentTime: dateTimeTrans(searchTime.value, searchTimeType.value),
+      currentTime: searchTime.value,
     })
     temp1.map((item1) => {
       if (item1.id === 1) {
@@ -414,9 +418,17 @@ async function init() {
 }
 
 async function search() {
-  console.log("options", options)
-  console.log("我的当前选择", fetchMychoice())
+  
+  if(searchTimeType.value==="月报"){
+    searchTime.value=dayjs(searchTime.value).format('YYYY-MM')
+  }else if(searchTimeType.value==="年报"){
+    searchTime.value=dayjs(searchTime.value).format('YYYY')
+  }
+  console.log("searchTime.value", searchTime.value)
+  console.log("searchTimeType.value", searchTimeType.value)
+
   const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
+
   let myData = (fetchMychoice() || []).map(async (item) => {
     let valveVolume, hydrantVolume, totalVolume, type
     if (searchTimeType.value === '年报') {
@@ -429,7 +441,7 @@ async function search() {
     if (item.type === 'city') {
       const temp1 = await fetchCityReport({
         type: type,
-        currentTime: dateTimeTrans(searchTime.value, searchTimeType.value),
+        currentTime: searchTime.value,
       })
       temp1.map((item1) => {
         if (item1.id === item.zoneId) {
@@ -441,7 +453,7 @@ async function search() {
     }  else if (item.type === 'district') {
       const temp1 = await fetchDistrictReport({
         type: type,
-        currentTime: dateTimeTrans(searchTime.value, searchTimeType.value),
+        currentTime: searchTime.value,
       })
       temp1.map((item1) => {
         if (item1.id === item.zoneId) {
@@ -453,7 +465,7 @@ async function search() {
     } else if (item.type === 'town') {
       const temp1 = await fetchTownReport({
         type: type,
-        currentTime: dateTimeTrans(searchTime.value, searchTimeType.value),
+        currentTime: searchTime.value,
       })
       temp1.map((item1) => {
         if (item1.id === item.zoneId) {
@@ -465,7 +477,7 @@ async function search() {
     } else if (item.type === 'village') {
       const temp1 = await fetchVillageReport({
         type: type,
-        currentTime: dateTimeTrans(searchTime.value, searchTimeType.value),
+        currentTime: searchTime.value,
       })
       temp1.map((item1) => {
         if (item1.id === item.zoneId) {
@@ -477,7 +489,7 @@ async function search() {
     } else if (item.type === 'road') {
       const temp1 = await fetchRoadReport({
         type: type,
-        currentTime: dateTimeTrans(searchTime.value, searchTimeType.value),
+        currentTime: searchTime.value,
       })
       temp1.map((item1) => {
         if (item1.id === item.zoneId) {
@@ -489,7 +501,7 @@ async function search() {
     }else if (item.type === 'section') {
       const temp1 = await fetchSectionReport({
         type: type,
-        currentTime: dateTimeTrans(searchTime.value, searchTimeType.value),
+        currentTime: searchTime.value,
       })
       temp1.map((item1) => {
         if (item1.id === item.zoneId) {
