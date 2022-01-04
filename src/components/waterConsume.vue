@@ -58,7 +58,7 @@
         },
       ],
       grid: {
-        top: 60,
+        top: 40,
         left: '2%',
         right: '10%',
         height: '75%',

@@ -509,6 +509,7 @@ const myFunc={
             })
             console.log("1",addForm.peopleId)
             console.log("2",myData)
+            console.log("3",addForm.inspectTime)
             console.log("3",dayjs(addForm.inspectTime).format('YYYY-MM-DD HH:mm:ss'))
             console.log("4",dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss'))
             const r = await addCheck({

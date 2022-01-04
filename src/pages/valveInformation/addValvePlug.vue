@@ -3,7 +3,7 @@
              style="margin-right: 10px"
              @click="add"
              :disabled="buttonState"
-  >添加
+  >新增
   </el-button>
   <el-dialog
       v-model="dialogVisible"
@@ -100,7 +100,7 @@
 
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="confirm"
-        >确认添加</el-button
+        >确认</el-button
         >
       </span>
       <p style="font-size: 3px;color: red">(注：除备注外其他项均不可为空)</p>
