@@ -78,7 +78,7 @@
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="监测阀栓" required>
+        <el-form-item style="margin-left: 8px" label="监测阀栓">
           <el-select style="position:relative; left:6%; width:101%" v-model="addModal.data.valveId" placeholder="请选择">
           <el-option
               v-for="item in valvePlugInformation"
@@ -121,7 +121,9 @@
         </el-form-item>
         </div>
       </el-form>
+      <el-footer style="text-align: end">
       <el-button type="primary"  @click="addModal.submit()" >确定</el-button>
+      </el-footer>
     </el-dialog>
 
     <el-dialog  v-model="editModal.show" title="编辑设备">
@@ -285,7 +287,7 @@ async function reset(){
   id.value = null
   showpagination.value = false
   const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
-  let res = await getMeter(this.data)
+  let res = await getMeter()
     if (res.code == '200'){
       tableData.value = res.data;
     }

@@ -21,7 +21,6 @@ import {ref} from 'vue'
 import BasicInformation from "./basicInformation.vue";
 import LiveData from "./liveData.vue";
 
-
 export default {
   components: {LiveData, BasicInformation},
   data() {
@@ -41,14 +40,12 @@ export default {
     valve_createTime: Date
   },
   methods: {
+
     valveChangeClick() {
       this.drawer = true;
       this.valve_test = true;
     }
   },
-  unmounted() {
-
-  }
 }
 </script>
 <style>

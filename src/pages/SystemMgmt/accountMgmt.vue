@@ -145,9 +145,6 @@
         <el-form-item label="用户名">
           {{ currentUser.userName }}
         </el-form-item>
-        <el-form-item label="原密码" required>
-          <el-input show-password v-model="form.editPassword.oldPassword"/>
-        </el-form-item>
         <el-form-item label="新密码" required>
           <el-input show-password v-model="form.editPassword.password"/>
         </el-form-item>
@@ -213,7 +210,6 @@ const addForm = reactive({
   post: null,
 })
 const editPasswordForm = reactive({
-  oldPassword:null,
   password: null,
   confirmPassword: null,
 })
@@ -299,13 +295,6 @@ const userFunc = {
   },
 
   async editPassword() {
-    if (!editPasswordForm.oldPassword) {
-      ElMessage({
-        type: 'info',
-        message: '原密码不能为空',
-      })
-      return
-    }
     if (!editPasswordForm.password) {
       ElMessage({
         type: 'info',
@@ -322,7 +311,6 @@ const userFunc = {
     }
     const res = await editAccountPassword({
       id: currentUser.value.userId,
-      oldPassword: editPasswordForm.oldPassword,
       password: editPasswordForm.password,
     })
     if (res) {

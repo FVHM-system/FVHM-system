@@ -107,7 +107,7 @@
       </el-footer>
     </el-dialog>
 
-    <el-dialog v-model="editModal.show" title="编辑类型">
+    <el-dialog width="25%" v-model="editModal.show" title="编辑类型">
       <el-form :inline="true">
         <div>
           <el-form-item label="型号编号" required>
@@ -124,7 +124,7 @@
           </el-form-item>
         </div>
         <div>
-          <el-form-item label="用途" required>
+          <el-form-item style="white-space: pre" label="用       途" required>
             <el-select style="position:relative; left:6%; width:101%"
                        v-model="editModal.data.meterType" placeholder="请选择">
               <el-option
@@ -138,12 +138,12 @@
         </div>
         <div>
           <el-form-item label="水表口径" required>
-            <el-input type="number" style="width:110%"
+            <el-input type="number" style="position:relative; left:6%; width:110%"
                       v-model.number="editModal.data.meterCaliber"/>
           </el-form-item>
         </div>
         <div>
-          <el-form-item label="阀      控" required>
+          <el-form-item style="white-space: pre" label="阀       控" required>
             <el-select style="position:relative; left:6%; width:101%"
                        v-model="editModal.data.meterVc">
               <el-option v-for="item in meterVc" :key="item.value" :value="item.value"
@@ -157,13 +157,17 @@
             <el-date-picker
                 v-model="editModal.data.createTime"
                 type="datetime"
+                value-format="YYYY-MM-DD HH:mm:ss"
                 placeholder="选择日期时间"
+                style="position:relative; left:6%; "
                 @change="transformAddDate()">
             </el-date-picker>
           </el-form-item>
         </div>
       </el-form>
+      <div style="text-align: end">
       <el-button type="primary" @click="editModal.submit()">确定</el-button>
+      </div>
     </el-dialog>
 
   </div>

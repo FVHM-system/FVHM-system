@@ -6,6 +6,7 @@
           <div class="CardWaterSum">
             <el-date-picker
                 v-model="value1"
+                value-format="YYYY-MM-DD HH:mm:ss"
                 type="daterange"
                 range-separator="To"
                 start-placeholder="开始时间"
@@ -205,9 +206,10 @@ let BarPic = function () {
   myChart.setOption(option)
 }
 const getTimeWaterData = async function () {
+  console.log(value1.value[0])
   let res = await fetFindVolumebyTime(props.valve_id_end,
-      new Date(value1.value[0]).toLocaleDateString(),
-      new Date(value1.value[1]).toLocaleDateString())
+      value1.value[0],
+      value1.value[1])
   if (res.code === '200') {
     waterData.value = res.data
   }
@@ -249,15 +251,15 @@ const getWaterTotal = async function () {
   console.log(res.data)
 }
 const waterTrandGet = async function () {
-  let res1 = await fetFindmonthvolumebyyear(props.valve_id_end, '2019')
+  let res1 = await fetFindmonthvolumebyyear(props.valve_id_end, year1)
   if (res1.code === '200') {
     year1Data = res1.data.map(item => item.volume)
   }
-  let res2 = await fetFindmonthvolumebyyear(props.valve_id_end, '2020')
+  let res2 = await fetFindmonthvolumebyyear(props.valve_id_end, year2)
   if (res2.code === '200') {
     year2Data = res2.data.map(item => item.volume)
   }
-  let res3 = await fetFindmonthvolumebyyear(props.valve_id_end, '2021')
+  let res3 = await fetFindmonthvolumebyyear(props.valve_id_end, year3)
   if (res3.code === '200') {
     year3Data = res3.data.map(item => item.volume)
   }

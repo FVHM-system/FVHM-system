@@ -13,7 +13,7 @@
         <el-form-item prop="place">
           <el-cascader
               v-model="searchForm.place"
-              :options="options"
+              :options="optionss"
               :props="myprops"
               placeholder="选择地址"
               :show-all-levels="false"
@@ -275,7 +275,12 @@ let testnum = ref('')
 let myprops = ref()
 let pageshow = ref(true)
 let dialogVisible = ref(false)
-
+myprops = {
+  label: 'name',
+  value: 'message',
+  children: 'child',
+  checkStrictly:true
+}
 const getValveId = function (row) {
   testnum = row.valveId
 }
@@ -587,7 +592,6 @@ onMounted(async () => {
   } else {
     currentData.value = tableData.value.slice(0, pageSize)
   }
-  options.value = await fetchSuper()
   optionss.value = await fetchSuper()
   await getApplicantList()
   loadingInstance.close()

@@ -97,7 +97,7 @@
           type="date"
           v-model="addModal.data.startTime"
           placeholder="选择日期"
-          value-format="yyyy-MM-dd">
+          value-format="YYYY-MM-DD">
           </el-date-picker>
         </el-form-item>
         </div>
@@ -158,7 +158,7 @@
           type="date"
           v-model="editModal.data.startTime"
           placeholder="选择日期"
-          value-format="yyyy-MM-dd">
+          value-format="YYYY-MM-DD">
           </el-date-picker>
         </el-form-item>
         </div>
@@ -271,7 +271,7 @@ async function reset(){
   search.data.end=null
   showpagination.value = false
   const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
-  let res = await searchLicense(this.data)
+  let res = await searchLicense()
     if (res.code == '200'){
       tableData.value = res.data;
     }

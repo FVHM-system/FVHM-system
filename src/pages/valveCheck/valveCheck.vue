@@ -144,7 +144,6 @@
             :options="options"
             :props="myprops"
             :show-all-levels="false"
-            ref="require"
             placeholder="选择阀栓"
             @expand-change="handleItemChange"
             collapse-tags="true"
@@ -167,7 +166,6 @@
             :options="options"
             :props="myprops"
             :show-all-levels="false"
-            ref="require"
             placeholder="选择阀栓"
             @expand-change="handleItemChange"
             collapse-tags="true"
@@ -566,6 +564,7 @@ const myFunc={
                     message: '删除成功!',
                     })
                 }
+                  dataSearch()
                 })
                 .catch(() => {})
         },

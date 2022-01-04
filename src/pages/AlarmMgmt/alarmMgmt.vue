@@ -188,15 +188,15 @@ const statuss = [
 const alarmType = [
   {
     value: 1,
-    label: '阀门故障',
+    label: '水量超额报警',
   },
   {
     value: 2,
-    label: '消防栓故障',
+    label: '阀栓故障报警',
   },
   {
     value: 3,
-    label: '水量超额',
+    label: '流量异常报警',
   },
   {
     value: 4,

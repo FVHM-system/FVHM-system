@@ -62,11 +62,10 @@ export const editAccountPost = async ({ id, post }) => {
   })
 }
 
-export const editAccountPassword = async ({ id, oldPassword, password }) => {
+export const editAccountPassword = async ({ id, password }) => {
   return await request.Pput('/user/updateuser', {
     data: {
       userId: id,
-      oldPassword: oldPassword,
       password: password,
     },
   })

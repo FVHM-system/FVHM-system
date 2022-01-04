@@ -97,11 +97,7 @@
 
     <el-dialog  v-model="editModal.show" title="编辑单位">
       <el-form :inline="true">
-        <div>
-        <el-form-item label="单位ID" required>
-          <el-input disabled="true" style="position:relative; left:28%; width:108%" type="number" v-model.number="editModal.data.departmentId"  />
-        </el-form-item>
-        </div>
+
         <div>
         <el-form-item label="单位名称" required>
           <el-input style="position:relative; left:6%; width:108%" v-model="editModal.data.applicantName">
@@ -198,7 +194,7 @@ async function reset(){
   search.data.address=null
   showpagination.value = false
   const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
-  let res = await getApplicant(this.data)
+  let res = await getApplicant()
     if (res.code == '200'){
       tableData.value = res.data;
     }
