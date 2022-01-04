@@ -21,16 +21,16 @@
         <el-table-column prop="description" min-width="400" label="岗位描述"></el-table-column>
         <el-table-column label="操作" min-width="650" fixed="right">
           <template #default="scope">
-            <el-button @click="postFunc.goAccount2Post(scope.row)" type="warning">分配用户</el-button>
-            <el-button @click="postFunc.goPost(scope.row)" type="primary">菜单权限</el-button>
-            <el-button @click="editModal.changeState(true) || changeCurrent(scope.row)">修改信息
+            <el-button @click="postFunc.goAccount2Post(scope.row)" type="warning" >分配用户</el-button>
+            <el-button @click="postFunc.goPost(scope.row)" type="primary" :disabled="scope.row.roleName==='ADMIN'">菜单权限</el-button>
+            <el-button @click="editModal.changeState(true) || changeCurrent(scope.row)" :disabled="scope.row.roleName==='ADMIN'||scope.row.roleName==='INSPECT'">修改信息
             </el-button>
             <el-popconfirm
                 :title="'确认删除岗位 “' + scope.row.roleName + '” 吗？'"
                 @confirm="postFunc.deletePost(scope.row)"
             >
               <template #reference>
-                <el-button type="danger">删除</el-button>
+                <el-button type="danger" :disabled="scope.row.roleName==='ADMIN'||scope.row.roleName==='INSPECT'">删除</el-button>
               </template>
             </el-popconfirm>
           </template>
@@ -84,6 +84,10 @@ import {onMounted, reactive, ref, computed} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import {ElMessage,ElLoading} from 'element-plus'
 import {addPost, deletePost, editPostByConfig, fetchPostList} from '/src/apis/post.js'
+import {
+  fetchAuthority ,
+  fetchUsername
+} from '../../utils/mrWang'
 
 const router = useRouter()
 let tableHeight = window.innerHeight - 300
