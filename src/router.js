@@ -228,6 +228,7 @@ const configs = [
       {
         path: '/api_management',
         label: 'API管理',
+        hide: true,
         component: ApiMgmt
       }
     ]
