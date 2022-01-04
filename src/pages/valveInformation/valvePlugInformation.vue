@@ -233,7 +233,7 @@ const dataFind = async function () {
     else {
       ElMessage({
         type: 'warning',
-        message: '尚无数据！',
+        message: '尚无当前所查数据！',
       })
     }
   }

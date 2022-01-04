@@ -23,7 +23,6 @@
           <template #default="scope">
             <el-button @click="postFunc.goAccount2Post(scope.row)" type="warning">分配用户</el-button>
             <el-button @click="postFunc.goPost(scope.row)" type="primary">菜单权限</el-button>
-            <el-button @click="postFunc.goAccept(scope.row)" type="primary">API 权限</el-button>
             <el-button @click="editModal.changeState(true) || changeCurrent(scope.row)">修改信息
             </el-button>
             <el-popconfirm

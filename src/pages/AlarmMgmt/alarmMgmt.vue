@@ -9,7 +9,7 @@
           :rules="rules"
           label-width="120px"
           class="searchForm"
-          
+
       >
         <el-form-item prop="place">
           <el-cascader
@@ -61,9 +61,10 @@
           <el-date-picker
             v-model="searchForm.time"
             type="datetimerange"
+            value-format="YYYY-MM-DD HH:mm:ss"
             range-separator="至"
-            start-placeholder="Start date"
-            end-placeholder="End date"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间"
             style="margin-left:-110px;width: 360px"
             >
             </el-date-picker>
@@ -213,15 +214,7 @@ const alarmStatus = [
     label: '取消已处理',
   }
 ]
-const genTwoLengthNumberString = n => (n >= 10 ? n : '0' + n)
-const timeSolve = function (time) {
-  let timeString = ref('')
-  timeString.value = timeString.value + time.getFullYear()+ '-'
-  timeString.value = timeString.value +  genTwoLengthNumberString(time.getMonth()+1) + '-'
-  timeString.value = timeString.value +  genTwoLengthNumberString(time.getDate()) + ' '
-  timeString.value = timeString.value + time.toString().split(' ')[4]
-  return timeString.value
-}
+
 async function exportCSV() {
   const excel = {}
   excel.props = [
@@ -349,23 +342,32 @@ const dataRSearch = async function () {
   }
   console.log(searchForm.time)
   if(searchForm.time){
-    startTime = timeSolve(searchForm.time[0])
-    endTime = timeSolve(searchForm.time[1])
+    searchForm.time[0]
+    searchForm.time[1]
+    console.log(searchForm.time[0],searchForm.time[1])
   }
   console.log(address.value, searchForm.type, searchForm.typeWarn,searchForm.status,startTime,endTime)
   let res = await fetchFindWarnInfo(address.value, searchForm.type, searchForm.typeWarn,searchForm.status,startTime,endTime)
-  if (res.code === '200' && res.data.length !== 0) {
-    ElMessage({
-      type: 'success',
-      message: '查询成功！',
-    })
-    tableData.value = res.data;
-    if (tableData.value.length < pageSize) {
-      currentData.value = tableData.value
-    } else {
-      currentData.value = tableData.value.slice(0, pageSize)
+  if (res.code === '200' ) {
+    if(res.data.length !== 0) {
+      ElMessage({
+        type: 'success',
+        message: '查询成功！',
+      })
+      tableData.value = res.data;
+      if (tableData.value.length < pageSize) {
+        currentData.value = tableData.value
+      } else {
+        currentData.value = tableData.value.slice(0, pageSize)
+      }
+      console.log(res.data)
     }
-    console.log(res.data)
+    else{
+        ElMessage({
+          type: 'warning',
+          message : '尚无当前所查数据'
+        })
+    }
   } else {
     ElMessage({
       type: 'error',

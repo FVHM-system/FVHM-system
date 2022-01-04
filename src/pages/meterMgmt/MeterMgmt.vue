@@ -4,7 +4,7 @@
       <p class="page2-name">监测设备管理</p>
 
       <div style="position:absolute;right:60px;top:30px">
-        <el-input v-model="id" placeholder="根据设备ID进行搜索"
+        <el-input v-model="id" placeholder="根据设备编号进行搜索"
                   style="width: 200px"/>
         <el-button style="position:relative; margin-left: 10px" type="primary" @click="submit()">查询</el-button>
         <el-button style="position:relative; margin-left: 10px" type="info" @click="reset()">重置</el-button>
@@ -23,10 +23,8 @@
             style="width: 100%"
             :height="tableHeight"
         >
-          <el-table-column fixed="left" label="ID" prop="meterId" min-width="100px"/>
           <el-table-column fixed="left"  label="设备编号" prop="meterCode" min-width="200px"/>
           <el-table-column fixed="left"  label="设备名称" prop="meterName" min-width="200px"/>
-          <el-table-column fixed="left" label="阀栓ID" prop="valveId" min-width="100px" />
           <el-table-column fixed="left" label="状态" prop="status" min-width="100px">
             <template #default="scope">
               <el-tag :type="statusFormate(scope.row.status)">{{['不正常','正常'][scope.row.status]}}</el-tag>
@@ -264,7 +262,7 @@ async function submit(){
     if (!id.value){
       ElMessage({
         type: 'error',
-        message : 'ID不能为空'
+        message : '设备编号不能为空'
       })
     }
     else{
