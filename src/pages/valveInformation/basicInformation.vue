@@ -1,79 +1,69 @@
 <template>
   <div class="basicInformation">
     <div class="BInfo">
+      <div style="height: 8%"></div>
       <el-form :model="formData" label-width="120px">
-        <el-form-item label="阀栓名称" prop="valveName"
-                      style="position:relative; left:-10px; top: 60px">
-          <el-col :span="9">
-            <el-input v-model="formData.valveName" style="width: 190px"></el-input>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="所在位置" style="position:relative; left:-10px; top: 70px">
-          <el-col :span="9">
-            <el-input v-model="formData.address" style="width: 190px"></el-input>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="经度" style="position:relative; left:-10px; top: 80px;">
-          <el-col :span="9">
-            <el-input v-model="formData.longitude" style=" width: 150px"></el-input>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="纬度" style="position:relative; left:-10px; top: 90px">
-          <el-col :span="9">
-            <el-input v-model="formData.latitude" style=" width: 150px"></el-input>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="状态" style="position:relative; left:-10px; top: 100px">
-          <el-select v-model="formData.status" placeholder="Select"
-                     style="position: relative;left: -213px;width: 120px">
-            <el-option
-                v-for="item in statuss"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+        <div style="width: 100%;display: flex;flex-direction: row">
+          <el-form-item label="阀栓名称" prop="valveName" style="width: 45%">
+            <el-input v-model="formData.valveName"></el-input>
+          </el-form-item>
+          <el-form-item label="阀栓编号" prop="valveCode" style="width: 45%">
+            <el-input v-model="formData.valveCode"></el-input>
+          </el-form-item>
+        </div>
+        <div style="width: 100%;display: flex;flex-direction: row;margin-top: 2.5%">
+          <el-form-item label="所在位置" style="width: 45%">
+            <el-input v-model="formData.address"></el-input>
+          </el-form-item>
+          <el-form-item label="创建时间" style="width: 45%">
+            <el-date-picker
+                v-model="formData.createTime"
+                type="datetime"
+                placeholder="选择阀栓创建时间"
+                style="width: 100%"
             >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="监测设备编号" style="position:relative; left:-10px; top: 110px">
-          <el-col :span="9">
-            <el-input v-model="formData.meterCode" style=" width: 150px"></el-input>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="阀栓编号" style="position:relative; left:300px; top: -310px">
-          <el-col :span="9">
-            <el-input v-model="formData.valveCode" style="width: 190px"></el-input>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="阀栓创建时间" style="position:relative; left:300px; top: -300px">
-          <el-date-picker
-              v-model="formData.createTime"
-              type="datetime"
-              placeholder="选择阀栓创建时间"
-              style="position: relative;left: -177px; width: 190px"
-          >
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="通讯编号" style="position:relative; left:300px; top: -290px">
-          <el-col :span="9">
-            <el-input v-model="formData.comNumber" style="width: 190px"></el-input>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="阀栓类型" style="position:relative; left:300px; top: -280px">
-          <el-select v-model="formData.valveType" placeholder="Select"
-                     style="position: relative;left: -213px;width: 120px">
-            <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="所属单位" style="position:relative; left:300px; top: -270px">
-          <el-col :span="9">
-            <el-select v-model="formData.applicantId" placeholder="选择所属单位" style="width: 190px">
+            </el-date-picker>
+          </el-form-item>
+        </div>
+        <div style="width: 100%;display: flex;flex-direction: row ;margin-top: 2.5%">
+          <el-form-item label="经度" style="width: 45%">
+            <el-input v-model="formData.longitude"></el-input>
+          </el-form-item>
+          <el-form-item label="通讯编号" style="width: 45%">
+            <el-input v-model="formData.comNumber"></el-input>
+          </el-form-item>
+        </div>
+        <div style="width: 100%;display: flex;flex-direction: row ;margin-top: 2.5%">
+          <el-form-item label="纬度" style="width: 45%">
+            <el-input v-model="formData.latitude"></el-input>
+          </el-form-item>
+          <el-form-item label="阀栓类型" style="width: 45%">
+            <el-select v-model="formData.valveType" placeholder="Select">
+              <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                  style="width: 100%"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </div>
+        <div style="width: 100%;display: flex;flex-direction: row;margin-top: 2.5%">
+          <el-form-item label="状态" style="width: 45%">
+            <el-select v-model="formData.status" placeholder="Select">
+              <el-option
+                  v-for="item in statuss"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="所属单位" style="width: 45%">
+            <el-select v-model="formData.applicantId" placeholder="选择所属单位">
               <el-option
                   v-for="item in applicantList"
                   :key="item.value"
@@ -82,28 +72,31 @@
               >
               </el-option>
             </el-select>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="备注" style="position:relative; left:300px; top: -260px">
-          <el-col :span="9">
-            <el-input v-model="input" style="width: 190px"></el-input>
-          </el-col>
-        </el-form-item>
-        <el-form-item style="position:relative; left:-60px; top: -275px">
-          <el-popconfirm
-              confirm-button-text="确定"
-              cancel-button-text="取消"
-              icon-color="red"
-              title="是否要保存修改?"
-              @confirm="updateInfo"
-          >
-            <template #reference>
-              <el-button size="medium" type="primary" @click="" :disabled="buttonState">保存修改</el-button>
-            </template>
-          </el-popconfirm>
-        </el-form-item>
+          </el-form-item>
+        </div>
+        <div style="width: 100%;display: flex;flex-direction: row;margin-top: 2.5%">
+          <el-form-item label="监测设备编号" style="width: 45%">
+            <el-input v-model="formData.meterCode"></el-input>
+          </el-form-item>
+          <el-form-item label="备注" style="width: 45%">
+            <el-input v-model="input"></el-input>
+          </el-form-item>
+        </div>
       </el-form>
-
+      <el-footer style="text-align: center;margin-top: 2.5%">
+        <el-popconfirm
+            confirm-button-text="确定"
+            cancel-button-text="取消"
+            icon-color="red"
+            title="是否要保存修改?"
+            @confirm="updateInfo"
+        >
+          <template #reference>
+            <el-button size="medium" type="primary" @click="" :disabled="buttonState">保存修改
+            </el-button>
+          </template>
+        </el-popconfirm>
+      </el-footer>
     </div>
   </div>
 </template>
@@ -114,13 +107,13 @@ import {fetchDetailData} from "./util/detailData";
 import {fetchUpdateData} from "./util/updateData";
 import {ElMessage} from 'element-plus'
 import {
-  fetchAuthority ,
+  fetchAuthority,
   fetchUsername
 } from '../../utils/mrWang'
 import {getApplicant} from "../applicantMgmt/util/ApplicantMgmt";
 
-let authority=ref('')
-let buttonState=ref(false)//禁用按钮
+let authority = ref('')
+let buttonState = ref(false)//禁用按钮
 let formData = ref([]);
 let options = ref([
   {
@@ -151,23 +144,25 @@ const statuss = [
   },
 ]
 let applicantList = ref([])
+
 async function getApplicantList() {
   let res = await getApplicant()
   console.log(res.data)
-  applicantList.value = res.data.map(item=>{
+  applicantList.value = res.data.map(item => {
     return {
-      value:item.applicantId,
-      label:item.applicantName
+      value: item.applicantId,
+      label: item.applicantName
     }
   })
   console.log(applicantList)
 }
+
 onMounted(async () => {
-  authority.value=fetchAuthority()
-  if(authority.value==='ROLE_ADMIN'){
-    buttonState.value=false
-  }else{
-    buttonState.value=true
+  authority.value = fetchAuthority()
+  if (authority.value === 'ROLE_ADMIN') {
+    buttonState.value = false
+  } else {
+    buttonState.value = true
   }
   let res = await fetchDetailData(props.valve_id_end)
   if (res.code === '200') {
@@ -193,7 +188,7 @@ const updateInfo = async function () {
   valveInfo.meterCode = formData.value.meterCode;
   valveInfo.comNumber = formData.value.comNumber;
   valveInfo.applicantId = formData.value.applicantId
-  console.log('ssdsasad',valveInfo.applicantId)
+  console.log('ssdsasad', valveInfo.applicantId)
   const res = await fetchUpdateData(valveInfo)
   console.log(res)
   console.log(valveInfo)
@@ -226,9 +221,11 @@ const props = defineProps({
 .BInfo {
   background-color: white;
   position: relative;
+  display: flex;
+  flex-direction: column;
   top: 8%;
   left: 4.5%;
   width: 85%;
-  height: 80%;
+  height: 100%;
 }
 </style>
