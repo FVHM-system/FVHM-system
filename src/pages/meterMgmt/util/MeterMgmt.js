@@ -6,9 +6,9 @@ export const getMeter = async () => {
 }
 
 export const getMeterById = async (id) => {
-  return await request.get('/meter/getmeterinfobyid', {
+  return await request.get('/meter/getmeterinfobycode', {
     params: {
-      meterId: id,
+      meterCode: id,
     },
   })
 }

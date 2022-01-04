@@ -259,17 +259,23 @@ function transformEditDate(){
 
 let id = ref()
 async function submit(){
+  console.log(JSON.stringify(id.value))
     if (!id.value){
-      ElMessage({
-        type: 'error',
-        message : '设备编号不能为空'
-      })
+      return
     }
     else{
       const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
       let res = await getMeterById(id.value)
-      if (res.code === '200' && res.data.length !== 0) {
-      currentData.value = [res.data]
+      if (res.code === '200') {
+        if(res.data) {
+          currentData.value = [res.data]
+        }
+        else{
+          ElMessage({
+            type: 'warning',
+            message : '尚无当前所查数据'
+          })
+        }
       }
       loadingInstance.close()
     }
