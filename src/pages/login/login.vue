@@ -16,7 +16,7 @@
           </div>
           <div class="boxOperation">
             <div style="position:relative;left:58px;top:-10%;">
-              <p >需要新建用户？<br/>请联系管理员</p>
+              <p style="color:white;">需要新建用户？<br/>请联系管理员</p>
             </div>
             <button class="boxConfirm" @click="login">登录</button>
           </div>
