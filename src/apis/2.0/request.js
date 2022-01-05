@@ -51,7 +51,6 @@ const request = {
         throw '返回数据格式异常'
       }
     } catch (e) {
-      console.log('error', e)
       // const msg = '网络请求失败：网络请求错误'
       const msg = '尚无数据'
       ElMessage({

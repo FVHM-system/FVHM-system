@@ -353,7 +353,6 @@ export const titleConfigs = generateTitleConfigs(configs)
 export const funcList = mergeListConfigs(funcListConfigs)
 export const funcMap = mergeMapConfigs(genType('page', cloneDeep(funcListConfigs)))
 
-console.log(routerConfigs)
 export const router = createRouter({
   history: createWebHashHistory(),
   routes: routerConfigs,

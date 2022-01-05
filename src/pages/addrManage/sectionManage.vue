@@ -73,7 +73,7 @@ import {
   editSectionInfoByConfig,
   deleteSectionInfoById
 } from '../../apis/2.0/addr'
-import { 
+import {
   fetchAuthority ,
   fetchUsername
 } from '../../utils/mrWang'
@@ -238,6 +238,9 @@ const addModal = {
     this.changeState(false)
   },
   open() {
+    if(check.value) {
+      check.value.clearValidate()
+    }
     this.changeState(true)
     mode.value = 'add'
     addForm.name = ''
@@ -288,6 +291,9 @@ const editModal = {
     this.changeState(false)
   },
   open(item) {
+    if(check.value) {
+      check.value.clearValidate()
+    }
     this.changeState(true)
     mode.value = 'edit'
     modal.value = editModal

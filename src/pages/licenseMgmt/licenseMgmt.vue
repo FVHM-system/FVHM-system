@@ -254,7 +254,7 @@ const search = reactive({
     loadingInstance.close()
     if (res.code == '200'){
       tableData.value = res.data;
-      console.log(res.data)
+      //console.log(res.data)
       currentData.value = tableData.value.slice(0, pageSize)
     }
     else {ElMessage({
@@ -300,7 +300,7 @@ const addModal = reactive({
   },
   async submit(){
     let res = await addLicense(this.data)
-    console.log(res)
+    //console.log(res)
     if (res.code == '200'){
       ElMessage({
         type: 'success',
@@ -349,9 +349,9 @@ const editModal = reactive({
     this.show = true;
   },
   async submit(){
-    console.log(this.data)
+    //console.log(this.data)
     let res = await editLicense(this.data)
-    console.log(res)
+    //console.log(res)
     if (res.code == '200'){
       ElMessage({
         type: 'success',
@@ -390,8 +390,8 @@ async function deleteLic(id){
 function transformSearchDate(){
   search.data.start=daterange.value[0]
   search.data.end=daterange.value[1]
-  console.log(search.data.start)
-  console.log(search.data.end)
+  //console.log(search.data.start)
+  //console.log(search.data.end)
 }
 
 onMounted(async () => {

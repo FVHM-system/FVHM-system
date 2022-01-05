@@ -40,10 +40,8 @@ import whiteBlock from '../../components/whiteBlock.vue'
 import {getCurrentInstance, markRaw, onMounted} from 'vue'
 import { fetchVpinformation} from '../valveInformation/util/vpinformation'
 let wholeHeight = window.innerHeight - 100
-console.log(wholeHeight)
 async function getValveInfo(){
   let res2 = await fetchVpinformation()
-  console.log('ssss',res2)
 }
 onMounted(async () =>{
   await getValveInfo()

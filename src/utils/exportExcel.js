@@ -31,7 +31,6 @@ function exportE() {
 export function exportExcel({props, body, fileName}) {
   //   exportE()
   //   return
-  console.log('in exportExcel')
   if (!props || !body || !fileName) {
     console.error('exportExcel need { props, body, fileName } !')
   }
@@ -72,7 +71,6 @@ export function exportExcel({props, body, fileName}) {
       '-' +
       fillZero(second)
   fileName += now
-  console.log(fileName)
 
   link.download = fileName + '.csv'
   link.click()

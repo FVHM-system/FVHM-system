@@ -240,12 +240,10 @@ function handleSizeChange(val) {
 function handleCurrentChange(val) {
   currentPage = val;
   currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-  console.log(currentPage)
 }
 
 const changeCurrentUser = user => {
   currentUser.value = user
-  console.log('change', user)
 }
 const addForm = reactive({
   username: null,
@@ -374,7 +372,7 @@ const userFunc = {
       return
       }
     })
-    
+
 
   },
   async editDesc() {
@@ -415,7 +413,7 @@ const userFunc = {
       return
       }
     })
-    
+
   },
   // async editPost() {
   //   const res = await editAccountPost({
@@ -447,7 +445,6 @@ const userFunc = {
       })
       return
     }
-    console.log(addForm)
     const res = await addAccount({
       ...addForm,
     })
@@ -468,7 +465,7 @@ const userFunc = {
       return
     }
     })
-    
+
   },
 }
 

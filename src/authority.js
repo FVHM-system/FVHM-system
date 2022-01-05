@@ -99,7 +99,6 @@ const genIndex = con => {
 }
 
 export const mergeMapConfigs = conA => {
-  console.log('coma', conA)
   return genIndex(mergeByGen(conA, genType('func', cloneDeep(operationConfigs)), genMapConfigs))
 }
 

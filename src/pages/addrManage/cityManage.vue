@@ -118,7 +118,6 @@ const myFunc = {
         value:item.city
       }
     })
-    console.log(cityNameList.value)
   },
   async add() {
     const r = await AddCityInfoByConfig({
@@ -178,7 +177,6 @@ const addModal = {
     addDta.value.validate((valid) => {
       if (valid) {
         const r = myFunc.add()
-        console.log(r)
         if (r) {
           this.changeState(false)
         }
@@ -190,6 +188,9 @@ const addModal = {
   }
   ,
   open() {
+    if(addDta.value) {
+      addDta.value.clearValidate()
+    }
     this.changeState(true)
     mode.value = 'add'
     addForm.name = ''
@@ -220,6 +221,9 @@ const editModal = {
     this.changeState(false)
   },
   open(item) {
+    if(addDta.value) {
+      addDta.value.clearValidate()
+    }
     this.changeState(true)
     mode.value = 'edit'
     modal.value = editModal

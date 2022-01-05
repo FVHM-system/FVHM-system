@@ -47,7 +47,6 @@
 
   onMounted(async () => {
     const res = await fetchInstalledHydrant()
-    console.log('message', res.message)
     if (res.code === '200') {
       counts.value = res.data
     }

@@ -136,7 +136,6 @@ const myFunc = {
         value:item.road
       }
     })
-    console.log(roadNameList)
     const temp5 = await fetchVillageList()
     villageList.value = temp5
   },
@@ -210,6 +209,9 @@ const addModal = {
     this.changeState(false)
   },
   open() {
+    if(addDta.value) {
+      addDta.value.clearValidate()
+    }
     this.changeState(true)
     mode.value = 'add'
     addForm.name = ''
@@ -239,6 +241,9 @@ const editModal = {
     this.changeState(false)
   },
   open(item) {
+    if(addDta.value) {
+      addDta.value.clearValidate()
+    }
     this.changeState(true)
     mode.value = 'edit'
     modal.value = editModal

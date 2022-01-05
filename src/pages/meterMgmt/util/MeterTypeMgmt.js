@@ -11,18 +11,15 @@ export const addMeterType = async (addData) => {
     ...addData
     },
   })
-  console.log(res)
   return res
 }
 
 export const editMeterType = async(addData) => {
-  console.log(addData)
   let res = await request.put('/meter/updatemetertype', {
     data:{
     ...addData
     },
   })
-  console.log(res)
   return res
 }
 

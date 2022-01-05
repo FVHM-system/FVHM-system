@@ -278,22 +278,29 @@ async function exportCSV() {
 }
 /* 处理按钮名称点击事件 */
 const handleStatus = async item => {
-  console.log(item)
   let res
   if (item.warnStatus === 1) {
     res = await fetchUpdateWarnIdById(item.valveId, item.warnId, 0)
-    console.log(item.valveId, item.warnId)
   } else if (item.warnStatus === 0) {
     res = await fetchUpdateWarnIdById(item.valveId, item.warnId, 1)
-    console.log(item.valveId, item.warnId)
   }
-  console.log(res)
   if (res.code === '200') {
     ElMessage({
       type: 'success',
       message: '修改成功！',
     })
-    location.reload()
+    pageshow.value = false
+    let res = await fetchAlarmManage()
+    if (res.code === '200') {
+      tableData.value = res.data;
+    }
+    if (tableData.value.length < pageSize) {
+      currentData.value = tableData.value
+    } else {
+      currentData.value = tableData.value.slice(0, pageSize)
+    }
+    currentPage = 1
+    pageshow.value = true
   }
 }
 /* 阀栓代码与文本转换 */
@@ -331,7 +338,6 @@ const dataRSearch = async function () {
   let startTime = ''
   let endTime = ''
   let address = ref('')
-  console.log(searchForm.place)
   if (searchForm.place) {
     if(searchForm.place.length>1){
       for (let i = searchForm.place.length - 1; i >= 0; i--) {
@@ -339,13 +345,10 @@ const dataRSearch = async function () {
       }
     }
   }
-  console.log(searchForm.time)
   if(searchForm.time){
     searchForm.time[0]
     searchForm.time[1]
-    console.log(searchForm.time[0],searchForm.time[1])
   }
-  console.log(address.value, searchForm.type, searchForm.typeWarn,searchForm.status,startTime,endTime)
   let res = await fetchFindWarnInfo(address.value, searchForm.type, searchForm.typeWarn,searchForm.status,startTime,endTime)
   if (res.code === '200' ) {
     if(res.data.length !== 0) {
@@ -359,7 +362,6 @@ const dataRSearch = async function () {
       } else {
         currentData.value = tableData.value.slice(0, pageSize)
       }
-      console.log(res.data)
     }
     else{
         ElMessage({
@@ -395,16 +397,13 @@ onMounted(async () => {
   if (res.code === '200') {
     tableData.value = res.data;
   }
-  console.log("嘎嘎嘎嘎嘎g",res.data)
   if (tableData.value.length < pageSize) {
     currentData.value = tableData.value
   } else {
     currentData.value = tableData.value.slice(0, pageSize)
   }
-  console.log(res.data)
   options.value = await fetchSuper()
   loadingInstance.close()
-  console.log('sssss',options.value[0].child)
 })
 
 </script>

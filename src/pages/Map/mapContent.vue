@@ -224,7 +224,6 @@ async function handleItemChange(e){
       return false
     }
   })
-  console.log("place",place)
   myData.value=place.map(item=>{
         let myId
           if(item.message.type==='hydrant'||item.message.type==='valve'){
@@ -233,7 +232,6 @@ async function handleItemChange(e){
         return myId
       })
   }
-  console.log("阀栓id",myData.value)
   await fetchData()
   await setMap()
 }
@@ -256,8 +254,7 @@ async function loadMap() {
   if(!chart){
     chart = markRaw(echarts.init(document.getElementById('map-container')))
     chart.on('click', e => {
-    console.log("点击的", e.data)
-    console.log(state.value)
+    //console.log(state.value)
     if (navmode.value === true && state.value === true) {
       if (clicklocation.value.length === 0) {
         startLngLat.push(e.data.value[0])
@@ -265,16 +262,14 @@ async function loadMap() {
         clicklocation.value.push(e.data)
         clicked.value = true
         showNav.value = false
-        console.log("起点", startLngLat)
-        console.log("点列表", clicklocation.value)
       } else if (clicklocation.value.length === 1 && state.value === true) {
         endLngLat.push(e.data.value[0])
         endLngLat.push(e.data.value[1])
         clicklocation.value.push(e.data)
         clicked.value = true
         showNav.value = true
-        console.log("终点", endLngLat)
-        console.log("点列表", clicklocation.value)
+        //console.log("终点", endLngLat)
+        //console.log("点列表", clicklocation.value)
         setNav()
       } else if (clicklocation.value.length === 2) {
         startLngLat = []
@@ -333,7 +328,7 @@ async function loadMap() {
       show:true,
       trigger: 'item',
       formatter:function(param){
-        //console.log(param)
+        ////console.log(param)
         let res
         res='阀栓编号: '+param .data.valveCode+"<br />"
            +'阀栓名称: '+param.data.name+"<br />"
@@ -609,7 +604,7 @@ const setMap = async () => {
 const fetchData = async () => {
   let res = await fetchValveInfos()
   let getList
-  console.log("myData",myData.value)
+  //console.log("myData",myData.value)
   if(judge===true){
       getList = e => {
       return res.filter(e).map(item => {
@@ -656,14 +651,14 @@ const fetchData = async () => {
   uninstalledHydrant.value=getList(item => item.status === 1002 && item.valveType === 2)
 
 
-  console.log("阀门正常运行", normalWell.value)
-  console.log("消防栓正常运行", normalHydrant.value)
-  console.log("阀门正在报警", warningWell.value)
-  console.log("消防栓正在报警", warningHydrant.value)
-  console.log("阀门已经废弃", offlineWell.value)
-  console.log("消防栓已经废弃", offlineHydrant.value)
-  console.log("阀门尚未安装", uninstalledWell.value)
-  console.log("消防栓尚未安装", uninstalledHydrant.value)
+  //console.log("阀门正常运行", normalWell.value)
+  //console.log("消防栓正常运行", normalHydrant.value)
+  //console.log("阀门正在报警", warningWell.value)
+  //console.log("消防栓正在报警", warningHydrant.value)
+  //console.log("阀门已经废弃", offlineWell.value)
+  //console.log("消防栓已经废弃", offlineHydrant.value)
+  //console.log("阀门尚未安装", uninstalledWell.value)
+  //console.log("消防栓尚未安装", uninstalledHydrant.value)
 }
 function miniClick(){
   miniShow.value = true
@@ -675,7 +670,7 @@ function miniClick2(){
 }
 
 function changeLayer(e) {
-  console.log("哈哈哈哈",radio.value)
+  //console.log("哈哈哈哈",radio.value)
   if (e == '标准地图') {
     satelliteObject.value.hide()
   } else {
@@ -693,7 +688,7 @@ onMounted(async () => {
   myData.value=res.map(item=>{
     return item.valveId
   })
-  console.log("mymymytSs",myData.value)
+  //console.log("mymymytSs",myData.value)
   const temp = await fetchSuperWithValves()
   options.value = temp
   for(let i=0;i<=options.value[0].id;i++){
@@ -876,7 +871,7 @@ onUnmounted(async()=>{
       display: flex;
       align-items: center;
       padding: 6px;
-      
+
       .word {
         position: relative;
         left:8px;

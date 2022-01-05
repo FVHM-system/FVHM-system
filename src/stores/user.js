@@ -73,7 +73,7 @@ export const user = {
       }
       localStorage.setItem('user', JSON.stringify(user))
       context.commit('setUser', user)
-      context.dispatch('utils/fetchAddr', null, {root: true})
+      await context.dispatch('utils/fetchAddr', null, {root: true})
       return true
     },
     logout(context) {

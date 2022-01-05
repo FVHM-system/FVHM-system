@@ -103,7 +103,6 @@ const myFunc = {
       cityId: addForm.zoneId,
       areaName: addForm.name,
     })
-    console.log("测测测", addForm.zoneId)
     if (r.code === '200') {
       ElMessage({
         type: 'success',

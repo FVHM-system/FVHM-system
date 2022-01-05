@@ -242,7 +242,6 @@ function handleSizeChange(val) {
 function handleCurrentChange(val) {
   currentPage = val;
   currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-  console.log(currentPage)
 }
 
 const statusFormate = function (i){
@@ -275,7 +274,6 @@ function transformEditDate(){
 
 let id = ref()
 async function submit(){
-  console.log(JSON.stringify(id.value))
     if (!id.value){
       return
     }
@@ -331,7 +329,6 @@ const addModal = reactive({
     let res = await fetchHasNoMeterVpinformation()
     if (res.code === '200') {
     valvePlug = res.data;
-    console.log('sdsd',res.data)
     valvePlugInformation.value = res.data.map(item=>{
       return{
         value:item.valveId,
@@ -339,7 +336,6 @@ const addModal = reactive({
       }
     })
     }
-    console.log()
     loadingInstance.close(valvePlugInformation.value)
     this.show = true;
   },
@@ -355,7 +351,6 @@ const addModal = reactive({
     }
     showpagination.value = false
     let res = await addMeter(this.data)
-    console.log(res)
     if (res.code == '200'){
       ElMessage({
         type: 'success',
@@ -413,7 +408,6 @@ const editModal = reactive({
     let res = await fetchHasNoMeterVpinformation()
     if (res.code === '200') {
     valvePlug = res.data;
-    console.log('sdsd',res.data)
     valvePlugInformation.value = res.data.map(item=>{
       return{
         value:item.valveId,
@@ -423,14 +417,13 @@ const editModal = reactive({
     }
     res = await fetchVpinformationById(row.valveId)
     if(res.code==='200'){
-      console.log('default',res.data)
       let tmp = ref([])
       tmp={
         value:res.data.valveId,
         label:res.data.valveName
       }
     valvePlugInformation.value.push(tmp)
-    console.log('success',valvePlugInformation.value)
+    //console.log('success',valvePlugInformation.value)
     }
 
     this.show = true;
@@ -439,9 +432,7 @@ const editModal = reactive({
   async submit(){
     editCheck.value.validate(async (valid)=>{
       if(valid){
-        console.log(this.data)
     let res = await editMeter(this.data)
-    console.log(res)
     if (res.code == '200'){
       ElMessage({
         type: 'success',
@@ -504,7 +495,6 @@ onMounted(async () => {
   res = await fetchHasNoMeterVpinformation()
   if (res.code === '200') {
     valvePlug = res.data;
-    console.log('sdsd',res.data)
     valvePlugInformation.value = res.data.map(item=>{
       return{
         value:item.valveId,
@@ -512,7 +502,7 @@ onMounted(async () => {
       }
     })
   }
-  console.log('success',valvePlugInformation.value)
+  //console.log('success',valvePlugInformation.value)
   loadingInstance.close()
 })
 
