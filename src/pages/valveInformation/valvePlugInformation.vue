@@ -364,7 +364,7 @@ let optionsss = ref([
     value: 2,
     label: '消防栓',
   }
-])
+])//
 let place = ref()
 let mypropss = ref()
 mypropss = {
