@@ -39,9 +39,15 @@
   </div>
   <el-dialog v-model="modalState" :title="modalTitle" center>
     <el-form :rules="addRule" ref="check" :model="addForm" label-width="100px" :inline="false">
-      <el-form-item prop="name" label="路段名">
-        <el-input v-model="addForm.name"></el-input>
+      <div style="display:flex;flex-dirction:row;align-items:centre;width:100%">
+      <el-form-item prop="name1" label="路段名">
+        <el-input v-model="addForm.name1"/>
       </el-form-item>
+      <p style="margin-top:10px;margin-left:10px;margin-right:10px;">—</p>
+      <el-form-item style="margin-left:-100px;" prop="name2" >
+        <el-input v-model="addForm.name2"/>
+      </el-form-item>
+      </div>
       <el-form-item prop="zoneId" label="所属道路">
         <el-select v-model="addForm.zoneId" clearable style="width: 617px" placeholder="请选择">
           <el-option v-for="item in roadList" :key="item.zoneId" :label="item.road"
@@ -61,10 +67,6 @@ import {ref, onMounted, computed, reactive} from 'vue'
 import {functions} from 'lodash'
 import {ElMessageBox, ElMessage,ElLoading} from 'element-plus'
 import {
-  fetchCityList,
-  fetchVillageList,
-  fetchDistrictList,
-  fetchTownList,
   fetchRoadList,
   fetchSectionList,
   AddSectionInfoByConfig,
@@ -86,15 +88,25 @@ let mode = ref('')
 let currentItem = ref()
 let tableHeight = window.innerHeight - 240
 let check=ref(null)
+let temp6
 
 const addRule=reactive({
-  name:[
+  name1:[
     {
       required: true,
       message: '请输入路段名',
       trigger: 'blur',
       type: 'string',
-      //pattern: /^[\u4e00-\u9fa5]+$/,
+      pattern: /^[\u4e00-\u9fa5]+$/,
+    }
+  ],
+  name2:[
+    {
+      required: true,
+      message: '请输入路段名',
+      trigger: 'blur',
+      type: 'string',
+      pattern: /^[\u4e00-\u9fa5]+$/,
     }
   ],
   zoneId:[
@@ -123,11 +135,13 @@ function handleCurrentChange(val) {
 }
 const addForm = reactive({
   name: '',
+  name1:'',
+  name2:'',
   zoneId: '',
 })
 const myFunc = {
   async search() {
-    const temp6 = await fetchSectionList()
+    temp6 = await fetchSectionList()
     sectionList.value = temp6
     const temp1 = await fetchRoadList()
     roadList.value = temp1
@@ -135,7 +149,7 @@ const myFunc = {
   async add() {
     const r = await AddSectionInfoByConfig({
       roadId: addForm.zoneId,
-      sectionName: addForm.name,
+      sectionName: addForm.name1+"-"+addForm.name2,
     })
     if (r.code === '200') {
       ElMessage({
@@ -150,7 +164,7 @@ const myFunc = {
   async edit() {
     const r = await editSectionInfoByConfig({
       sectionId: currentItem.value.zoneId,
-      sectionName: addForm.name,
+      sectionName: addForm.name1+"-"+addForm.name2,
       roadId: addForm.zoneId,
     })
     if (r.code === '200') {
@@ -189,9 +203,24 @@ const addModal = {
   },
   state: modalState,
   async submit() {
+    for(let i=0;i<temp6.length;i++){
+      if(temp6[i].pid===addForm.zoneId && temp6[i].section===addForm.name1+'-'+addForm.name2){
+        ElMessage({
+              type: 'info',
+              message: '路段名重复',
+          })
+          return
+      }else if(temp6[i].pid===addForm.zoneId && temp6[i].section===addForm.name2+'-'+addForm.name1){
+        ElMessage({
+              type: 'info',
+              message: '路段名重复',
+          })
+          return
+      }
+    }
     check.value.validate(async (valid)=>{
       if(valid){
-    if (!addForm.name || !addForm.zoneId) {
+    if (!addForm.name1 ||!addForm.name2 || !addForm.zoneId) {
       ElMessage({
         type: 'info',
         message: '名称或地址不能为空',
@@ -212,6 +241,8 @@ const addModal = {
     this.changeState(true)
     mode.value = 'add'
     addForm.name = ''
+    addForm.name1 = ''
+    addForm.name2 = ''
     addForm.zoneId = ''
     modal.value = addModal
   },
@@ -222,9 +253,24 @@ const editModal = {
   },
   state: modalState,
   async submit() {
+    for(let i=0;i<temp6.length;i++){
+      if(temp6[i].pid===addForm.zoneId && temp6[i].section===addForm.name1+'-'+addForm.name2){
+        ElMessage({
+              type: 'info',
+              message: '路段名重复',
+          })
+          return
+      }else if(temp6[i].pid===addForm.zoneId && temp6[i].section===addForm.name2+'-'+addForm.name1){
+        ElMessage({
+              type: 'info',
+              message: '路段名重复',
+          })
+          return
+      }
+    }
     check.value.validate(async (valid)=>{
       if(valid){
-    if (!addForm.name || !addForm.zoneId) {
+    if (!addForm.name1 ||!addForm.name2   || !addForm.zoneId) {
       ElMessage({
         type: 'info',
         message: '名称或地址不能为空',
@@ -247,6 +293,8 @@ const editModal = {
     modal.value = editModal
     currentItem.value = item
     addForm.name = item.section
+    addForm.name1 = item.section.split('-')[0]
+    addForm.name2 = item.section.split('-')[1]
     addForm.zoneId = item.pid
   },
 }
