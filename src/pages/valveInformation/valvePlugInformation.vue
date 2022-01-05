@@ -1,7 +1,7 @@
 <template>
   <div class="p-page">
     <div class="p-header">
-      <p class="page-name">阀栓信息</p>
+      <p class="page-name">阀栓信息</p>//
       <el-form
           :model="searchForm"
           status-icon
