@@ -34,7 +34,7 @@
           <template #default="scope">
             <el-button @click="editModal.open(scope.row)">修改</el-button>
             <el-popconfirm
-                :title="'确认删除设备 ' + scope.row.meterCode + ' 吗？'"
+                :title="'是否确认删除该设备？'"
                 @confirm="deleteMetType(scope.row.id)"
             >
               <template #reference>
@@ -224,10 +224,13 @@ const validateFloat = (rule, value, callback) => {
   }
 };
 const valveCodeCheck = (rule, value, callback) => {
+  const nameCheck = /^[\u4e00-\u9fa5]+$/
   if (!value) {
     return callback(new Error('请输入类型编号'))
   } else if (valveCodee.find(i => i.value === value)) {
     return callback(new Error('类型编号重复'))
+  } else if(nameCheck.test(value)){
+    return callback(new Error('不允许输入中文字段'))
   } else {
     callback()
   }
@@ -285,7 +288,7 @@ async function addSubmit() {
           type: 'success',
           message: '添加成功'
         })
-        addShow = false
+        addShow.value = false
         const loadingInstance = ElLoading.service(
             {target: document.getElementById("box"), fullscreen: true})
         let res = await getMeterType()

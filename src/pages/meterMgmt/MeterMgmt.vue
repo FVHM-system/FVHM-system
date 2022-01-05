@@ -36,7 +36,7 @@
             <template #default="scope">
               <el-button @click="editModal.open(scope.row)">修改</el-button>
               <el-popconfirm
-              :title="'确认删除设备 ' + scope.row.meterCode + ' 吗？'"
+              :title="'是否确认删除该设备？'"
               @confirm="deleteMet(scope.row.meterId)"
             >
               <template #reference>
@@ -386,7 +386,7 @@ const addModal = reactive({
       })
       }
     })
-    
+
   }
 })
 
@@ -465,7 +465,7 @@ const editModal = reactive({
       })
       }
     })
-    
+
   }
 })
 

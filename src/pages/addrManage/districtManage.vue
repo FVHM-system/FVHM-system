@@ -94,6 +94,8 @@ const valveNameCheck = (rule, value, callback) => {
     return callback(new Error('内容不能为空'))
   } else if (!nameCheck.test(value)) {
     return callback(new Error('内容格式错误(仅允许输入中文名称)'))
+  }else {
+    callback()
   }
 }
 let addRules = reactive({
