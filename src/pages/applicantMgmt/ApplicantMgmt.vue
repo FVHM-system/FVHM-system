@@ -62,7 +62,7 @@
 
 
     <el-dialog  v-model="addModal.show" title="新增部门">
-      <el-form :inline="true">
+      <el-form :rules="addRule" ref="addCheck" :model="addModal.data" :inline="true">
         <div>
         <el-form-item label="单位名称" required>
           <el-input style="position:relative; left:6%; width:108%" v-model="addModal.data.applicantName">
@@ -77,7 +77,7 @@
             <el-input style="position:relative; left:6%; width:150%" v-model="addModal.data.address">
           </el-input>
         </el-form-item>
-        <el-form-item style="position:relative; left:16%;"  label="邮编" required>
+        <el-form-item prop="code" style="position:relative; left:16%;"  label="邮编" required>
             <el-input style="position:relative; width:86%" v-model="addModal.data.code">
           </el-input>
         </el-form-item>
@@ -87,7 +87,7 @@
           <el-input style="position:relative; left:6%; width:108%" v-model="addModal.data.contactPerson">
           </el-input>
           </el-form-item>
-          <el-form-item style="position:relative; left:8%;" label="电话号码" required>
+          <el-form-item prop="phone" style="position:relative; left:8%;" label="电话号码" required>
           <el-input style="position:relative; left:6%; width:108%" v-model="addModal.data.phone" />
           </el-form-item>
         </div>
@@ -96,7 +96,7 @@
     </el-dialog>
 
     <el-dialog  v-model="editModal.show" title="编辑单位">
-      <el-form :inline="true">
+      <el-form :rules="addRule" ref="editCheck" :model="editModal.data" :inline="true">
 
         <div>
         <el-form-item label="单位名称" required>
@@ -112,7 +112,7 @@
             <el-input style="position:relative; left:6%; width:150%" v-model="editModal.data.address">
           </el-input>
         </el-form-item>
-        <el-form-item style="position:relative; left:16%;"  label="邮编" required>
+        <el-form-item prop="code" style="position:relative; left:16%;"  label="邮编" required>
             <el-input style="position:relative; width:86%" v-model="editModal.data.code">
           </el-input>
         </el-form-item>
@@ -122,7 +122,7 @@
           <el-input style="position:relative; left:6%; width:108%" v-model="editModal.data.contactPerson">
           </el-input>
           </el-form-item>
-          <el-form-item style="position:relative; left:8%;" label="电话号码" required>
+          <el-form-item prop="phone" style="position:relative; left:8%;" label="电话号码" required>
           <el-input style="position:relative; left:6%; width:108%" v-model="editModal.data.phone" />
           </el-form-item>
         </div>
@@ -148,6 +148,33 @@ let currentPage = 1
 let pageSize = 10
 let currentData = ref([])
 let tableHeight = window.innerHeight - 310
+let addCheck=ref(null)
+let editCheck=ref(null)
+
+const addRule=reactive({
+  code:[
+    {
+      required: true,
+      message: '请输入6位邮编',
+      trigger: 'blur',
+      type: 'string',
+      pattern: /^[0-9]+$/,
+      //pattern: /^[\u4e00-\u9fa5]+$/,
+      len:6,
+    }
+  ],
+  phone:[
+    {
+      required: true,
+      message: '请输入固定电话号码(XXXX-XXXXXXX，XXXX-XXXXXXXX，XXX-XXXXXXX，XXX-XXXXXXXX，XXXXXXX，XXXXXXXX)',
+      trigger: 'blur',
+      type: 'string',
+      pattern: /^(\d3,4\d3,4|\d{3,4}-)?\d{7,8}$/,
+      //pattern: /^[\u4e00-\u9fa5]+$/,
+    }
+  ],
+})
+
 function handleSizeChange(val) {
   pageSize = val;
 }
@@ -222,7 +249,9 @@ const addModal = reactive({
     this.show = true;
   },
   async submit(){
-    if( !this.data.applicantName || !this.data.legalPerson ){
+    addCheck.value.validate(async (valid)=>{
+      if(valid){
+        if( !this.data.applicantName || !this.data.legalPerson ){
       ElMessage({
         type: 'error',
         message : '不能为空'
@@ -253,6 +282,16 @@ const addModal = reactive({
         type: 'error',
         message : '添加失败'
       })}
+      }
+      else{
+        ElMessage({
+        type: 'error',
+        message : '请输入正确的邮编和固定电话号码'
+      })
+      }
+    })
+    
+  
   }
 })
 
@@ -278,7 +317,9 @@ const editModal = reactive({
     this.show = true;
   },
   async submit(){
-    console.log(this.data)
+    editCheck.value.validate(async (valid)=>{
+      if(valid){
+        console.log(this.data)
     let res = await editApplicant(this.data)
     console.log(res)
     if (res.code == '200'){
@@ -297,6 +338,14 @@ const editModal = reactive({
         type: 'error',
         message : '修改失败'
       })}
+      }else{
+        ElMessage({
+        type: 'error',
+        message : '请输入正确的邮编和固定电话号码'
+      })
+      }
+    })
+    
   }
 })
 

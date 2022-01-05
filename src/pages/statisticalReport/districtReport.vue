@@ -105,7 +105,7 @@ import {exportExcel} from '../../utils/exportExcel'
 import {dateTimeTrans} from '../../utils/mrWang'
 import dayjs from 'dayjs'
 
-emits: ['handleItemChange']
+// emits: ['handleItemChange']
 let options = ref([])
 let require = ref(null)
 let myprops = ref()

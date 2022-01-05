@@ -68,12 +68,15 @@
     </div>
 
     <el-dialog v-model="modalState.add" title="新增用户" style="font-weight: 500">
-      <el-form :model="form.add" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+      <el-form ref="addCheck" :rules="addRule" :model="form.add" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
         <el-form-item label="用户名" required>
           <el-input v-model="form.add.username"/>
         </el-form-item>
-        <el-form-item label="密码" required>
+        <el-form-item prop="password" label="密码" required>
           <el-input v-model="form.add.password"/>
+        </el-form-item>
+        <el-form-item prop="phone" label="手机号" >
+          <el-input v-model="form.add.phone"/>
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="form.add.describe"/>
@@ -122,12 +125,28 @@
     </el-dialog>
 
     <el-dialog v-model="modalState.editPhone" title="修改电话">
-      <el-form :model="form.editDesc" :label-col="{ span: 8 }" :wrapper-col="{ span: 14 }">
+      <!-- <el-form ref="editPhoneCheck" :rules="addRule"  :label-col="{ span: 8 }" :wrapper-col="{ span: 14 }">
         <el-form-item label="用户名">
           {{ currentUser.userName }}
         </el-form-item>
-        <el-form-item label="新电话号码">
-          <el-input placeholder="可设为空" v-model="form.editPhone.phone"/>
+        <el-form-item prop="phone" label="新电话号码" required>
+          <el-input  v-model="form.editPhone.phone" />
+        </el-form-item>
+        <el-popconfirm
+                :title="'确认修改用户 “' + currentUser.userName + '” 的电话号码吗？'"
+                @confirm="userFunc.editPhone()"
+            >
+              <template #reference>
+                <el-button type="primary">确定</el-button>
+              </template>
+        </el-popconfirm>
+      </el-form> -->
+      <el-form :rules="addRule" ref="editPhoneCheck" :model="form.editPhone" :label-col="{ span: 8 }" :wrapper-col="{ span: 14 }">
+        <el-form-item label="用户名">
+          {{ currentUser.userName }}
+        </el-form-item>
+        <el-form-item prop="phone" label="新电话号码" required>
+          <el-input v-model="form.editPhone.phone"/>
         </el-form-item>
         <el-popconfirm
                 :title="'确认修改用户 “' + currentUser.userName + '” 的电话号码吗？'"
@@ -141,14 +160,14 @@
     </el-dialog>
 
     <el-dialog v-model="modalState.editPassword" title="修改密码">
-      <el-form :model="form.editPassword" :label-col="{ span: 8 }" :wrapper-col="{ span: 14 }">
+      <el-form :rules="addRule" ref="editPasswordCheck" :model="form.editPassword" :label-col="{ span: 8 }" :wrapper-col="{ span: 14 }">
         <el-form-item label="用户名">
           {{ currentUser.userName }}
         </el-form-item>
-        <el-form-item label="新密码" required>
+        <el-form-item prop="password" label="新密码" required>
           <el-input show-password v-model="form.editPassword.password"/>
         </el-form-item>
-        <el-form-item label="确认新密码" required>
+        <el-form-item prop="password" label="确认新密码" required>
           <el-input show-password v-model="form.editPassword.confirmPassword"/>
         </el-form-item>
         <el-popconfirm
@@ -186,7 +205,33 @@ let currentPage = 1
 let pageSize = 10
 const currentUser = ref({})
 let currentData = ref([])
+let addCheck=ref(null)
+let editPasswordCheck=ref(null)
+let editPhoneCheck=ref(null)
 let showpagination = ref(true)
+const addRule=reactive({
+  password:[
+    {
+      required: true,
+      message: '请输入密码(不能包含中文及中文符号)',
+      trigger: 'blur',
+      pattern: /^[^\u4e00-\u9fa5]+$/,
+    }
+  ],
+  phone:[
+    {
+      required: true,
+      message: '请输入正确的手机号',
+      trigger: 'blur',
+      type: 'string',
+      pattern: /^1\d{10}$/,
+      //pattern: /^[\u4e00-\u9fa5]+$/,
+      len:11,
+    }
+  ]
+})
+
+
 
 function handleSizeChange(val) {
   pageSize = val;
@@ -295,7 +340,9 @@ const userFunc = {
   },
 
   async editPassword() {
-    if (!editPasswordForm.password) {
+    editPasswordCheck.value.validate(async (valid)=>{
+      if(valid){
+        if (!editPasswordForm.password) {
       ElMessage({
         type: 'info',
         message: '密码不能为空',
@@ -319,6 +366,16 @@ const userFunc = {
       changeModal.editPassword(false)
       this.fetchUser()
     }
+      }else{
+        ElMessage({
+        type: 'error',
+        message: '两次密码不符合规范',
+      })
+      return
+      }
+    })
+    
+
   },
   async editDesc() {
     const res = await editAccountDesc({
@@ -337,7 +394,9 @@ const userFunc = {
   },
 
   async editPhone() {
-    const res = await editAccountPhone({
+    editPhoneCheck.value.validate(async(valid)=>{
+      if(valid){
+        const res = await editAccountPhone({
       id: currentUser.value.userId,
       phone: editPhoneForm.phone
     })
@@ -348,6 +407,15 @@ const userFunc = {
       await this.fetchUser()
       currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
     }
+      }else{
+        ElMessage({
+        type: 'error',
+        message: '请输入正确的电话号码',
+      })
+      return
+      }
+    })
+    
   },
   // async editPost() {
   //   const res = await editAccountPost({
@@ -370,7 +438,9 @@ const userFunc = {
     }
   },
   async addUser() {
-    if (!addForm.username || !addForm.password) {
+    addCheck.value.validate(async (valid)=>{
+      if(valid){
+        if (!addForm.username || !addForm.password) {
       ElMessage({
         type: 'info',
         message: '用户名和密码不能为空',
@@ -389,6 +459,16 @@ const userFunc = {
       await this.fetchUser()
       currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
     }
+      }
+    else{
+      ElMessage({
+          type: 'error',
+          message: '请正确填写相关数据！',
+      })
+      return
+    }
+    })
+    
   },
 }
 
