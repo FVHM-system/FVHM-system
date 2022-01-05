@@ -38,11 +38,11 @@
     </div>
   </div>
   <el-dialog v-model="modalState" :title="modalTitle" center>
-    <el-form :model="addForm" label-width="100px" :inline="false">
-      <el-form-item label="路段名" required>
+    <el-form :rules="addRule" ref="check" :model="addForm" label-width="100px" :inline="false">
+      <el-form-item prop="name" label="路段名">
         <el-input v-model="addForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="所属道路" required>
+      <el-form-item prop="zoneId" label="所属道路">
         <el-select v-model="addForm.zoneId" clearable style="width: 617px" placeholder="请选择">
           <el-option v-for="item in roadList" :key="item.zoneId" :label="item.road"
                      :value="item.zoneId"></el-option>
@@ -85,6 +85,26 @@ let modalState = ref(false)
 let mode = ref('')
 let currentItem = ref()
 let tableHeight = window.innerHeight - 240
+let check=ref(null)
+
+const addRule=reactive({
+  name:[
+    {
+      required: true,
+      message: '请输入路段名',
+      trigger: 'blur',
+      type: 'string',
+      //pattern: /^[\u4e00-\u9fa5]+$/,
+    }
+  ],
+  zoneId:[
+    {
+      required: true,
+      message: '请选择所属道路',
+      trigger: 'blur',
+    }
+  ],
+})
 let modalTitle = computed(() => {
   let res
   if (mode.value === 'add') {
@@ -169,6 +189,8 @@ const addModal = {
   },
   state: modalState,
   async submit() {
+    check.value.validate(async (valid)=>{
+      if(valid){
     if (!addForm.name || !addForm.zoneId) {
       ElMessage({
         type: 'info',
@@ -180,6 +202,8 @@ const addModal = {
     if (r) {
       this.changeState(false)
     }
+    }
+    })
   },
   cancel() {
     this.changeState(false)
@@ -198,6 +222,8 @@ const editModal = {
   },
   state: modalState,
   async submit() {
+    check.value.validate(async (valid)=>{
+      if(valid){
     if (!addForm.name || !addForm.zoneId) {
       ElMessage({
         type: 'info',
@@ -209,6 +235,8 @@ const editModal = {
     if (r) {
       this.changeState(false)
     }
+    }
+    })
   },
   cancel() {
     this.changeState(false)
