@@ -5,13 +5,13 @@
       <div class="p-operation">
         <div class="p-row">
           <el-button
-                type="success"
-                @click="addModal.open()"
-                :disabled="buttonState"
-                style="position:absolute;right:60px;top:30px"
-            >
-              新增
-            </el-button>
+              type="success"
+              @click="addModal.open()"
+              :disabled="buttonState"
+              style="position:absolute;right:60px;top:30px"
+          >
+            新增
+          </el-button>
         </div>
       </div>
     </div>
@@ -21,12 +21,16 @@
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
           :cell-style="{'text-align':'center'}"
           :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
-          :data="cityList" style="margin-top:10px;width: 100%" size="medium" :height="tableHeight" empty-text=" " stripe>
+          :data="cityList" style="margin-top:10px;width: 100%" size="medium" :height="tableHeight"
+          empty-text=" " stripe>
         <el-table-column prop="city" label="城市名" min-width="150"></el-table-column>
         <el-table-column fixed="right" label="操作" width="230">
           <template #default="scope">
-            <el-button type="primary" @click="editModal.open(scope.row)" :disabled="buttonState">编辑</el-button>
-            <el-button type="danger" @click="myFunc.delete(scope.row)" :disabled="buttonState">删除</el-button>
+            <el-button type="primary" @click="editModal.open(scope.row)" :disabled="buttonState">
+              编辑
+            </el-button>
+            <el-button type="danger" @click="myFunc.delete(scope.row)" :disabled="buttonState">删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -34,13 +38,14 @@
     <div class="p-foot"></div>
   </div>
   <el-dialog v-model="modalState" :title="modalTitle" center>
-    <el-form :model="addForm" label-width="100px" :inline="false">
-      <el-form-item label="城市名" required>
-        <el-input v-model="addForm.name" ></el-input>
+    <el-form :model="addForm" ref="addDta" :rules="addRules" label-width="100px" :inline="false">
+      <el-form-item label="城市名" prop="name">
+        <el-input v-model="addForm.name"></el-input>
       </el-form-item>
     </el-form>
     <template #footer>
       <el-button type="primary" class="search-btn" @click="modal.submit()">保存</el-button>
+      <el-button type="info" class="search-btn" @click="modal.reset()">重置</el-button>
       <el-button @click="modal.cancel()">取消</el-button>
     </template>
   </el-dialog>
@@ -49,25 +54,26 @@
 <script setup>
 import {ref, onMounted, computed, reactive} from 'vue'
 import {functions} from 'lodash'
-import {ElMessageBox, ElMessage,ElLoading} from 'element-plus'
+import {ElMessageBox, ElMessage, ElLoading} from 'element-plus'
 import {
   fetchCityList,
   AddCityInfoByConfig,
   editCityInfoByConfig,
   deleteCityInfoById
 } from '../../apis/2.0/addr'
-import { 
-  fetchAuthority ,
+import {
+  fetchAuthority,
   fetchUsername
 } from '../../utils/mrWang'
 
-let authority=ref('')
-let buttonState=ref(false)//禁用按钮
+let authority = ref('')
+let buttonState = ref(false)//禁用按钮
 let cityList = ref([])
 let modal = ref()
 let modalState = ref(false)
 let mode = ref('')
 let currentItem = ref()
+let addDta = ref()
 let tableHeight = window.innerHeight - 240
 let modalTitle = computed(() => {
   let res
@@ -77,6 +83,23 @@ let modalTitle = computed(() => {
     res = '编辑城市'
   }
   return res
+})
+const valveNameCheck = (rule, value, callback) => {
+  const nameCheck = /^[\u4e00-\u9fa5]+$/
+  if (!value) {
+    return callback(new Error('内容不能为空'))
+  } else if (!nameCheck.test(value)) {
+    return callback(new Error('内容格式错误(仅允许输入中文名称)'))
+  }
+}
+let addRules = reactive({
+  name: [
+    {
+      required: true,
+      validator: valveNameCheck,
+      trigger: 'blur',
+    }
+  ]
 })
 const addForm = reactive({
   name: '',
@@ -141,28 +164,30 @@ const addModal = {
   },
   state: modalState,
   async submit() {
-    if (!addForm.name) {
-      ElMessage({
-        type: 'info',
-        message: '名称不能为空',
-      })
-      return
-    }
-    const r = await myFunc.add()
-    if (r) {
-      this.changeState(false)
-    }
+    addDta.value.validate(async (valid) => {
+      if (valid) {
+        const r = await myFunc.add()
+        if (r) {
+          this.changeState(false)
+        }
+      }
+    })
+  },
+  reset(){
+    addDta.value.resetFields()
   },
   cancel() {
     this.changeState(false)
-  },
+  }
+  ,
   open() {
     this.changeState(true)
     mode.value = 'add'
     addForm.name = ''
     addForm.addr = ''
     modal.value = addModal
-  },
+  }
+  ,
 }
 const editModal = {
   changeState(e) {
@@ -195,16 +220,18 @@ const editModal = {
 }
 
 onMounted(() => {
-  const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
-  authority.value=fetchAuthority()
-  if(authority.value==='ROLE_ADMIN'){
-    buttonState.value=false
-  }else{
-    buttonState.value=true
-  }
-  myFunc.search()
-  loadingInstance.close()
-})
+      const loadingInstance = ElLoading.service(
+          {target: document.getElementById("box"), fullscreen: false})
+      authority.value = fetchAuthority()
+      if (authority.value === 'ROLE_ADMIN') {
+        buttonState.value = false
+      } else {
+        buttonState.value = true
+      }
+      myFunc.search()
+      loadingInstance.close()
+    }
+)
 </script>
 
 <style lang="scss" scoped>
