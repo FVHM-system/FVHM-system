@@ -45,7 +45,6 @@
     </el-form>
     <template #footer>
       <el-button type="primary" class="search-btn" @click="modal.submit()">保存</el-button>
-      <el-button type="info" class="search-btn" @click="modal.reset()">重置</el-button>
       <el-button @click="modal.cancel()">取消</el-button>
     </template>
   </el-dialog>
@@ -73,7 +72,6 @@ let modal = ref()
 let modalState = ref(false)
 let mode = ref('')
 let currentItem = ref()
-let addDta = ref()
 let tableHeight = window.innerHeight - 240
 let modalTitle = computed(() => {
   let res
@@ -90,8 +88,11 @@ const valveNameCheck = (rule, value, callback) => {
     return callback(new Error('内容不能为空'))
   } else if (!nameCheck.test(value)) {
     return callback(new Error('内容格式错误(仅允许输入中文名称)'))
+  }else{
+    callback()
   }
 }
+let addDta = ref()
 let addRules = reactive({
   name: [
     {
@@ -163,18 +164,16 @@ const addModal = {
     modalState.value = e
   },
   state: modalState,
-  async submit() {
-    addDta.value.validate(async (valid) => {
+  submit() {
+    addDta.value.validate((valid) => {
       if (valid) {
-        const r = await myFunc.add()
+        const r = myFunc.add()
+        console.log(r)
         if (r) {
           this.changeState(false)
         }
       }
     })
-  },
-  reset(){
-    addDta.value.resetFields()
   },
   cancel() {
     this.changeState(false)
