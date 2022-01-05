@@ -268,6 +268,7 @@ async function submit(){
     else{
       const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
       let res = await getMeterById(id.value)
+
       if (res.code === '200') {
         if(res.data) {
           currentData.value = [res.data]
@@ -329,6 +330,7 @@ const addModal = reactive({
     this.show = true;
   },
   async submit(){
+
     if( !this.data.meterCode || !this.data.meterName ){
       ElMessage({
         type: 'error',
@@ -336,6 +338,7 @@ const addModal = reactive({
       })
       return
     }
+    showpagination.value = false
     let res = await addMeter(this.data)
     console.log(res)
     if (res.code == '200'){
@@ -354,7 +357,8 @@ const addModal = reactive({
       tableData.value = res.data;
       currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
       }
-      this.show = false;
+      currentPage = 1
+      showpagination.value = true
     }
     else {ElMessage({
         type: 'error',

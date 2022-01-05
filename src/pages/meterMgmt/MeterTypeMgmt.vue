@@ -3,7 +3,7 @@
     <div class="p2-header">
       <p class="page2-name">设备型号管理</p>
       <el-button type="success" style="position:absolute;right:60px;top:30px"
-                 @click="addModal.open()">新增
+                 @click="addShow=true">新增
       </el-button>
     </div>
     <div class="p-body" id="box">
@@ -16,7 +16,7 @@
           style="width: 100%"
           :height="tableHeight"
       >
-        <el-table-column fixed="left" label="型号编号" prop="meterNo" min-width="150px"/>
+        <el-table-column fixed="left" label="类型编号" prop="meterNo" min-width="150px"/>
         <el-table-column fixed="left" label="类型名称" prop="meterNoName" min-width="150px"/>
         <el-table-column fixed="left" label="用途" prop="meterType" min-width="150px">
           <template #default="scope">
@@ -45,65 +45,65 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-dialog v-model="addModal.show" title="新增类型">
-      <el-form :inline="true">
+    <el-dialog v-model="addShow" title="新增类型">
+      <el-form :model="addFormData" :rules="addRules" ref="addForm" :inline="true">
         <div style="display: flex;flex-direction: row">
           <div>
-            <el-form-item label="型号编号" required>
-              <el-input style="width: 220px" v-model="addModal.data.meterNo">
+            <el-form-item prop="meterNo" label="型号编号">
+              <el-input style="width: 220px" v-model="addFormData.meterNo">
               </el-input>
             </el-form-item>
           </div>
           <div style="margin-left: 20px">
-            <el-form-item label="类型名称" required>
-              <el-input style="width: 220px" v-model="addModal.data.meterNoName">
+            <el-form-item label="类型名称" prop="meterNoName">
+              <el-input style="width: 220px" v-model="addFormData.meterNoName">
               </el-input>
             </el-form-item>
           </div>
         </div>
         <div style="display: flex;flex-direction: row;white-space: pre">
-        <div>
-          <el-form-item label="用       途" required>
-            <el-select v-model="addModal.data.meterType" style="width: 220px" placeholder="请选择">
-              <el-option
-                  v-for="item in meterType"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </div>
+          <div>
+            <el-form-item prop="meterType" label="用       途" >
+              <el-select v-model="addFormData.meterType" style="width: 220px" placeholder="请选择">
+                <el-option
+                    v-for="item in meterType"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </div>
           <div style="margin-left: 20px">
-          <el-form-item label="水表口径" required>
-            <el-input style="width: 220px" type="number" v-model.number="addModal.data.meterCaliber"/>
-          </el-form-item>
-        </div>
+            <el-form-item prop="meterCaliber" label="水表口径" >
+              <el-input style="width: 220px" v-model="addFormData.meterCaliber"/>
+            </el-form-item>
+          </div>
         </div>
         <div style="display: flex;white-space:pre;flex-direction: row">
-        <div>
-          <el-form-item label="阀       控" required>
-            <el-select style="width: 220px" v-model="addModal.data.meterVc">
-              <el-option v-for="item in meterVc" :key="item.value" :value="item.value"
-                         :label="item.label">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </div>
+          <div>
+            <el-form-item prop="meterVc" label="阀       控" >
+              <el-select style="width: 220px" v-model="addFormData.meterVc">
+                <el-option v-for="item in meterVc" :key="item.value" :value="item.value"
+                           :label="item.label">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </div>
           <div style="display: flex;flex-direction: row;margin-left: 20px;">
-          <el-form-item style="width: 220px" label="创建时间" required>
-            <el-date-picker
-                v-model="addModal.data.createTime"
-                type="datetime"
-                placeholder="选择日期时间"
-                @change="transformAddDate()">
-            </el-date-picker>
-          </el-form-item>
-            </div>
+            <el-form-item prop="createTime" style="width: 220px" label="创建时间" >
+              <el-date-picker
+                  v-model="addFormData.createTime"
+                  type="datetime"
+                  placeholder="选择日期时间"
+                  value-format="YYYY-MM-DD HH:mm:ss">
+              </el-date-picker>
+            </el-form-item>
+          </div>
         </div>
       </el-form>
       <el-footer style="text-align: end;">
-      <el-button type="primary" @click="addModal.submit()">确定</el-button>
+        <el-button type="primary" @click="addSubmit">确定</el-button>
       </el-footer>
     </el-dialog>
 
@@ -166,7 +166,7 @@
         </div>
       </el-form>
       <div style="text-align: end">
-      <el-button type="primary" @click="editModal.submit()">确定</el-button>
+        <el-button type="primary" @click="editModal.submit()">确定</el-button>
       </div>
     </el-dialog>
 
@@ -190,8 +190,10 @@ let valvePlugInformation = ref()
 let input = ref('')
 let tableData = ref([])
 let tableHeight = window.innerHeight - 240
-
+let addForm = ref()
+let addShow = ref(false)
 let meterVc = ref([])
+let valveCodee = ref({})
 meterVc.value = [
   {
     value: 1,
@@ -202,6 +204,104 @@ meterVc.value = [
     label: '否'
   }
 ]
+let addFormData = reactive({
+  id: '',
+  meterNo: '',
+  meterNoName: '',
+  meterType: '',
+  meterCaliber: '',
+  meterVc: '',
+  createTime: '',
+})
+const validateFloat = (rule, value, callback) => {
+  const age = /^[0-9]*$/
+  if (!value) {
+    return callback(new Error('数值不能为空'))
+  } else if (!age.test(value)) {
+    return callback(new Error('输入格式错误'))
+  } else {
+    callback();
+  }
+};
+const valveCodeCheck = (rule, value, callback) => {
+  if (!value) {
+    return callback(new Error('请输入类型编号'))
+  } else if (valveCodee.find(i => i.value === value)) {
+    return callback(new Error('类型编号重复'))
+  } else {
+    callback()
+  }
+}
+let addRules = reactive({
+  meterNo: [
+    {
+      required: true,
+      validator: valveCodeCheck,
+      trigger: 'blur',
+    }
+  ],
+  meterNoName: [
+    {
+      required: true,
+      message: '请输入类型名称',
+      trigger: 'blur',
+    }
+  ],
+  meterType: [
+    {
+      required: true,
+      message: '请输入用途',
+      trigger: 'blur',
+    }
+  ],
+  meterCaliber: [
+    {
+      required: true,
+      validator: validateFloat,
+      trigger: 'blur',
+    }
+  ],
+  meterVc: [
+    {
+      required: true,
+      message: '请选择是否带有阀控',
+      trigger: 'blur',
+    }
+  ],
+  createTime: [
+    {
+      required: true,
+      message: '请选择创建时间',
+      trigger: 'blur',
+    }
+  ],
+})
+async function addSubmit() {
+  addForm.value.validate(async (valid) => {
+    if (valid) {
+      let res = await addMeterType(addFormData)
+      if (res.code === '200') {
+        ElMessage({
+          type: 'success',
+          message: '添加成功'
+        })
+        addShow = false
+        const loadingInstance = ElLoading.service(
+            {target: document.getElementById("box"), fullscreen: true})
+        let res = await getMeterType()
+        if (res.code === '200') {
+          tableData.value = res.data;
+        }
+        loadingInstance.close()
+        }
+      } else {
+        ElMessage({
+          type: 'error',
+          message: '修改失败'
+        })
+      }
+  })
+}
 
 let meterType = ref([])
 meterType.value = [
@@ -235,61 +335,9 @@ function dateFormatter(str) {//默认返回yyyy-MM-dd HH-mm-ss
   }
 }
 
-function transformAddDate() {
-  addModal.data.createTime = dateFormatter(addModal.data.createTime)
-}
-
 function transformEditDate() {
   editModal.data.createTime = dateFormatter(editModal.data.createTime)
 }
-
-const addModal = reactive({
-  show: false,
-  data: {
-    meterNo: '',
-    meterNoName: '',
-    meterType: '',
-    meterCaliber: '',
-    meterVc: '',
-    createTime: '',
-  },
-  open() {
-    this.show = true;
-  },
-  async submit() {
-    if (!this.data.meterNo || !this.data.meterNoName) {
-      ElMessage({
-        type: 'error',
-        message: '必填字段不能为空'
-      })
-      return
-    }
-    let res = await addMeterType(this.data)
-    console.log(res)
-    if (res.code == '200') {
-      ElMessage({
-        type: 'success',
-        message: '添加成功'
-      })
-      this.data.meterNo = ''
-      this.data.meterNoName = ''
-      this.data.meterType = ''
-      this.data.meterCaliber = ''
-      this.data.meterVc = ''
-      this.data.createTime = ''
-      res = await getMeterType()
-      if (res.code === '200') {
-        tableData.value = res.data;
-        this.show = false;
-      }
-    } else {
-      ElMessage({
-        type: 'error',
-        message: '添加失败'
-      })
-    }
-  }
-})
 
 const editModal = reactive({
   show: false,
@@ -356,6 +404,11 @@ onMounted(async () => {
   let res = await getMeterType()
   if (res.code === '200') {
     tableData.value = res.data;
+    valveCodee = res.data.map(item=>{
+      return{
+        value:item.meterNo
+      }
+    })
   }
   loadingInstance.close()
 })

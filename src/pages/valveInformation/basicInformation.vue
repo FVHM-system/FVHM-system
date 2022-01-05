@@ -13,9 +13,18 @@
         </div>
         <div style="width: 100%;display: flex;flex-direction: row;margin-top: 2.5%">
           <el-form-item prop="address" label="所在位置" style="width: 45%">
-            <el-input v-model="formData.address"></el-input>
+            <el-select v-model="formData.zoneId" placeholder="Select">
+              <el-option
+                  v-for="item in addrList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                  style="width: 100%"
+              >
+              </el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item prop="createTime" label="创建时间" style="width: 45%">
+          <el-form-item prop="createTime" label="创建时间" style="width: 47%">
             <el-date-picker
                 v-model="formData.createTime"
                 type="datetime"
@@ -76,7 +85,7 @@
         </div>
         <div style="width: 100%;display: flex;flex-direction: row;margin-top: 2.5%">
           <el-form-item prop="meterCode" label="监测设备编号" style="width: 45%">
-            <el-input v-model="formData.meterCode"></el-input>
+            <el-input disabled v-model="formData.meterCode"></el-input>
           </el-form-item>
           <el-form-item label="备注" style="width: 45%">
             <el-input v-model="input"></el-input>
@@ -111,7 +120,9 @@ import {
   fetchUsername
 } from '../../utils/mrWang'
 import {getApplicant} from "../applicantMgmt/util/ApplicantMgmt";
+import {fetchSectionList} from "../../apis/2.0/addr";
 
+let addrList = ref({})
 let authority = ref('')
 let buttonState = ref(false)//禁用按钮
 let formData = ref([]);
@@ -168,6 +179,14 @@ onMounted(async () => {
   if (res.code === '200') {
     formData.value = res.data;
   }
+  let res1 = await fetchSectionList()
+  console.log(res1)
+  addrList.value = res1.map(item=>{
+    return{
+      value:item.zoneId,
+      label:item.section
+    }
+  })
   console.log(formData.value)
   await getApplicantList()
 })
@@ -175,7 +194,6 @@ let valveInfo = {}
 const updateInfo = async function () {
   valveInfo.valveId = formData.value.valveId;
   valveInfo.valveCode = formData.value.valveCode;
-  valveInfo.zoneType = 2;
   valveInfo.valveType = formData.value.valveType;
   valveInfo.valveName = formData.value.valveName;
   valveInfo.zoneId = formData.value.zoneId;
@@ -197,6 +215,7 @@ const updateInfo = async function () {
       type: 'success',
       message: '操作成功！',
     })
+    location.reload()
   }
 }
 const props = defineProps({

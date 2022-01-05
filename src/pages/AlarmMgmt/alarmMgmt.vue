@@ -121,7 +121,6 @@
               :page-size="pageSize"
               style="margin-top: 10px;"
               layout="total, prev, pager, next"
-              hide-on-single-page
               v-if="pageshow"
               :total="tableData.length">
           </el-pagination>
