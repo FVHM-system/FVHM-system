@@ -64,9 +64,9 @@
     </div>
 
     <el-dialog width="25%" v-model="addModal.show" title="新增设备">
-      <el-form :inline="true">
+      <el-form :rules="addRule" ref="addCheck" :model="addModal.data" :inline="true">
         <div>
-        <el-form-item label="设备编号" required>
+        <el-form-item prop="meterCode" label="设备编号" required>
           <el-input style="position:relative; left:6%; width:108%" v-model="addModal.data.meterCode">
           </el-input>
         </el-form-item>
@@ -127,9 +127,9 @@
     </el-dialog>
 
     <el-dialog  v-model="editModal.show" title="编辑设备">
-      <el-form :inline="true">
+      <el-form :rules="addRule" ref="editCheck" :model="editModal.data" :inline="true">
         <div>
-        <el-form-item label="设备编号" required>
+        <el-form-item prop="meterCode" label="设备编号" required>
           <el-input style="position:relative; left:6%; width:108%" v-model="editModal.data.meterCode">
           </el-input>
         </el-form-item>
@@ -207,6 +207,8 @@ let tableData = ref([])
 let currentPage = 1
 let pageSize = 10
 let currentData = ref([])
+let addCheck=ref(null)
+let editCheck=ref(null)
 let tableHeight = window.innerHeight - 310
 let meterType = ref([])
 let statusoption = ref([])
@@ -220,7 +222,19 @@ statusoption.value = [
     label: '不正常'
   }
 ]
-
+const addRule=reactive({
+  meterCode:[
+    {
+      required: true,
+      message: '请输入9位设备编号',
+      trigger: 'blur',
+      type: 'string',
+      pattern: /^[0-9]+$/,
+      //pattern: /^[\u4e00-\u9fa5]+$/,
+      len:9,
+    }
+  ]
+})
 function handleSizeChange(val) {
   pageSize = val;
 }
@@ -329,7 +343,9 @@ const addModal = reactive({
     this.show = true;
   },
   async submit(){
-    if( !this.data.meterCode || !this.data.meterName ){
+    addCheck.value.validate(async (valid)=>{
+      if(valid){
+        if( !this.data.meterCode || !this.data.meterName ){
       ElMessage({
         type: 'error',
         message : '不能为空'
@@ -360,6 +376,14 @@ const addModal = reactive({
         type: 'error',
         message : '添加失败'
       })}
+      }else{
+        ElMessage({
+        type: 'error',
+        message : '请输入9位数字设备编号'
+      })
+      }
+    })
+    
   }
 })
 
@@ -410,7 +434,9 @@ const editModal = reactive({
     loadingInstance.close()
   },
   async submit(){
-    console.log(this.data)
+    editCheck.value.validate(async (valid)=>{
+      if(valid){
+        console.log(this.data)
     let res = await editMeter(this.data)
     console.log(res)
     if (res.code == '200'){
@@ -429,6 +455,14 @@ const editModal = reactive({
         type: 'error',
         message : '修改失败'
       })}
+      }else{
+        ElMessage({
+        type: 'error',
+        message : '请输入9位数字设备编号'
+      })
+      }
+    })
+    
   }
 })
 

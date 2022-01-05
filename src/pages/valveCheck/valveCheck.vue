@@ -612,7 +612,7 @@ const myFunc={
     },
     state: editState,
     async submit() {
-        if (!addForm.people || !addForm.phone) {
+        if (!addForm.peopleId) {
         ElMessage({
             type: 'info',
             message: '必要信息不能为空',
