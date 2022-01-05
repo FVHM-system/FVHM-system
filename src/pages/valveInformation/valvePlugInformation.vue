@@ -191,15 +191,11 @@
             </el-form-item>
           </div>
         </el-form>
-        <template #footer>
-      <span class="dialog-footer">
+      <el-footer style="text-align: end;">
+        <el-button type="primary" @click="confirm">确认</el-button>
+        <el-button type="info" @click="resetAdd">重置</el-button>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="confirm"
-        >确认</el-button
-        >
-      </span>
-          <p style="font-size: 3px;color: red">(注：除备注外其他项均不可为空)</p>
-        </template>
+      </el-footer>
       </el-dialog>
     </div>
     <div class="pagination-out">
@@ -230,7 +226,7 @@ import {fetchFindData} from "./util/dataSearch";
 import {types, statuss} from '../../utils/transform.js'
 import ValveDetail from "./valveDetail.vue";
 import AddValvePlug from "./addValvePlug.vue";
-import {fetchSuper} from '../../apis/2.0/addr'
+import {fetchSectionList, fetchSuper} from '../../apis/2.0/addr'
 import {exportExcel} from '../../utils/exportExcel'
 import {ElLoading, ElMessage} from 'element-plus'
 import {
@@ -238,8 +234,9 @@ import {
   fetchUsername
 } from '../../utils/mrWang'
 
+let valveCodee = ref({})
 let formData = reactive({
-  place:[],
+  place: [],
   valveName: '',
   valveCode: '',
   createTime: '',
@@ -251,6 +248,27 @@ let formData = reactive({
   applicantId: '',
   remark: ''
 });
+const validateFloat = (rule, value, callback) => {
+  const age = /^[0-9]+.?[0-9]*$/g
+  if (!value) {
+    return callback(new Error('数值不能为空'))
+  } else if (!age.test(value)) {
+    return callback(new Error('输入格式错误'))
+  } else if (value.indexOf(".") !== -1 && value.split('.').length > 2) {
+    return callback(new Error('请输入正确格式的数值'))
+  } else {
+    callback();
+  }
+};
+const valveCodeCheck = (rule, value, callback) => {
+  if (!value) {
+    return callback(new Error('数值不能为空'))
+  } else if (valveCodee.find(i => i.value === value)) {
+    return callback(new Error('阀栓编号重复'))
+  } else {
+    callback()
+  }
+}
 const addRule = reactive({
   valveName:
       [
@@ -264,42 +282,79 @@ const addRule = reactive({
       [
         {
           required: true,
-          message: '请输入阀栓编号',
+          validator: valveCodeCheck,
           trigger: 'blur',
         }
       ],
   createTime:
       [
-
+        {
+          required: true,
+          message: '请选择创建时间',
+          trigger: 'blur',
+        }
       ],
   longitude:
       [
-
+        {
+          required: true,
+          validator: validateFloat,
+          trigger: 'blur',
+        }
       ],
   comNumber:
       [
-
+        {
+          required: true,
+          message: '请输入通讯编号',
+          trigger: 'blur',
+        }
       ],
   latitude:
       [
-
+        {
+          required: true,
+          validator: validateFloat,
+          trigger: 'blur',
+        }
       ],
   valveType:
       [
-
+        {
+          required: true,
+          message: '请选择阀栓类型',
+          trigger: 'blur',
+        }
       ],
   status:
       [
-
+        {
+          required: true,
+          message: '请选择阀栓状态',
+          trigger: 'blur',
+        }
       ],
   applicantId:
       [
-
+        {
+          required: true,
+          message: '请选择所属单位',
+          trigger: 'blur',
+        }
+      ],
+  place:
+      [
+        {
+          required: true,
+          message: '请选择所在地址',
+          trigger: 'blur',
+        }
       ],
 })
 let addForm = ref()
 let input = ref('')
 let applicantList = ref([])
+let addrList = ref({})
 let optionsss = ref([
   {
     value: 1,
@@ -391,70 +446,72 @@ const stringJudge = function (input) {
 }
 
 const confirm = async function () {
-    addForm.value.validate(async (valid) => {
-      if (valid){
-        console.log('ssss')
-        // valveInfo = {
-        //   place : [],
-        //   valveName:'',
-        //   valveCode:'',
-        //   createTime:'',
-        //   longitude:'',
-        //   comNumber:'',
-        //   latitude:'',
-        //   valveType:'',
-        //   status:'',
-        //   applicantId:'',
-        //   remark:'',
-        //   zoneId:'',
-        // }
-        // valveInfo.zoneId = formData.place[5].zoneId
-        // valveInfo.applicantId = formData.applicantId
-        // valveInfo.comNumber = stringJudge(formData.comNumber)
-        // valveInfo.createTime = formData.createTime
-        // valveInfo.latitude = parseFloat(formData.latitude)
-        // valveInfo.longitude = parseFloat(formData.longitude)
-        // valveInfo.remark = stringJudge(formData.remark)
-        // valveInfo.status = formData.status
-        // valveInfo.valveCode = stringJudge(formData.valveCode)
-        // valveInfo.valveId = 0
-        // valveInfo.zoneType = 2
-        // valveInfo.valveName = stringJudge(formData.valveName)
-        // valveInfo.valveType = formData.valveType
-        // valveInfo = JSON.stringify(valveInfo)
-        // let res = await fetInsertValveInfo(valveInfo)
-        // if (res.code === '200') {
-        //   ElMessage({
-        //     type: 'success',
-        //     message: '操作成功！',
-        //   })
-        //   dialogVisible.value = false
-        //   pageshow = false
-        //   let res = await fetchVpinformation()
-        //   if (res.code === '200') {
-        //     tableData.value = res.data;
-        //   }
-        //   if (tableData.value.length < pageSize) {
-        //     currentData.value = tableData.value
-        //   } else {
-        //     currentData.value = tableData.value.slice(0, pageSize)
-        //   }
-        //   currentPage = 1
-        //   pageshow = true
-        // } else {
-        //   ElMessage({
-        //     type: 'error',
-        //     message: '添加失败！',
-        //   })
-        //   return
-        // }
+  addForm.value.validate(async (valid) => {
+    if (valid) {
+      valveInfo = {
+        place: [],
+        valveName: '',
+        valveCode: '',
+        createTime: '',
+        longitude: '',
+        comNumber: '',
+        latitude: '',
+        valveType: '',
+        status: '',
+        applicantId: '',
+        remark: '',
+        zoneId: '',
+      }
+      valveInfo.zoneId = formData.place[5].zoneId
+      valveInfo.applicantId = formData.applicantId
+      valveInfo.comNumber = stringJudge(formData.comNumber)
+      valveInfo.createTime = formData.createTime
+      valveInfo.latitude = parseFloat(formData.latitude)
+      valveInfo.longitude = parseFloat(formData.longitude)
+      valveInfo.remark = stringJudge(formData.remark)
+      valveInfo.status = formData.status
+      valveInfo.valveCode = stringJudge(formData.valveCode)
+      valveInfo.valveId = 0
+      valveInfo.zoneType = 2
+      valveInfo.valveName = stringJudge(formData.valveName)
+      valveInfo.valveType = formData.valveType
+      valveInfo = JSON.stringify(valveInfo)
+      let res = await fetInsertValveInfo(valveInfo)
+      if (res.code === '200') {
+        ElMessage({
+          type: 'success',
+          message: '操作成功！',
+        })
+        dialogVisible.value = false
+        pageshow = false
+        let res = await fetchVpinformation()
+        if (res.code === '200') {
+          tableData.value = res.data;
+        }
+        if (tableData.value.length < pageSize) {
+          currentData.value = tableData.value
+        } else {
+          currentData.value = tableData.value.slice(0, pageSize)
+        }
+        currentPage = 1
+        pageshow = true
       } else {
         ElMessage({
           type: 'error',
-          message: '未填写完整数据！',
+          message: '添加失败！',
         })
+        return
       }
-    })
+    } else {
+      ElMessage({
+        type: 'error',
+        message: '未填写完整数据！',
+      })
+    }
+  })
+}
+function resetAdd(){
+  addForm.value.resetFields()
 }
 
 function dateTimeTrans(d) {
@@ -580,6 +637,8 @@ const dataRequire = async function () {
   searchForm.type = ''
   searchForm.status = ''
   pageshow.value = false
+  const loadingInstance = ElLoading.service(
+      {target: document.getElementById("data-chart"), fullscreen: false})
   let res = await fetchVpinformation()
   if (res.code === '200') {
     tableData.value = res.data;
@@ -591,6 +650,7 @@ const dataRequire = async function () {
   }
   pageshow.value = true
   currentPage = 1
+  loadingInstance.close()
 }
 const deleteValve = async function (row) {
   let res = await fetDeleteValveInfo({valveId: row.valveId})
@@ -694,6 +754,11 @@ onMounted(async () => {
   let res = await fetchVpinformation()
   if (res.code === '200') {
     tableData.value = res.data;
+    valveCodee = res.data.map(item => {
+      return {
+        value: item.valveCode
+      }
+    })
   }
   if (tableData.value.length < pageSize) {
     currentData.value = tableData.value

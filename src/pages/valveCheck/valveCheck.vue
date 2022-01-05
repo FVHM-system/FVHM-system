@@ -56,14 +56,14 @@
         </el-table>
     </div>
   </div>
-  <el-dialog v-model="editState" :title="modalTitle"  center>
+  <el-dialog v-model="editState" :title="modalTitle" width="37%" center>
         <el-form :model="addForm" label-width="100px" :inline="false">
         <el-form-item label="巡视人" required>
             <el-select v-model="addForm.peopleId" clearable style="width: 330px" placeholder="请选择">
             <el-option v-for="item in peopleList" :key="item.userId" :label="item.userName" :value="item.userId"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="任务时间" >
+        <el-form-item label="任务时间" required>
             <el-date-picker
                     v-model="addForm.inspectTime"
                     value-format="YYYY-MM-DD HH:mm:ss"
@@ -72,7 +72,7 @@
                     >
             </el-date-picker>
         </el-form-item>
-        <el-form-item label="备注" >
+        <el-form-item label="备注">
             <el-input v-model="addForm.remark" style="width: 360px"></el-input>
         </el-form-item>
         </el-form>
@@ -157,7 +157,7 @@
         <el-button @click="valveDetail.detailCancel()">取消</el-button>
         </template>
    </el-dialog>
-   <el-dialog v-model="modalState" title="新增任务"  center>
+   <el-dialog v-model="modalState" width="28%" title="新增任务"  center>
         <el-form :model="addForm" label-width="100px" :inline="false">
 
         <el-form-item label="选择阀栓" required>
@@ -169,22 +169,21 @@
             placeholder="选择阀栓"
             @expand-change="handleItemChange"
             collapse-tags="true"
-            style="left: 100px;width: 220px"
+            style="width: 220px"
             clearable/>
         </el-form-item>
         <el-form-item label="选择巡视人" required>
-            <el-select v-model="addForm.peopleId" clearable style="left: 100px;width: 220px" placeholder="请选择">
+            <el-select v-model="addForm.peopleId" clearable style="width: 220px" placeholder="请选择">
             <el-option v-for="item in peopleList" :key="item.userId" :label="item.userName" :value="item.userId"></el-option>
             </el-select>
         </el-form-item>
 
-        <el-form-item label="任务时间" >
+        <el-form-item label="任务时间" required>
             <el-date-picker
                     v-model="addForm.inspectTime"
                     value-format="YYYY-MM-DD HH:mm:ss"
                     type="datetime"
                     placeholder="请选择"
-                    style="left:100px"
                     >
             </el-date-picker>
         </el-form-item>
@@ -575,7 +574,7 @@ const myFunc={
         },
         state: modalState,
         async submit() {
-        if (!addForm.peopleId  ) {
+        if (!addForm.peopleId) {
             ElMessage({
             type: 'info',
             message: '必要信息不能为空',
