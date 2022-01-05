@@ -1,11 +1,10 @@
 <template>
   <div class="p-page">
     <div class="p-header">
-      <p class="page-name">阀栓信息</p>//
+      <p class="page-name">阀栓信息</p>
       <el-form
           :model="searchForm"
           status-icon
-          :rules="rules"
           label-width="120px"
           class="searchForm"
           style="position: absolute;top:30px;right: 40px;"
@@ -107,19 +106,19 @@
           title="填写阀栓信息"
           width="50%"
           :before-close="handleClose">
-        <el-form :model="formData" label-width="120px">
+        <el-form ref="addForm" :rules="addRule" :model="formData" label-width="120px">
           <div style="display: flex;flex-direction: row">
-            <el-form-item label="阀栓名称">
+            <el-form-item prop="valveName" label="阀栓名称">
               <el-input v-model="formData.valveName" style="width: 190px"></el-input>
             </el-form-item>
-            <el-form-item label="阀栓编号">
+            <el-form-item prop="valveCode" label="阀栓编号">
               <el-input v-model="formData.valveCode" style="width: 190px"></el-input>
             </el-form-item>
           </div>
           <div style="margin-top:10px;display: flex;flex-direction: row">
-            <el-form-item label="所在位置">
+            <el-form-item prop="place" label="所在位置">
               <el-cascader
-                  v-model="place"
+                  v-model="formData.place"
                   :options="optionss"
                   :props="mypropss"
                   placeholder="选择地址"
@@ -127,7 +126,7 @@
                   style="width: 190px"
                   clearable></el-cascader>
             </el-form-item>
-            <el-form-item label="阀栓创建时间">
+            <el-form-item prop="createTime" label="阀栓创建时间">
               <el-date-picker
                   value-format="YYYY-MM-DD HH:mm:ss"
                   v-model="formData.createTime"
@@ -139,18 +138,18 @@
             </el-form-item>
           </div>
           <div style="display: flex;margin-top:10px;flex-direction: row;">
-            <el-form-item label="经度">
+            <el-form-item prop="longitude" label="经度">
               <el-input v-model="formData.longitude" style="width: 150px"></el-input>
             </el-form-item>
-            <el-form-item label="通讯编号" style="margin-left: 40px">
+            <el-form-item prop="comNumber" label="通讯编号" style="margin-left: 40px">
               <el-input v-model="formData.comNumber" style="width: 190px"></el-input>
             </el-form-item>
           </div>
           <div style="display: flex;margin-top:10px;flex-direction: row">
-            <el-form-item label="纬度">
+            <el-form-item prop="latitude" label="纬度">
               <el-input v-model="formData.latitude" style=" width: 150px"></el-input>
             </el-form-item>
-            <el-form-item label="阀栓类型" style="margin-left: 40px;">
+            <el-form-item prop="valveType" label="阀栓类型" style="margin-left: 40px;">
               <el-select v-model="formData.valveType" placeholder="选择类型" style="width: 120px">
                 <el-option
                     v-for="item in optionsss"
@@ -163,7 +162,7 @@
             </el-form-item>
           </div>
           <div style="display: flex;margin-top:10px;flex-direction: row">
-            <el-form-item label="状态">
+            <el-form-item prop="status" label="状态">
               <el-select v-model="formData.status" placeholder="选择状态" style="width: 140px">
                 <el-option
                     v-for="item in statuss"
@@ -174,7 +173,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="所属单位" style="margin-left: 50px;">
+            <el-form-item prop="applicantId" label="所属单位" style="margin-left: 50px;">
               <el-select v-model="formData.applicantId" placeholder="选择所属单位" style="width: 190px">
                 <el-option
                     v-for="item in applicantList"
@@ -187,7 +186,7 @@
             </el-form-item>
           </div>
           <div style="display: flex;margin-top:10px;flex-direction: row">
-            <el-form-item label="备注">
+            <el-form-item prop="remark" label="备注">
               <el-input v-model="formData.remark" style="width: 190px"></el-input>
             </el-form-item>
           </div>
@@ -239,7 +238,66 @@ import {
   fetchUsername
 } from '../../utils/mrWang'
 
-let formData = ref({});
+let formData = reactive({
+  place:[],
+  valveName: '',
+  valveCode: '',
+  createTime: '',
+  longitude: '',
+  comNumber: '',
+  latitude: '',
+  valveType: '',
+  status: '',
+  applicantId: '',
+  remark: ''
+});
+const addRule = reactive({
+  valveName:
+      [
+        {
+          required: true,
+          message: '请输入阀栓名称',
+          trigger: 'blur',
+        }
+      ],
+  valveCode:
+      [
+        {
+          required: true,
+          message: '请输入阀栓编号',
+          trigger: 'blur',
+        }
+      ],
+  createTime:
+      [
+
+      ],
+  longitude:
+      [
+
+      ],
+  comNumber:
+      [
+
+      ],
+  latitude:
+      [
+
+      ],
+  valveType:
+      [
+
+      ],
+  status:
+      [
+
+      ],
+  applicantId:
+      [
+
+      ],
+})
+let addForm = ref()
 let input = ref('')
 let applicantList = ref([])
 let optionsss = ref([
@@ -279,7 +337,7 @@ myprops = {
   label: 'name',
   value: 'message',
   children: 'child',
-  checkStrictly:true
+  checkStrictly: true
 }
 const getValveId = function (row) {
   testnum = row.valveId
@@ -300,6 +358,7 @@ function handleCurrentChange(val) {
   currentPage = val;
   currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
 }
+
 let optionss = ref([])
 const statussss = [
   {
@@ -330,58 +389,72 @@ const stringJudge = function (input) {
     return input.toString()
   }
 }
-const confirm = async function () {
-  console.log(formData.value.createTime)
 
-  if (formData.value.comNumber && formData.value.createTime && formData.value.latitude
-      && formData.value.longitude  && formData.value.applicantId
-      && formData.value.status && formData.value.valveCode && formData.value.valveName
-      && formData.value.valveType && place.value.length > 0) {
-    valveInfo = {}
-    valveInfo.zoneId = place.value[4].zoneId
-    valveInfo.applicantId = formData.value.applicantId
-    valveInfo.comNumber = stringJudge(formData.value.comNumber)
-    valveInfo.createTime = formData.value.createTime
-    valveInfo.latitude = parseFloat(formData.value.latitude)
-    valveInfo.longitude = parseFloat(formData.value.longitude)
-    valveInfo.remark = stringJudge(formData.value.remark)
-    valveInfo.status = formData.value.status
-    valveInfo.valveCode = stringJudge(formData.value.valveCode)
-    valveInfo.valveId = 0
-    valveInfo.zoneType = 2
-    valveInfo.valveName = stringJudge(formData.value.valveName)
-    valveInfo.valveType = formData.value.valveType
-    valveInfo = JSON.stringify(valveInfo)
-    let res = await fetInsertValveInfo(valveInfo)
-    if (res.code === '200') {
-      ElMessage({
-        type: 'success',
-        message: '操作成功！',
-      })
-      dialogVisible.value = false
-      let res = await fetchVpinformation()
-      if (res.code === '200') {
-        tableData.value = res.data;
-      }
-      if (tableData.value.length < pageSize) {
-        currentData.value = tableData.value
+const confirm = async function () {
+    addForm.value.validate(async (valid) => {
+      if (valid){
+        console.log('ssss')
+        // valveInfo = {
+        //   place : [],
+        //   valveName:'',
+        //   valveCode:'',
+        //   createTime:'',
+        //   longitude:'',
+        //   comNumber:'',
+        //   latitude:'',
+        //   valveType:'',
+        //   status:'',
+        //   applicantId:'',
+        //   remark:'',
+        //   zoneId:'',
+        // }
+        // valveInfo.zoneId = formData.place[5].zoneId
+        // valveInfo.applicantId = formData.applicantId
+        // valveInfo.comNumber = stringJudge(formData.comNumber)
+        // valveInfo.createTime = formData.createTime
+        // valveInfo.latitude = parseFloat(formData.latitude)
+        // valveInfo.longitude = parseFloat(formData.longitude)
+        // valveInfo.remark = stringJudge(formData.remark)
+        // valveInfo.status = formData.status
+        // valveInfo.valveCode = stringJudge(formData.valveCode)
+        // valveInfo.valveId = 0
+        // valveInfo.zoneType = 2
+        // valveInfo.valveName = stringJudge(formData.valveName)
+        // valveInfo.valveType = formData.valveType
+        // valveInfo = JSON.stringify(valveInfo)
+        // let res = await fetInsertValveInfo(valveInfo)
+        // if (res.code === '200') {
+        //   ElMessage({
+        //     type: 'success',
+        //     message: '操作成功！',
+        //   })
+        //   dialogVisible.value = false
+        //   pageshow = false
+        //   let res = await fetchVpinformation()
+        //   if (res.code === '200') {
+        //     tableData.value = res.data;
+        //   }
+        //   if (tableData.value.length < pageSize) {
+        //     currentData.value = tableData.value
+        //   } else {
+        //     currentData.value = tableData.value.slice(0, pageSize)
+        //   }
+        //   currentPage = 1
+        //   pageshow = true
+        // } else {
+        //   ElMessage({
+        //     type: 'error',
+        //     message: '添加失败！',
+        //   })
+        //   return
+        // }
       } else {
-        currentData.value = tableData.value.slice(0, pageSize)
+        ElMessage({
+          type: 'error',
+          message: '未填写完整数据！',
+        })
       }
-    }
-    else{
-      ElMessage({
-        type: 'error',
-        message: '添加失败！',
-      })
-      return
-    }
-  } else {
-    ElMessage({
-      type: 'error',
-      message: '未填写完整数据！',
     })
-  }
 }
 
 function dateTimeTrans(d) {
@@ -392,15 +465,17 @@ function dateTimeTrans(d) {
     return ''
   }
 }
+
 async function getApplicantList() {
   let res = await getApplicant()
-  applicantList.value = res.data.map(item=>{
+  applicantList.value = res.data.map(item => {
     return {
-      value:item.applicantId,
-      label:item.applicantName
+      value: item.applicantId,
+      label: item.applicantName
     }
   })
 }
+
 const handleClose = (done) => {
   ElMessageBox.confirm('是否要退出编辑？')
   .then(() => {
@@ -428,7 +503,18 @@ const valveStatusChange = async function (row) {
         type: 'success',
         message: '启用成功！',
       })
-      location.reload()
+      pageshow = false
+      let res = await fetchVpinformation()
+      if (res.code === '200') {
+        tableData.value = res.data;
+      }
+      if (tableData.value.length < pageSize) {
+        currentData.value = tableData.value
+      } else {
+        currentData.value = tableData.value.slice(0, pageSize)
+      }
+      currentPage = 1
+      pageshow = true
     }
   } else if (row.status === 1001 || row.status === 4444) {
     let res = await fetUpdateStatus({valveId: row.valveId, status: 1003})
@@ -438,7 +524,18 @@ const valveStatusChange = async function (row) {
         type: 'success',
         message: '停用成功！',
       })
-      location.reload()
+      pageshow = false
+      let res = await fetchVpinformation()
+      if (res.code === '200') {
+        tableData.value = res.data;
+      }
+      if (tableData.value.length < pageSize) {
+        currentData.value = tableData.value
+      } else {
+        currentData.value = tableData.value.slice(0, pageSize)
+      }
+      currentPage = 1
+      pageshow = true
     }
   }
 }
@@ -503,7 +600,18 @@ const deleteValve = async function (row) {
       type: 'success',
       message: '删除成功！',
     })
-    location.reload()
+    pageshow = false
+    let res = await fetchVpinformation()
+    if (res.code === '200') {
+      tableData.value = res.data;
+    }
+    if (tableData.value.length < pageSize) {
+      currentData.value = tableData.value
+    } else {
+      currentData.value = tableData.value.slice(0, pageSize)
+    }
+    currentPage = 1
+    pageshow = true
   }
 }
 

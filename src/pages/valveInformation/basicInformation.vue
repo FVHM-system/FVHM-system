@@ -12,10 +12,10 @@
           </el-form-item>
         </div>
         <div style="width: 100%;display: flex;flex-direction: row;margin-top: 2.5%">
-          <el-form-item label="所在位置" style="width: 45%">
+          <el-form-item prop="address" label="所在位置" style="width: 45%">
             <el-input v-model="formData.address"></el-input>
           </el-form-item>
-          <el-form-item label="创建时间" style="width: 45%">
+          <el-form-item prop="createTime" label="创建时间" style="width: 45%">
             <el-date-picker
                 v-model="formData.createTime"
                 type="datetime"
@@ -26,18 +26,18 @@
           </el-form-item>
         </div>
         <div style="width: 100%;display: flex;flex-direction: row ;margin-top: 2.5%">
-          <el-form-item label="经度" style="width: 45%">
+          <el-form-item label="经度" prop="longitude" style="width: 45%">
             <el-input v-model="formData.longitude"></el-input>
           </el-form-item>
-          <el-form-item label="通讯编号" style="width: 45%">
+          <el-form-item label="通讯编号" prop="comNumber" style="width: 45%">
             <el-input v-model="formData.comNumber"></el-input>
           </el-form-item>
         </div>
-        <div style="width: 100%;display: flex;flex-direction: row ;margin-top: 2.5%">
-          <el-form-item label="纬度" style="width: 45%">
+        <div style="width: 100%; display: flex;flex-direction: row ;margin-top: 2.5%">
+          <el-form-item prop="latitude" label="纬度" style="width: 45%">
             <el-input v-model="formData.latitude"></el-input>
           </el-form-item>
-          <el-form-item label="阀栓类型" style="width: 45%">
+          <el-form-item prop="valveType" label="阀栓类型" style="width: 45%">
             <el-select v-model="formData.valveType" placeholder="Select">
               <el-option
                   v-for="item in options"
@@ -51,7 +51,7 @@
           </el-form-item>
         </div>
         <div style="width: 100%;display: flex;flex-direction: row;margin-top: 2.5%">
-          <el-form-item label="状态" style="width: 45%">
+          <el-form-item prop="status" label="状态" style="width: 45%">
             <el-select v-model="formData.status" placeholder="Select">
               <el-option
                   v-for="item in statuss"
@@ -62,7 +62,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="所属单位" style="width: 45%">
+          <el-form-item prop="applicantId" label="所属单位" style="width: 45%">
             <el-select v-model="formData.applicantId" placeholder="选择所属单位">
               <el-option
                   v-for="item in applicantList"
@@ -75,7 +75,7 @@
           </el-form-item>
         </div>
         <div style="width: 100%;display: flex;flex-direction: row;margin-top: 2.5%">
-          <el-form-item label="监测设备编号" style="width: 45%">
+          <el-form-item prop="meterCode" label="监测设备编号" style="width: 45%">
             <el-input v-model="formData.meterCode"></el-input>
           </el-form-item>
           <el-form-item label="备注" style="width: 45%">
@@ -83,7 +83,7 @@
           </el-form-item>
         </div>
       </el-form>
-      <el-footer style="text-align: center;margin-top: 2.5%">
+      <el-footer style="text-align: center;margin-top: 2%">
         <el-popconfirm
             confirm-button-text="确定"
             cancel-button-text="取消"
@@ -92,7 +92,7 @@
             @confirm="updateInfo"
         >
           <template #reference>
-            <el-button size="medium" type="primary" @click="" :disabled="buttonState">保存修改
+            <el-button size="medium" type="primary"  :disabled="buttonState">保存修改
             </el-button>
           </template>
         </el-popconfirm>
@@ -197,9 +197,6 @@ const updateInfo = async function () {
       type: 'success',
       message: '操作成功！',
     })
-    // ElLoading.service(options)
-    location.reload()
-
   }
 }
 const props = defineProps({
@@ -226,6 +223,6 @@ const props = defineProps({
   top: 8%;
   left: 4.5%;
   width: 85%;
-  height: 100%;
+  height: 85%;
 }
 </style>

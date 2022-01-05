@@ -79,7 +79,7 @@
         </div>
         <div>
         <el-form-item style="margin-left: 8px" label="监测阀栓">
-          <el-select style="position:relative; left:6%; width:101%" v-model="addModal.data.valveId" placeholder="请选择">
+          <el-select no-data-text="当前没有需要监测的阀栓" style="position:relative; left:6%; width:101%" v-model="addModal.data.valveId" placeholder="请选择">
           <el-option
               v-for="item in valvePlugInformation"
               :key="item.value"

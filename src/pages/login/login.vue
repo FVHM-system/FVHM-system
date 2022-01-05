@@ -3,7 +3,7 @@
     <div class="box">
       <div class="boxContent">
         <div class="boxTitle">
-          <p>使用密码登录</p>
+          <p>登录</p>
         </div>
         <div class="boxInner">
           <div class="inputRow">
@@ -214,6 +214,10 @@ export default {
 }
 
 .boxTitle {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   position: absolute;
   left: 5%;
   top: -6%;
