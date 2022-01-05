@@ -4,7 +4,7 @@
       <p class="page2-name">道路管理</p>
       <div class="p-operation">
         <div class="p-row">
-          
+
             <el-button
                 type="success"
                 @click="addModal.open()"
@@ -13,7 +13,7 @@
             >
               新增
             </el-button>
-          
+
         </div>
       </div>
     </div>
@@ -40,11 +40,11 @@
     <div class="p-foot"></div>
   </div>
   <el-dialog v-model="modalState" :title="modalTitle" center>
-    <el-form :model="addForm" label-width="100px" :inline="false">
-      <el-form-item label="道路名" required>
+    <el-form :model="addForm" ref="addDta" :rules="addRules" label-width="100px" :inline="false">
+      <el-form-item label="道路名" prop="name">
         <el-input v-model="addForm.name" ></el-input>
       </el-form-item>
-      <el-form-item label="所属村庄" required>
+      <el-form-item label="所属村庄" prop="zoneId">
         <el-select v-model="addForm.zoneId" clearable style="width: 617px" placeholder="请选择">
           <el-option v-for="item in villageList" :key="item.zoneId" :label="item.village"
                      :value="item.zoneId"></el-option>
@@ -72,7 +72,7 @@ import {
   editRoadInfoByConfig,
   deleteRoadInfoById
 } from '../../apis/2.0/addr'
-import { 
+import {
   fetchAuthority ,
   fetchUsername
 } from '../../utils/mrWang'
@@ -94,6 +94,33 @@ let modalTitle = computed(() => {
     res = '编辑道路'
   }
   return res
+})
+let addDta = ref()
+const valveNameCheck = (rule, value, callback) => {
+  const nameCheck = /^[\u4e00-\u9fa5]+$/
+  if (!value) {
+    return callback(new Error('内容不能为空'))
+  } else if (!nameCheck.test(value)) {
+    return callback(new Error('内容格式错误(仅允许输入中文名称)'))
+  }else {
+    callback()
+  }
+}
+let addRules = reactive({
+  name: [
+    {
+      required: true,
+      message: '请输入道路名称',
+      trigger: 'blur',
+    }
+  ],
+  zoneId:[
+    {
+      required: true,
+      message: '请选择所属村庄',
+      trigger: 'blur',
+    }
+  ]
 })
 const addForm = reactive({
   name: '',
@@ -163,17 +190,14 @@ const addModal = {
   },
   state: modalState,
   async submit() {
-    if (!addForm.name || !addForm.zoneId) {
-      ElMessage({
-        type: 'info',
-        message: '名称或地址不能为空',
-      })
-      return
-    }
-    const r = await myFunc.add()
-    if (r) {
-      this.changeState(false)
-    }
+    addDta.value.validate(async (valid) => {
+      if(valid) {
+        const r = await myFunc.add()
+        if (r) {
+          this.changeState(false)
+        }
+      }
+    })
   },
   cancel() {
     this.changeState(false)
