@@ -88,13 +88,17 @@ let modalTitle = computed(() => {
   return res
 })
 let addDta = ref()
+let districtNameList = {}
 const valveNameCheck = (rule, value, callback) => {
   const nameCheck = /^[\u4e00-\u9fa5]+$/
   if (!value) {
     return callback(new Error('内容不能为空'))
   } else if (!nameCheck.test(value)) {
     return callback(new Error('内容格式错误(仅允许输入中文名称)'))
-  }else {
+  }else if(districtNameList.find(i=>i.value===value)){
+    return callback(new Error('区县名称重复！'))
+  }
+  else {
     callback()
   }
 }
@@ -122,6 +126,11 @@ const myFunc = {
   async search() {
     const temp1 = await fetchDistrictList()
     districtList.value = temp1
+    districtNameList = temp1.map(item=>{
+      return{
+        value:item.district
+      }
+    })
     const temp2 = await fetchCityList()
     cityList.value = temp2
   },
