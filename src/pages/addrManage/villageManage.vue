@@ -38,11 +38,11 @@
     <div class="p-foot"></div>
   </div>
   <el-dialog v-model="modalState" :title="modalTitle" center>
-    <el-form :model="addForm" label-width="100px" :inline="false">
-      <el-form-item label="村庄名" required>
+    <el-form :rules="addRule" ref="check" :model="addForm" label-width="100px" :inline="false">
+      <el-form-item prop="name" label="村庄名" >
         <el-input v-model="addForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="所属乡镇" required>
+      <el-form-item prop="zoneId" label="所属乡镇" >
         <el-select v-model="addForm.zoneId" clearable style="width: 617px" placeholder="请选择">
           <el-option v-for="item in townList" :key="item.zoneId" :label="item.town"
                      :value="item.zoneId"></el-option>
@@ -85,6 +85,28 @@ let modalState = ref(false)
 let mode = ref('')
 let currentItem = ref()
 let tableHeight = window.innerHeight - 240
+let check=ref(null)
+
+const addRule=reactive({
+  name:[
+    {
+      required: true,
+      message: '请输入村庄名',
+      trigger: 'blur',
+      type: 'string',
+      pattern: /^[\u4e00-\u9fa5]+$/
+      //pattern: /^[\u4e00-\u9fa5]+$/,
+    }
+  ],
+  zoneId:[
+    {
+      required: true,
+      message: '请选择所属乡镇',
+      trigger: 'blur',
+    }
+  ],
+})
+
 let modalTitle = computed(() => {
   let res
   if (mode.value === 'add') {
@@ -166,7 +188,9 @@ const addModal = {
   },
   state: modalState,
   async submit() {
-    if (!addForm.name || !addForm.zoneId) {
+    check.value.validate(async (valid)=>{
+      if(valid){
+        if (!addForm.name || !addForm.zoneId) {
       ElMessage({
         type: 'info',
         message: '名称或地址不能为空',
@@ -177,6 +201,10 @@ const addModal = {
     if (r) {
       this.changeState(false)
     }
+      }
+    })
+    
+
   },
   cancel() {
     this.changeState(false)
@@ -195,7 +223,9 @@ const editModal = {
   },
   state: modalState,
   async submit() {
-    if (!addForm.name || !addForm.zoneId) {
+    check.value.validate(async (valid)=>{
+      if(valid){
+        if (!addForm.name || !addForm.zoneId) {
       ElMessage({
         type: 'info',
         message: '名称或地址不能为空',
@@ -206,6 +236,9 @@ const editModal = {
     if (r) {
       this.changeState(false)
     }
+      }
+    })
+  
   },
   cancel() {
     this.changeState(false)
