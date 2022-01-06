@@ -249,7 +249,7 @@ const addModal = {
 }
 const editModal = {
   changeState(e) {
-    modalState.value = e
+    modalState.value = e//
   },
   state: modalState,
   async submit() {
