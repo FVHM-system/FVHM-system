@@ -88,7 +88,10 @@ const valveNameCheck = (rule, value, callback) => {
     return callback(new Error('内容不能为空'))
   } else if (!nameCheck.test(value)) {
     return callback(new Error('内容格式错误(仅允许输入中文名称)'))
-  }else{
+  }else if(cityNameList.find(i=>i.value===value)){
+    return callback(new Error('区县名称重复！'))
+  }
+  else{
     callback()
   }
 }
@@ -105,10 +108,16 @@ let addRules = reactive({
 const addForm = reactive({
   name: '',
 })
+let cityNameList = {}
 const myFunc = {
   async search() {
     const temp = await fetchCityList()
     cityList.value = temp
+    cityNameList = temp.map(item=>{
+      return{
+        value:item.city
+      }
+    })
   },
   async add() {
     const r = await AddCityInfoByConfig({
@@ -168,7 +177,6 @@ const addModal = {
     addDta.value.validate((valid) => {
       if (valid) {
         const r = myFunc.add()
-        console.log(r)
         if (r) {
           this.changeState(false)
         }
@@ -180,6 +188,9 @@ const addModal = {
   }
   ,
   open() {
+    if(addDta.value) {
+      addDta.value.clearValidate()
+    }
     this.changeState(true)
     mode.value = 'add'
     addForm.name = ''
@@ -210,6 +221,9 @@ const editModal = {
     this.changeState(false)
   },
   open(item) {
+    if(addDta.value) {
+      addDta.value.clearValidate()
+    }
     this.changeState(true)
     mode.value = 'edit'
     modal.value = editModal

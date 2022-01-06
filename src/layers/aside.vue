@@ -48,7 +48,6 @@ const genMenuList = configs => {
 const mergedMenuConfigs = computed(() => {
   let res = []
   const menus = store.getters['user/menus']
-  console.log('menu', menus)
   const menuList = genMenuList(menuConfigs)
   const findAndMixed = config => {
     const r = menuList.find(item => item.index === config.path)
@@ -75,7 +74,6 @@ const mergedMenuConfigs = computed(() => {
       res.push(mixed)
     }
   })
-  console.log('merge', res)
   res = [...res, ...menuList.filter(item => item.force === true)]
   return res
 })

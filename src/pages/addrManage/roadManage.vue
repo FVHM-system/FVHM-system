@@ -96,13 +96,14 @@ let modalTitle = computed(() => {
   return res
 })
 let addDta = ref()
+let roadNameList = ref({})
 const valveNameCheck = (rule, value, callback) => {
-  const nameCheck = /^[\u4e00-\u9fa5]+$/
   if (!value) {
     return callback(new Error('内容不能为空'))
-  } else if (!nameCheck.test(value)) {
-    return callback(new Error('内容格式错误(仅允许输入中文名称)'))
-  }else {
+  }else if(roadNameList.find(i=>i.value===value)){
+    return callback(new Error('道路名称重复！'))
+  }
+  else {
     callback()
   }
 }
@@ -110,7 +111,7 @@ let addRules = reactive({
   name: [
     {
       required: true,
-      message: '请输入道路名称',
+      validator:valveNameCheck,
       trigger: 'blur',
     }
   ],
@@ -130,6 +131,11 @@ const myFunc = {
   async search() {
     const temp1 = await fetchRoadList()
     roadList.value = temp1
+    roadNameList = temp1.map(item=>{
+      return{
+        value:item.road
+      }
+    })
     const temp5 = await fetchVillageList()
     villageList.value = temp5
   },
@@ -203,6 +209,9 @@ const addModal = {
     this.changeState(false)
   },
   open() {
+    if(addDta.value) {
+      addDta.value.clearValidate()
+    }
     this.changeState(true)
     mode.value = 'add'
     addForm.name = ''
@@ -232,6 +241,9 @@ const editModal = {
     this.changeState(false)
   },
   open(item) {
+    if(addDta.value) {
+      addDta.value.clearValidate()
+    }
     this.changeState(true)
     mode.value = 'edit'
     modal.value = editModal

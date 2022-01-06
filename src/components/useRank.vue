@@ -35,7 +35,6 @@
     if (res.code === '200') {
       tableData.value = res.data;
     }
-    console.log("rankdata",tableData.value)
   })
 </script>
 

@@ -126,8 +126,6 @@ class CSVReader {
     if (this.isDone) {
       this.list = []
     }
-    // console.log('10', readResult, this.list)
-    // console.log('ad')
   }
 
   async readLine() {
@@ -138,16 +136,13 @@ class CSVReader {
     let str = ''
     let count = 0
     while (!this.isDone && !this.readEnd) {
-      // console.log('a', this.isDone, this.readEnd)
       count++
       if (count > 1000) {
-        console.log('fuck')
         break
       }
       await this.read()
       while (this.index < this.list.length) {
         count++
-        // console.log('b')
         const l = getUtf8Length(this.list[this.index])
         this.lastIndex = this.index + l
         const wlist = this.list.slice(this.index, this.lastIndex)
@@ -201,21 +196,18 @@ export const readFile = async opt => {
     if (notFilter) {
       //reject("文件类型不符合要求");
       res.message = '文件类型不符合要求'
-      console.log(res)
       return res
     }
     let sizeM = file.size / 1024 / 1024
     if (sizeM > 50) {
       //reject("文件大小不符合要求");
       res.message = '文件大小不符合要求'
-      console.log(res)
       return res
     }
 
     // const t = new CSVReader(file)
     // for (let i = 0; i < 130; i++) {
     //   const a = await t.readLine()
-    //   console.log(a, typeof a)
     // }
     const normalParser = origin => {
       return parseFloat(origin) || undefined
@@ -263,15 +255,12 @@ export const readFile = async opt => {
     while (true) {
       i += 1
       const a = await t.readLine()
-      console.log(a, typeof a)
       if (!a || rowNumber >= 1000000) {
-        console.log('100')
         // await sleep(100000)
         break
       }
       c += 1
       rowNumber += 1
-      // console.log('line', a)
       const row = {}
       const rowRes = {}
       rowRes._hasError = false

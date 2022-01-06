@@ -19,18 +19,15 @@ export const addApplicant = async (addData) => {
     ...addData
     },
   })
-  console.log(res)
   return res
 }
 
 export const editApplicant = async(addData) => {
-  console.log(addData)
   let res = await request.put('/applicant/updateapplicantinfo', {
     data:{
     ...addData
     },
   })
-  console.log(res)
   return res
 }
 

@@ -25,7 +25,6 @@ export const deleteAccount = async ({ ids }) => {
 }
 
 export const editAccountName = async ({ id, name }) => {
-  console.log(id)
   return await request.Pput('/user/updateuser', {
     data: {
       userId: id,
@@ -35,7 +34,6 @@ export const editAccountName = async ({ id, name }) => {
 }
 
 export const editAccountDesc = async ({ id, name, desc, password }) => {
-  console.log(id)
   return await request.Pput('/user/updateuser', {
     data: {
       userId: id,

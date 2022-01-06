@@ -124,7 +124,7 @@ function handleSizeChange(val) {
 function handleCurrentChange(val) {
   currentPage = val;
   currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-  console.log(currentPage)
+  //console.log(currentPage)
 }
 
 const form = reactive({
@@ -211,7 +211,7 @@ const modal = {
   modalState,
   changeState(b) {
     this.modalState.value = b
-    console.log('add')
+    //console.log('add')
   },
   open() {
     mode.value = 'normal'

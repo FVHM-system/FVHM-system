@@ -158,14 +158,14 @@ let applicantList = ref([])
 
 async function getApplicantList() {
   let res = await getApplicant()
-  console.log(res.data)
+  //console.log(res.data)
   applicantList.value = res.data.map(item => {
     return {
       value: item.applicantId,
       label: item.applicantName
     }
   })
-  console.log(applicantList)
+  //console.log(applicantList)
 }
 
 onMounted(async () => {
@@ -180,14 +180,14 @@ onMounted(async () => {
     formData.value = res.data;
   }
   let res1 = await fetchSectionList()
-  console.log(res1)
+  //console.log(res1)
   addrList.value = res1.map(item=>{
     return{
       value:item.zoneId,
       label:item.section
     }
   })
-  console.log(formData.value)
+  //console.log(formData.value)
   await getApplicantList()
 })
 let valveInfo = {}
@@ -206,10 +206,10 @@ const updateInfo = async function () {
   valveInfo.meterCode = formData.value.meterCode;
   valveInfo.comNumber = formData.value.comNumber;
   valveInfo.applicantId = formData.value.applicantId
-  console.log('ssdsasad', valveInfo.applicantId)
+  //console.log('ssdsasad', valveInfo.applicantId)
   const res = await fetchUpdateData(valveInfo)
-  console.log(res)
-  console.log(valveInfo)
+  //console.log(res)
+  //console.log(valveInfo)
   if (res.code === '200') {
     ElMessage({
       type: 'success',

@@ -182,7 +182,6 @@ function handleSizeChange(val) {
 function handleCurrentChange(val) {
   currentPage = val;
   currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-  console.log(currentPage)
 }
 
 const search = reactive({
@@ -206,7 +205,6 @@ const search = reactive({
           message : '尚无当前所查数据'
         })
       }
-      console.log(res.data)
       currentData.value = tableData.value.slice(0, pageSize)
     }
     else {ElMessage({
@@ -259,7 +257,7 @@ const addModal = reactive({
       return
     }
     let res = await addApplicant(this.data)
-    console.log(res)
+    //console.log(res)
     if (res.code == '200'){
       ElMessage({
         type: 'success',
@@ -290,8 +288,8 @@ const addModal = reactive({
       })
       }
     })
-    
-  
+
+
   }
 })
 
@@ -319,9 +317,8 @@ const editModal = reactive({
   async submit(){
     editCheck.value.validate(async (valid)=>{
       if(valid){
-        console.log(this.data)
     let res = await editApplicant(this.data)
-    console.log(res)
+    //console.log(res)
     if (res.code == '200'){
       ElMessage({
         type: 'success',
@@ -345,7 +342,7 @@ const editModal = reactive({
       })
       }
     })
-    
+
   }
 })
 

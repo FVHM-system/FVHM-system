@@ -14,24 +14,20 @@ export const getMeterById = async (id) => {
 }
 
 export const addMeter = async (addData) => {
-  console.log(addData)
   let res = await request.post('/meter/insertmeterinfo', {
     data:{
     ...addData
     },
   })
-  console.log(res)
   return res
 }
 
 export const editMeter = async(addData) => {
-  console.log(addData)
   let res = await request.put('/meter/updatemeterinfo', {
     data:{
     ...addData
     },
   })
-  console.log(res)
   return res
 }
 

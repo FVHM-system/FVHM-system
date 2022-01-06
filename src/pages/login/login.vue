@@ -3,7 +3,7 @@
     <div class="box">
       <div class="boxContent">
         <div class="boxTitle">
-          <p>登录</p>
+          <p style="white-space: break-spaces">登&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp录</p>
         </div>
         <div class="boxInner">
           <div class="inputRow">
@@ -11,14 +11,14 @@
                       placeholder="用户名"/>
           </div>
           <div class="inputRow">
-            <el-input class="inputSingle" type="password" v-model="loginForm.password"
+            <el-input v-on:keyup.enter.native="login" class="inputSingle" type="password" v-model="loginForm.password"
                       placeholder="密码"/>
           </div>
           <div class="boxOperation">
             <div style="position:relative;left:58px;top:-10%;">
               <p style="color:white;">需要新建用户？<br/>请联系管理员</p>
             </div>
-            <button class="boxConfirm" @click="login">登录</button>
+            <button class="boxConfirm" @click="login" v-on:keyup.enter.native="login">登录</button>
           </div>
         </div>
       </div>
@@ -29,6 +29,7 @@
 <script>
 import axios from 'axios'
 import { fetchValveInfos } from '../../apis/2.0/newMap';
+import {ElMessage} from "element-plus";
 
 export default {
   data() {
@@ -39,11 +40,29 @@ export default {
       }
     };
   },
+  mounted() {
+    this.username = ''
+    this.password = ''
+    window.addEventListener('keydown', this.keyDown)
+  },
+  unmounted () {
+    window.removeEventListener('keydown', this.keyDown, false)
+  },
   methods: {
+    keyDown (e) {
+      // 如果是回车则执行登录方法
+      if (e.keyCode === 13) {
+        this.login()
+      }
+    },
     login() {
       let _this = this;
       if (this.loginForm.username === '' || this.loginForm.password === '') {
-        alert('账号或密码不能为空');
+        ElMessage({
+          type: 'warning',
+          message: '用户名或密码为空！',
+        })
+        return
       } else {
         axios.request({
           method: 'post',
@@ -52,11 +71,13 @@ export default {
         }).then(res => {
           this.$store.dispatch('user/login', _this.loginForm);
           if (res.data.data.code === '200') {
-            alert('登陆成功');
+            ElMessage({
+              type: 'success',
+              message: '登陆成功！',
+            })
           }
         }).catch(error => {
           //alert('账号或密码错误');
-          console.log(error);
         });
       }
     }
@@ -141,12 +162,9 @@ export default {
 // }
 
 .box {
-  // position: absolute;
-  // top: 0;
-  // bottom: 0;
-  // left: 0;
-  // right: 0;
-  // margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 100px auto 0 auto;
   position: relative;
   top: -120px;
@@ -175,10 +193,13 @@ export default {
 }
 
 .boxContent {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
   position: absolute;
   width: 380px;
   top: 47.5px;
-  left: 47.5px;
 }
 
 .boxOperation {
@@ -214,12 +235,11 @@ export default {
 }
 
 .boxTitle {
-  width: 100%;
   display: flex;
-  flex-direction: row;
+  text-align: center;
+  flex-direction: column;
   align-items: center;
   position: absolute;
-  left: 5%;
   top: -6%;
   font-size: 28px;
   color: white;
@@ -240,7 +260,7 @@ export default {
 
 .inputRow {
   position: relative;
-  left: 50px;
+  left: 10%;
   top: -15px;
   width: 300px;
   height: 70px;
@@ -282,7 +302,6 @@ export default {
   line-height: 38px;
   padding: 9.5px;
   color: rgba(0, 0, 0, 0.75);
-  border-bottom: solid 0.95px rgba(0, 0, 0, 0.3);
 }
 
 .boxOther {

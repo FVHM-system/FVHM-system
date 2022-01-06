@@ -364,9 +364,9 @@ const editModal = reactive({
     this.show = true;
   },
   async submit() {
-    console.log(this.data)
+    //console.log(this.data)
     let res = await editMeterType(this.data)
-    console.log(res)
+    //console.log(res)
     if (res.code == '200') {
       ElMessage({
         type: 'success',

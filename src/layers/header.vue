@@ -17,6 +17,7 @@ import {computed} from 'vue'
 import {useRouter, useRoute} from 'vue-router'
 import {useStore} from 'vuex'
 import {store} from "../stores";
+import {ElMessage} from "element-plus";
 const router = useRouter();
 export default {
   data() {
@@ -29,7 +30,10 @@ export default {
   methods: {
 
     logout() {
-      alert('成功退出登录');
+      ElMessage({
+        type: 'success',
+        message: '成功退出登录！',
+      })
       this.$router.push('/');
       this.$store.dispatch('user/logout');
     }

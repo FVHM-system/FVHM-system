@@ -125,7 +125,6 @@ function handleSizeChange(val) {
 function handleCurrentChange(val) {
   currentPage = val;
   currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-  console.log(currentPage)
 }
 
 const id = computed(() => route.query.id)
@@ -193,7 +192,6 @@ const modal = {
   modalState,
   changeState(b) {
     this.modalState.value = b
-    console.log('add')
   },
   open() {
     mode.value = 'normal'

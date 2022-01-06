@@ -115,7 +115,7 @@ const permissionFunc = {
           }
         }
       })
-      console.log('res', res)
+      //console.log('res', res)
       return res
     }
     tableData.value = genChildList(r || [])

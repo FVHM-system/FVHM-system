@@ -66,7 +66,7 @@ import {
   editTownInfoByConfig,
   deleteTownInfoById
 } from '../../apis/2.0/addr'
-import { 
+import {
   fetchAuthority ,
   fetchUsername
 } from '../../utils/mrWang'
@@ -82,16 +82,26 @@ let currentItem = ref()
 let tableHeight = window.innerHeight - 240
 
 let check=ref(null)
-
+let townNameList={}
+const valveNameCheck = (rule, value, callback) => {
+  const nameCheck = /^[\u4e00-\u9fa5]+$/
+  if (!value) {
+    return callback(new Error('内容不能为空'))
+  } else if (!nameCheck.test(value)) {
+    return callback(new Error('内容格式错误(仅允许输入中文名称)'))
+  }else if(townNameList.find(i=>i.value===value)){
+    return callback(new Error('乡镇名称重复！'))
+  }
+  else {
+    callback()
+  }
+}
 const addRule=reactive({
   name:[
     {
       required: true,
-      message: '请输入乡镇名',
+      validator: valveNameCheck,
       trigger: 'blur',
-      type: 'string',
-      pattern: /^[\u4e00-\u9fa5]+$/
-      //pattern: /^[\u4e00-\u9fa5]+$/,
     }
   ],
   zoneId:[
@@ -119,6 +129,11 @@ const myFunc = {
   async search() {
     const temp1 = await fetchTownList()
     townList.value = temp1
+    townNameList = temp1.map(item=>{
+      return{
+        value:item.town
+      }
+    })
     const temp3 = await fetchDistrictList()
     districtList.value = temp3
   },
@@ -199,6 +214,9 @@ const addModal = {
     this.changeState(false)
   },
   open() {
+    if(check.value) {
+      check.value.clearValidate()
+    }
     this.changeState(true)
     mode.value = 'add'
     addForm.name = ''
@@ -232,6 +250,9 @@ const editModal = {
     this.changeState(false)
   },
   open(item) {
+    if(check.value) {
+      check.value.clearValidate()
+    }
     this.changeState(true)
     mode.value = 'edit'
     modal.value = editModal

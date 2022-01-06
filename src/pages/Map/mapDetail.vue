@@ -193,7 +193,6 @@ async function changeSwitch(e){
   await setMap()
 }
 async function handleItemChange(e){
-  //console.log("变化")
   myData.value=place.value.map(item=>{
         let myId
         let temp=item.map(item1=>{
@@ -203,7 +202,6 @@ async function handleItemChange(e){
         })
         return myId
       })
-  console.log("阀栓id",myData.value)
   await fetchData()
   await setMap()
 }
@@ -226,8 +224,6 @@ async function loadMap() {
   if(!chart){
     chart = markRaw(echarts.init(document.getElementById('map-container')))
     chart.on('click', e => {
-    console.log("点击的", e.data)
-    console.log(state.value)
     if (navmode.value === true && state.value === true) {
       if (clicklocation.value.length === 0) {
         startLngLat.push(e.data.value[0])
@@ -235,16 +231,12 @@ async function loadMap() {
         clicklocation.value.push(e.data)
         clicked.value = true
         showNav.value = false
-        console.log("起点", startLngLat)
-        console.log("点列表", clicklocation.value)
       } else if (clicklocation.value.length === 1 && state.value === true) {
         endLngLat.push(e.data.value[0])
         endLngLat.push(e.data.value[1])
         clicklocation.value.push(e.data)
         clicked.value = true
         showNav.value = true
-        console.log("终点", endLngLat)
-        console.log("点列表", clicklocation.value)
         setNav()
       } else if (clicklocation.value.length === 2) {
         startLngLat = []
@@ -584,18 +576,18 @@ const fetchData = async () => {
   uninstalledHydrant.value=getList(item => item.status === 1002 && item.valveType === 2)
 
 
-  console.log("阀门正常运行", normalWell.value)
-  console.log("消防栓正常运行", normalHydrant.value)
-  console.log("阀门正在报警", warningWell.value)
-  console.log("消防栓正在报警", warningHydrant.value)
-  console.log("阀门已经废弃", offlineWell.value)
-  console.log("消防栓已经废弃", offlineHydrant.value)
-  console.log("阀门尚未安装", uninstalledWell.value)
-  console.log("消防栓尚未安装", uninstalledHydrant.value)
+  //console.log("阀门正常运行", normalWell.value)
+  //console.log("消防栓正常运行", normalHydrant.value)
+  //console.log("阀门正在报警", warningWell.value)
+  //console.log("消防栓正在报警", warningHydrant.value)
+  //console.log("阀门已经废弃", offlineWell.value)
+  //console.log("消防栓已经废弃", offlineHydrant.value)
+  //console.log("阀门尚未安装", uninstalledWell.value)
+  //console.log("消防栓尚未安装", uninstalledHydrant.value)
 }
 
 function changeLayer(e) {
-  console.log("哈哈哈哈",radio.value)
+  //console.log("哈哈哈哈",radio.value)
   if (e == '标准地图') {
     satelliteObject.value.hide()
   } else {

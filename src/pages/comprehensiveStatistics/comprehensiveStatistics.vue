@@ -81,14 +81,12 @@ const load = async (tree, treeNode, resolve) => {
   if (tree.type === 'city') {
     //区县
     const district = (await fetchDistrictList() || []).filter(item => item.pid == tree.zoneId)
-    console.log("district: ", district)
     res = (await fetchMonthDistrict({
       month: searchTime.value,
       list: district.map(item => {
         return item.zoneId;
       }),
     }))
-    console.log("res: ", res)
     r2 = res.map((item, index) => {
       return {
         ...item,
@@ -99,19 +97,16 @@ const load = async (tree, treeNode, resolve) => {
         id: 'district' + district[index].zoneId,
       }
     })
-    console.log("r2: ", r2)
   }
   if (tree.type == 'district') {
     //乡镇
     const town = (await fetchTownList() || []).filter(item => item.pid == tree.zoneId)
-    console.log("town: ", town)
     res = (await fetchMonthTown({
       month: searchTime.value,
       list: town.map(item => {
         return item.zoneId;
       }),
     }))
-    console.log("res: ", res)
     r3 = res.map((item, index) => {
       return {
         ...item,
@@ -122,19 +117,16 @@ const load = async (tree, treeNode, resolve) => {
         id: 'town' + town[index].zoneId,
       }
     })
-    console.log("r3: ", r3)
   }
   if (tree.type == 'town') {
     //村庄
     const village = (await fetchVillageList() || []).filter(item => item.pid == tree.zoneId)
-    console.log("village: ", village)
     res = (await fetchMonthVillage({
       month: searchTime.value,
       list: village.map(item => {
         return item.zoneId;
       }),
     }))
-    console.log("res: ", res)
     r4 = res.map((item, index) => {
       return {
         ...item,
@@ -145,19 +137,16 @@ const load = async (tree, treeNode, resolve) => {
         id: 'village' + village[index].zoneId,
       }
     })
-    console.log("r4: ", r4)
   }
   if (tree.type == 'village') {
     //道路
     const road = (await fetchRoadList() || []).filter(item => item.pid == tree.zoneId)
-    console.log("road: ", road)
     res = (await fetchMonthRoad({
       month: searchTime.value,
       list: road.map(item => {
         return item.zoneId;
       }),
     }))
-    console.log("res: ", res)
     r5 = res.map((item, index) => {
       return {
         ...item,
@@ -168,19 +157,16 @@ const load = async (tree, treeNode, resolve) => {
         id: 'road' + road[index].zoneId,
       }
     })
-    console.log("r5: ", r5)
   }
   if (tree.type == 'road') {
     //路段
     const section = (await fetchSectionList() || []).filter(item => item.pid == tree.zoneId)
-    console.log("section: ", section)
     res = (await fetchMonthSection({
       month: searchTime.value,
       list: section.map(item => {
         return item.zoneId;
       }),
     }))
-    console.log("res: ", res)
     r1 = res.map((item, index) => {
       return {
         ...item,
@@ -191,18 +177,15 @@ const load = async (tree, treeNode, resolve) => {
         id: 'section' + section[index].zoneId,
       }
     })
-    console.log("r1: ", r1)
   }
   resolve([].concat(r2).concat(r3).concat(r4).concat(r5).concat(r1))
 
 }
 
 async function search() {
-  console.log("测试",searchTime.value)
   const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: true})
   let city = []
   city = await fetchCityList()
-  console.log("city: ", city)
 
   const res = await fetchMonthCity({
     month: searchTime.value,
@@ -210,7 +193,6 @@ async function search() {
       return item.zoneId;
     }),
   })
-  console.log("res: ", res)
   const n = Date.now()
   const r = res.map((item, index) => {
     return {
@@ -222,7 +204,6 @@ async function search() {
       id: 'city' + city[index].zoneId + n,
     }
   })
-  console.log("r: ", r)
   data.value = r
   loadingInstance.close()
 }

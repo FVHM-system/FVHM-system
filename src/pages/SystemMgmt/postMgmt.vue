@@ -102,7 +102,6 @@ function handleSizeChange(val) {
 function handleCurrentChange(val) {
   currentPage = val;
   currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-  console.log(currentPage)
 }
 
 
@@ -129,14 +128,12 @@ const addModal = {
   modalState,
   changeState(b) {
     this.modalState.value = b
-    console.log('add')
   },
 }
 const editModal = {
   editState,
   changeState(b) {
     this.editState.value = b
-    console.log('add')
   },
 }
 const helper = {
@@ -218,7 +215,6 @@ const postFunc = {
   },
   async fetchPost() {
     const data = (await fetchPostList()) || []
-    // console.log("data", data)
     tableData.value = data
     currentData.value = tableData.value.slice((currentPage - 1) * pageSize, currentPage * pageSize)
   },

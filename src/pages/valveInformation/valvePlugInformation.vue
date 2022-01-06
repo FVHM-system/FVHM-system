@@ -483,7 +483,7 @@ const confirm = async function () {
           message: '操作成功！',
         })
         dialogVisible.value = false
-        pageshow = false
+        pageshow.value = false
         let res = await fetchVpinformation()
         if (res.code === '200') {
           tableData.value = res.data;
@@ -494,7 +494,7 @@ const confirm = async function () {
           currentData.value = tableData.value.slice(0, pageSize)
         }
         currentPage = 1
-        pageshow = true
+        pageshow.value = true
       } else {
         ElMessage({
           type: 'error',
@@ -554,13 +554,12 @@ const statusFormate = function (row) {
 const valveStatusChange = async function (row) {
   if (row.status === 1003) {
     let res = await fetUpdateStatus({valveId: row.valveId, status: 1001})
-    console.log(res)
     if (res.code === '200') {
       ElMessage({
         type: 'success',
         message: '启用成功！',
       })
-      pageshow = false
+      pageshow.value = false
       let res = await fetchVpinformation()
       if (res.code === '200') {
         tableData.value = res.data;
@@ -571,17 +570,16 @@ const valveStatusChange = async function (row) {
         currentData.value = tableData.value.slice(0, pageSize)
       }
       currentPage = 1
-      pageshow = true
+      pageshow.value = true
     }
   } else if (row.status === 1001 || row.status === 4444) {
     let res = await fetUpdateStatus({valveId: row.valveId, status: 1003})
-    console.log(res)
     if (res.code === '200') {
       ElMessage({
         type: 'success',
         message: '停用成功！',
       })
-      pageshow = false
+      pageshow.value = false
       let res = await fetchVpinformation()
       if (res.code === '200') {
         tableData.value = res.data;
@@ -592,14 +590,13 @@ const valveStatusChange = async function (row) {
         currentData.value = tableData.value.slice(0, pageSize)
       }
       currentPage = 1
-      pageshow = true
+      pageshow.value = true
     }
   }
 }
 /* 查询 */
 const dataFind = async function () {
   let address = ref('')
-  console.log(searchForm.place)
   if (searchForm.place) {
     if (searchForm.place.length > 1) {
       for (let i = searchForm.place.length - 1; i >= 0; i--) {
@@ -607,7 +604,6 @@ const dataFind = async function () {
       }
     }
   }
-  console.log(searchForm.type, searchForm.status, address.value)
   let res = await fetchFindData(searchForm.type, searchForm.status, address.value)
   if (res.code === '200') {
     if (res.data.length > 0) {
@@ -628,8 +624,6 @@ const dataFind = async function () {
       })
     }
   }
-  console.log(tableData.value)
-  console.log(address.value)
 }
 
 const dataRequire = async function () {
@@ -654,13 +648,12 @@ const dataRequire = async function () {
 }
 const deleteValve = async function (row) {
   let res = await fetDeleteValveInfo({valveId: row.valveId})
-  console.log(row.valveId)
   if (res.code === '200') {
     ElMessage({
       type: 'success',
       message: '删除成功！',
     })
-    pageshow = false
+    pageshow.value = false
     let res = await fetchVpinformation()
     if (res.code === '200') {
       tableData.value = res.data;
@@ -671,7 +664,7 @@ const deleteValve = async function (row) {
       currentData.value = tableData.value.slice(0, pageSize)
     }
     currentPage = 1
-    pageshow = true
+    pageshow.value = true
   }
 }
 
@@ -768,7 +761,6 @@ onMounted(async () => {
   optionss.value = await fetchSuper()
   await getApplicantList()
   loadingInstance.close()
-  console.log(proxy)
 })
 
 </script>

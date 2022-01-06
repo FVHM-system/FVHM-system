@@ -326,10 +326,10 @@ const valveDetail={
       missionValveState.value=false
     },
     async submitEdit(){
-      console.log("id",detailForm.id)
-      console.log("完成状态",detailForm.complete)
-      console.log("完成时间",dayjs(detailForm.completeTime).format('YYYY-MM-DD HH:mm:ss'))
-      console.log("备注",detailForm.remark)
+      //console.log("id",detailForm.id)
+      //console.log("完成状态",detailForm.complete)
+      //console.log("完成时间",dayjs(detailForm.completeTime).format('YYYY-MM-DD HH:mm:ss'))
+      //console.log("备注",detailForm.remark)
       if (!detailForm.id||!detailForm.completeTime) {
         ElMessage({
             type: 'info',
@@ -355,7 +355,7 @@ const valveDetail={
       this.detailCancel()
     },
     async submitAdd(){
-      console.log("我的选择",place.value)
+      //console.log("我的选择",place.value)
       let myData=place.value.map(item=>{
         let myId
         let temp=item.map(item1=>{
@@ -365,8 +365,8 @@ const valveDetail={
         })
         return myId
       })
-      console.log("阀栓id",myData)
-      console.log("taskId",addForm.taskId)
+      //console.log("阀栓id",myData)
+      //console.log("taskId",addForm.taskId)
       const r=await addMissionValves({
         taskId:addForm.taskId,
         valveIds:myData,
@@ -427,7 +427,7 @@ async function exportCSV() {
     exportExcel(excel)
   }
 async function dataSearch(){
-    console.log("value1",value1.value)
+    //console.log("value1",value1.value)
     let res
     if(value1.value===''){
         res=await fetchCheckInfoByConfig({
@@ -443,10 +443,10 @@ async function dataSearch(){
           endTime:dayjs(value1.value[1]).format('YYYY-MM-DD HH:mm:ss'),
       })
     }
-    console.log("people",input1.value)
-    console.log("complete",input2.value)
-    console.log("startTime",dayjs(value1.value[0]).format('YYYY-MM-DD HH:mm:ss'))
-    console.log("endTime",dayjs(value1.value[1]).format('YYYY-MM-DD HH:mm:ss'))
+    //console.log("people",input1.value)
+    //console.log("complete",input2.value)
+    //console.log("startTime",dayjs(value1.value[0]).format('YYYY-MM-DD HH:mm:ss'))
+    //console.log("endTime",dayjs(value1.value[1]).format('YYYY-MM-DD HH:mm:ss'))
 
     if(res.code==='200' && res.data.length!==0){
     ElMessage({
@@ -454,7 +454,7 @@ async function dataSearch(){
       message: '查询成功！',
     })
     tableData.value = res.data;
-    console.log("all data",res.data)
+    //console.log("all data",res.data)
     }
     else {
         ElMessage({
@@ -478,19 +478,19 @@ const myFunc={
                 return false
               }
             })
-            console.log("本人",tableData.value)
+            //console.log("本人",tableData.value)
           }
 
           const temp1=await fetchRoadList()
           roadList.value=temp1
-          console.log("所有信息",roadList.value)
+          //console.log("所有信息",roadList.value)
 
           const temp2=await fetchPeopleList({role:'ROLE_INSPECT'})//获取所有巡视人
           if(temp2.code==='200'){
             peopleList.value=temp2.data
-            console.log("所有人",peopleList.value)
+            //console.log("所有人",peopleList.value)
           }else{
-            console.log("失败")
+            //console.log("失败")
           }
 
         },
@@ -504,11 +504,11 @@ const myFunc={
               })
               return myId
             })
-            console.log("1",addForm.peopleId)
-            console.log("2",myData)
-            console.log("3",addForm.inspectTime)
-            console.log("3",dayjs(addForm.inspectTime).format('YYYY-MM-DD HH:mm:ss'))
-            console.log("4",dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss'))
+            //console.log("1",addForm.peopleId)
+            //console.log("2",myData)
+            //console.log("3",addForm.inspectTime)
+            //console.log("3",dayjs(addForm.inspectTime).format('YYYY-MM-DD HH:mm:ss'))
+            //console.log("4",dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss'))
             const r = await addCheck({
               peopleId:addForm.peopleId,
               valveIds:myData,
@@ -526,11 +526,11 @@ const myFunc={
             return false
         },
         async edit() {
-            console.log(addForm.taskId)
-            console.log(addForm.peopleId)
-            console.log(dayjs(addForm.inspectTime).format('YYYY-MM-DD HH:mm:ss'))
-            console.log(dayjs(addForm.createTime).format('YYYY-MM-DD HH:mm:ss'))
-            console.log(addForm.remark)
+            //console.log(addForm.taskId)
+            //console.log(addForm.peopleId)
+            //console.log(dayjs(addForm.inspectTime).format('YYYY-MM-DD HH:mm:ss'))
+            //console.log(dayjs(addForm.createTime).format('YYYY-MM-DD HH:mm:ss'))
+            //console.log(addForm.remark)
             const r = await updateCheck({
                 taskId: addForm.taskId,
                 peopleId: addForm.peopleId,
@@ -639,7 +639,7 @@ const myFunc={
         addForm.complete=item.complete
         addForm.remark=item.remark
         addForm.valveIds=item.valveIds
-        console.log("hahahaha",addForm)
+        //console.log("hahahaha",addForm)
     },
     }
     const detailModal={
@@ -663,7 +663,7 @@ const myFunc={
         addForm.inspectTime=item.inspectTime,
         addForm.complete=item.complete
         addForm.remark=item.remark
-        console.log("hahahaha",addForm)
+        //console.log("hahahaha",addForm)
         },
     }
 const reload = async function () {

@@ -206,21 +206,19 @@ let BarPic = function () {
   myChart.setOption(option)
 }
 const getTimeWaterData = async function () {
-  console.log(value1.value[0])
+  //console.log(value1.value[0])
   let res = await fetFindVolumebyTime(props.valve_id_end,
       value1.value[0],
       value1.value[1])
   if (res.code === '200') {
     waterData.value = res.data
   }
-  console.log(props.valve_createTime_end)
 }
 const getTimeWaterDataYear = async function () {
   let res = await fetFindvolumebyyear(props.valve_id_end)
   if (res.code === '200') {
     waterDataYear.value = res.data
   }
-  console.log(waterDataYear.value)
 }
 const props = defineProps({
   valve_id_end: Number,
@@ -247,8 +245,6 @@ const getWaterTotal = async function () {
   if (res.code === '200') {
     waterDataTotal.value = res.data
   }
-  console.log(props.valve_id_end, type, time)
-  console.log(res.data)
 }
 const waterTrandGet = async function () {
   let res1 = await fetFindmonthvolumebyyear(props.valve_id_end, year1)
@@ -273,7 +269,6 @@ onMounted(async () => {
 onUnmounted(() => {
   if (myChart) {
     myChart = null
-    console.log(myChart)
   }
   getTimeWaterData()
 })

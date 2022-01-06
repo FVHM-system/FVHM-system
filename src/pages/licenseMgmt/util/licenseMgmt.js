@@ -6,7 +6,7 @@ export const fetchLicense = async () => {
 }
 
 export const searchLicense = async (addData) => {
-  console.log(addData)
+  //console.log(addData)
   return await request.get('/license/getlicenseinfo', {
     params:{
       ...addData
@@ -20,24 +20,24 @@ export const fetchDepartments = async () => {
 }
 
 export const addLicense = async (addData) => {
-  console.log(addData)
+  //console.log(addData)
   let res = await request.post('/license/insertlicenseinfo', {
     data:{
     ...addData
     },
   })
-  console.log(res)
+  //console.log(res)
   return res
 }
 
 export const editLicense = async(addData) => {
-  console.log(addData)
+  //console.log(addData)
   let res = await request.put('/license/updatelicenseinfo', {
     data:{
     ...addData
     },
   })
-  console.log(res)
+  //console.log(res)
   return res
 }
 

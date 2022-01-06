@@ -98,7 +98,6 @@ export const utils = {
       district.forEach(item => {
         const id = item.id
         const idx = city.findIndex(it => item.pid === it.zoneId)
-        console.log('aaaa', city[idx])
         if (idx >= 0) {
           city[idx].children = (city[idx].children || []).concat(item)
         }
@@ -209,7 +208,6 @@ export const utils = {
     },
     async fetchDepartment(context) {
       const department = (await fetchDepartmentsByNone()) || []
-      console.log('dedede', department)
       context.commit('setState', {
         department,
       })

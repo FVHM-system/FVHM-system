@@ -207,7 +207,6 @@ const getList = async (type, zoneId) => {
       }
     })
   }
-  console.log("newplace: ", newplace);
   return newplace;
 }
 
@@ -215,7 +214,6 @@ const getNodes = async (val) => {
   if (!val) {
     let rawcity = [];
     rawcity = await fetchCityList();
-    console.log("rawcity: ", rawcity);
     const city = rawcity.map((item, index) => {
       return {
         name: item.city,
@@ -227,9 +225,7 @@ const getNodes = async (val) => {
         child: []
       }
     })
-    console.log("city: ", city);
     options.value = city;
-    console.log("options: ", options);
   } else if (val.length === 1) {
     options.value.map(async (item, index) => {
       if (item.message.zoneId === val[0].zoneId) {
@@ -243,7 +239,6 @@ const getNodes = async (val) => {
         }
       }
     })
-    console.log("options: ", options.value)
   } else if (val.length === 2) {
     options.value.map(async (item, index) => {
       if (item.message.zoneId === val[0].zoneId) {
@@ -251,7 +246,7 @@ const getNodes = async (val) => {
           if (item1.message.zoneId === val[1].zoneId && item1.message.type === 'district') {
             if (item1.child.length === 0) {
               let town = await getList('town', val[1].zoneId)
-              console.log("town: ", town)
+              //console.log("town: ", town)
               if (town.length === 0) {
                 item1.child = null;
               } else {
@@ -271,7 +266,7 @@ const getNodes = async (val) => {
               if (item2.message.zoneId === val[2].zoneId) {
                 if (item2.child.length === 0) {
                   let village = await getList('village', val[2].zoneId)
-                  console.log("village: ", village)
+                  //console.log("village: ", village)
                   if (village.length === 0) {
                     item2.child = null
                   } else {
@@ -295,7 +290,6 @@ const getNodes = async (val) => {
                   if (item3.message.zoneId === val[3].zoneId) {
                     if (item3.child.length === 0) {
                       let road = await getList('road', val[3].zoneId)
-                      console.log("road", road)
                       if (road.length === 0) {
                         item3.child = null;
                       } else {
@@ -322,7 +316,6 @@ const getNodes = async (val) => {
                     item3.child.map(async (item4)=>{
                         if (item4.child.length === 0) {
                         let section = await getList('section', val[4].zoneId)
-                        console.log("section", section)
                         if (section.length === 0) {
                           item4.child = null;
                         } else {
@@ -342,7 +335,6 @@ const getNodes = async (val) => {
 
 }
 const handleItemChange = async (val) => {
-  console.log("点击的val", val)
   //fetchMychoice()
   getNodes(val)//加速，非必要
 }
@@ -418,14 +410,12 @@ async function init() {
 }
 
 async function search() {
-  
+
   if(searchTimeType.value==="月报"){
     searchTime.value=dayjs(searchTime.value).format('YYYY-MM')
   }else if(searchTimeType.value==="年报"){
     searchTime.value=dayjs(searchTime.value).format('YYYY')
   }
-  console.log("searchTime.value", searchTime.value)
-  console.log("searchTimeType.value", searchTimeType.value)
 
   const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
 
@@ -519,9 +509,7 @@ async function search() {
       totalVolume: totalVolume,
     }
   })
-  //console.log("测试测试",myData)
   data.value = await Promise.all(myData)//important
-  console.log("测试测试",data.value)
   loadingInstance.close()
 }
 

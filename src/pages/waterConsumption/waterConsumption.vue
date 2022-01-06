@@ -98,13 +98,10 @@ async function search() {
     type: type,
     currentTime: dateTimeTrans(searchTime.value, searchTimeType.value),
   })
-  console.log("嘎嘎嘎", res)
   if (res.code === '200') {
     citys.value = res.data.map(item => item.name)
     consumption.value = res.data.map(item => item.totalVolume)
   }
-  console.log("啊啊啊", citys.value)
-  console.log("嘿嘿嘿", consumption.value)
   BarPic(citys.value, consumption.value)
 }
 

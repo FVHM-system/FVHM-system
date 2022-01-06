@@ -175,7 +175,7 @@ const stringJudge = function (input) {
   }
 }
 const confirm = async function () {
-  console.log(formData.value.createTime)
+  //console.log(formData.value.createTime)
   if (formData.value.comNumber && formData.value.createTime && formData.value.latitude
       && formData.value.longitude  && formData.value.applicantId
       && formData.value.status && formData.value.valveCode && formData.value.valveName
