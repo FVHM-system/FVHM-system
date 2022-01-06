@@ -284,6 +284,7 @@ async function submit(){
       if (res.code === '200') {
         if(res.data) {
           currentData.value = [res.data]
+          tableData.value= [res.data]
         }
         else{
           ElMessage({
