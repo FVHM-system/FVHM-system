@@ -313,6 +313,7 @@ const valveDetail={
                 if (r.code === '200') {
                     const res1=await fetchCheckDetail({taskId: addForm.taskId})//刷新表格数据
                     taskData.value=res1.data
+                    myFunc.search() 
                     ElMessage({
                     type: 'success',
                     message: '删除成功!',
@@ -320,6 +321,7 @@ const valveDetail={
                 }
                 })
                 .catch(() => {})
+          
     },
     detailCancel(){
       editDetailState.value=false

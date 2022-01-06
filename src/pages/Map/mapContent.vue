@@ -869,6 +869,7 @@ onUnmounted(async()=>{
     border-radius: 6px;
     .tip-item {
       display: flex;
+      flex-direction: row;
       align-items: center;
       padding: 6px;
 
