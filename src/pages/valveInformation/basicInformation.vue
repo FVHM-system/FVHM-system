@@ -1,6 +1,6 @@
 <template>
   <div class="basicInformation">
-    <div class="BInfo">
+    <div class="BInfo" :id="detaikl">
       <div style="height: 8%"></div>
       <el-form :model="formData" label-width="120px">
         <div style="width: 100%;display: flex;flex-direction: row">
@@ -13,16 +13,14 @@
         </div>
         <div style="width: 100%;display: flex;flex-direction: row;margin-top: 2.5%">
           <el-form-item prop="address" label="所在位置" style="width: 45%">
-            <el-select v-model="formData.zoneId" placeholder="Select">
-              <el-option
-                  v-for="item in addrList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                  style="width: 100%"
-              >
-              </el-option>
-            </el-select>
+            <el-cascader
+                v-model="formData.place"
+                :options="addrList"
+                :props="mypropss"
+                placeholder="选择地址"
+                :show-all-levels="false"
+                style="width: 100%"
+                clearable></el-cascader>
           </el-form-item>
           <el-form-item prop="createTime" label="创建时间" style="width: 47%">
             <el-date-picker
@@ -114,15 +112,21 @@
 import {ref, defineProps, onMounted} from 'vue'
 import {fetchDetailData} from "./util/detailData";
 import {fetchUpdateData} from "./util/updateData";
-import {ElMessage} from 'element-plus'
+import {ElLoading, ElMessage} from 'element-plus'
 import {
   fetchAuthority,
   fetchUsername
 } from '../../utils/mrWang'
 import {getApplicant} from "../applicantMgmt/util/ApplicantMgmt";
-import {fetchSectionList} from "../../apis/2.0/addr";
+import {fetchSectionList, fetchSuper} from "../../apis/2.0/addr";
 
-let addrList = ref({})
+let mypropss = {
+  label: 'name',
+  value: 'message',
+  children: 'child',
+}
+let detaikl = new Date().getTime()
+let addrList = ref([])
 let authority = ref('')
 let buttonState = ref(false)//禁用按钮
 let formData = ref([]);
@@ -169,7 +173,10 @@ async function getApplicantList() {
 }
 
 onMounted(async () => {
+  const loadingInstance = ElLoading.service(
+      {target: document.getElementById(detaikl), fullscreen: false,})
   authority.value = fetchAuthority()
+  addrList.value= await fetchSuper()
   if (authority.value === 'ROLE_ADMIN') {
     buttonState.value = false
   } else {
@@ -178,25 +185,63 @@ onMounted(async () => {
   let res = await fetchDetailData(props.valve_id_end)
   if (res.code === '200') {
     formData.value = res.data;
+    console.log(formData.value)
   }
-  let res1 = await fetchSectionList()
-  //console.log(res1)
-  addrList.value = res1.map(item=>{
-    return{
-      value:item.zoneId,
-      label:item.section
+  let cityName = formData.value.cityName
+  let cityId = formData.value.cityId
+  let districtName = formData.value.districtName
+  let districtId = formData.value.districtId
+  let townName = formData.value.townName
+  let townId = formData.value.townId
+  let villageName = formData.value.villageName
+  let villageId = formData.value.villageId
+  let roadName = formData.value.roadName
+  let roadId = formData.value. roadId
+  let sectionName = formData.value.sectionName
+  let sectionId = formData.value.sectionId
+  formData.value.place=[
+    {
+      name: cityName,
+      type: "city",
+      zoneId: cityId,
+    },
+    {
+      name: districtName,
+      type: "district",
+      zoneId: districtId,
+    },
+    {
+      name: townName,
+      type: "town",
+      zoneId: townId,
+    },
+    {
+      name: villageName,
+      type: "village",
+      zoneId: villageId,
+    },
+    {
+      name: roadName,
+      type: "road",
+      zoneId: roadId,
+    },
+    {
+      name: sectionName,
+      type: "section",
+      zoneId: sectionId,
     }
-  })
-  //console.log(formData.value)
+  ]
   await getApplicantList()
+  loadingInstance.close()
 })
 let valveInfo = {}
 const updateInfo = async function () {
+  console.log(formData.value.place)
   valveInfo.valveId = formData.value.valveId;
   valveInfo.valveCode = formData.value.valveCode;
   valveInfo.valveType = formData.value.valveType;
   valveInfo.valveName = formData.value.valveName;
-  valveInfo.zoneId = formData.value.zoneId;
+  valveInfo.zoneId = formData.value.place[5].zoneId
   valveInfo.zoneName = formData.value.zoneName;
   valveInfo.longitude = formData.value.longitude;
   valveInfo.latitude = formData.value.latitude;
@@ -206,7 +251,7 @@ const updateInfo = async function () {
   valveInfo.meterCode = formData.value.meterCode;
   valveInfo.comNumber = formData.value.comNumber;
   valveInfo.applicantId = formData.value.applicantId
-  //console.log('ssdsasad', valveInfo.applicantId)
+  console.log('ssdsasad', valveInfo.applicantId)
   const res = await fetchUpdateData(valveInfo)
   //console.log(res)
   //console.log(valveInfo)

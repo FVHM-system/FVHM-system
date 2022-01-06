@@ -248,7 +248,7 @@ let formData = reactive({
   applicantId: '',
   remark: ''
 });
-const validateFloat = (rule, value, callback) => {
+const validateFloat1 = (rule, value, callback) => {
   const age = /^[0-9]+.?[0-9]*$/g
   if (!value) {
     return callback(new Error('数值不能为空'))
@@ -256,14 +256,36 @@ const validateFloat = (rule, value, callback) => {
     return callback(new Error('输入格式错误'))
   } else if (value.indexOf(".") !== -1 && value.split('.').length > 2) {
     return callback(new Error('请输入正确格式的数值'))
-  } else {
+  } else if(value>180||value<0){
+    return callback(new Error('经度允许的范围为0~180'))
+  }
+  else {
+    callback();
+  }
+};
+const validateFloat2 = (rule, value, callback) => {
+  const age = /^[0-9]+.?[0-9]*$/g
+  if (!value) {
+    return callback(new Error('数值不能为空'))
+  } else if (!age.test(value)) {
+    return callback(new Error('输入格式错误'))
+  } else if (value.indexOf(".") !== -1 && value.split('.').length > 2) {
+    return callback(new Error('请输入正确格式的数值'))
+  }else if(value>90||value<0) {
+    return callback(new Error('经度允许的范围为0~90'))
+  }
+  else {
     callback();
   }
 };
 const valveCodeCheck = (rule, value, callback) => {
+  const nameCheck = /^[\u4e00-\u9fa5]+$/
   if (!value) {
     return callback(new Error('数值不能为空'))
-  } else if (valveCodee.find(i => i.value === value)) {
+  }else if(nameCheck.test(value)){
+    return callback(new Error('输入的编号格式的错误！'))
+  }
+  else if (valveCodee.find(i => i.value === value)) {
     return callback(new Error('阀栓编号重复'))
   } else {
     callback()
@@ -298,7 +320,7 @@ const addRule = reactive({
       [
         {
           required: true,
-          validator: validateFloat,
+          validator: validateFloat1,
           trigger: 'blur',
         }
       ],
@@ -306,15 +328,17 @@ const addRule = reactive({
       [
         {
           required: true,
-          message: '请输入通讯编号',
+          message: '请输入正确的通讯编号!',
           trigger: 'blur',
+          type: 'string',
+          pattern: /^(\d3,4\d3,4|\d{3,4}-)?\d{7,11}?$/,
         }
       ],
   latitude:
       [
         {
           required: true,
-          validator: validateFloat,
+          validator: validateFloat2,
           trigger: 'blur',
         }
       ],
@@ -434,6 +458,7 @@ const statussss = [
   },
 ]
 const add = function () {
+  resetAdd()
   dialogVisible.value = true
 }
 let valveInfo
@@ -511,7 +536,9 @@ const confirm = async function () {
   })
 }
 function resetAdd(){
-  addForm.value.resetFields()
+  if(addForm.value!==undefined) {
+    addForm.value.resetFields()
+  }
 }
 
 function dateTimeTrans(d) {

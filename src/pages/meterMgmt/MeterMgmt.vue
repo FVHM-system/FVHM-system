@@ -66,19 +66,19 @@
     <el-dialog width="25%" v-model="addModal.show" title="新增设备">
       <el-form :rules="addRule" ref="addCheck" :model="addModal.data" :inline="true">
         <div>
-        <el-form-item prop="meterCode" label="设备编号" required>
+        <el-form-item prop="meterCode" label="设备编号" >
           <el-input style="position:relative; left:6%; width:108%" v-model="addModal.data.meterCode">
           </el-input>
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="设备名称" required>
+        <el-form-item label="设备名称" prop="meterName" >
           <el-input style="position:relative; left:6%; width:108%" v-model="addModal.data.meterName">
           </el-input>
         </el-form-item>
         </div>
         <div>
-        <el-form-item style="margin-left: 8px" label="监测阀栓">
+        <el-form-item style="margin-left: 8px" label="监测阀栓" prop="valveId">
           <el-select no-data-text="当前没有需要监测的阀栓" style="position:relative; left:6%; width:101%" v-model="addModal.data.valveId" placeholder="请选择">
           <el-option
               v-for="item in valvePlugInformation"
@@ -90,7 +90,7 @@
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="状态" required>
+        <el-form-item label="状态" prop="status">
             <el-select style="position:relative; left:18%" v-model="addModal.data.status" placeholder="请选择">
             <el-option
               v-for="item in statusoption"
@@ -102,7 +102,7 @@
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="设备类型" required>
+        <el-form-item label="设备类型" prop="typeId">
           <el-select style="position:relative; left:6%; width:101%" v-model="addModal.data.typeId">
             <el-option v-for="item in meterType" :key="item.id" :value="item.id" :label="item.id + ' - ' + item.meterNoName">
             </el-option>
@@ -110,7 +110,7 @@
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="创建时间" required>
+        <el-form-item label="创建时间" prop="createTime">
           <el-date-picker
           style="position:relative; left:6%"
           v-model="addModal.data.createTime"
@@ -135,13 +135,13 @@
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="设备名称" required>
+        <el-form-item label="设备名称" prop="meterName">
           <el-input style="position:relative; left:6%; width:108%" v-model="editModal.data.meterName">
           </el-input>
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="监测阀栓" required>
+        <el-form-item label="监测阀栓" prop="valveId">
           <el-select style="position:relative; left:6%; width:101%" v-model="editModal.data.valveId" placeholder="请选择">
           <el-option
               v-for="item in valvePlugInformation"
@@ -153,7 +153,7 @@
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="状态" required>
+        <el-form-item label="状态" prop="status">
             <el-select style="position:relative; left:8%" v-model="editModal.data.status" placeholder="请选择">
             <el-option
               v-for="item in statusoption"
@@ -165,7 +165,7 @@
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="设备类型" required>
+        <el-form-item label="设备类型" prop="typeId">
           <el-select style="position:relative; left:6%; width:101%" v-model="editModal.data.typeId">
             <el-option v-for="item in meterType" :key="item.id" :value="item.id" :label="item.id + ' - ' + item.meterNoName">
             </el-option>
@@ -173,7 +173,7 @@
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="创建时间" required>
+        <el-form-item label="创建时间" prop="createTime">
           <el-date-picker
           v-model="editModal.data.createTime"
           type="datetime"
@@ -233,7 +233,43 @@ const addRule=reactive({
       //pattern: /^[\u4e00-\u9fa5]+$/,
       len:9,
     }
-  ]
+  ],
+  createTime:[
+    {
+      required: true,
+      message: '请选择创建时间',
+      trigger: 'blur',
+    }
+  ],
+  typeId:[
+    {
+      required: true,
+      message: '请选择设备类型',
+      trigger: 'blur',
+    }
+  ],
+  status:[
+    {
+      required: true,
+      message: '请选择设备状态',
+      trigger: 'blur',
+    }
+  ],
+  valveId:[
+    {
+      required: true,
+      message: '请选择监测阀栓',
+      trigger: 'blur',
+    }
+  ],
+  meterName:[
+    {
+      required: true,
+      message: '请输入设备名称',
+      trigger: 'blur',
+    }
+  ],
+
 })
 function handleSizeChange(val) {
   pageSize = val;
@@ -326,6 +362,10 @@ const addModal = reactive({
     createTime:'',
   },
   async open(){
+    if(addCheck.value) {
+      addCheck.value.resetFields()
+      addCheck.value.clearValidate()
+    }
     const loadingInstance = ElLoading.service({target:document.getElementById("box"),fullscreen: false})
     let res = await fetchHasNoMeterVpinformation()
     if (res.code === '200') {
@@ -378,7 +418,7 @@ const addModal = reactive({
       }else{
         ElMessage({
         type: 'error',
-        message : '请输入9位数字设备编号'
+        message : '请填写完整信息'
       })
       }
     })
@@ -453,7 +493,7 @@ const editModal = reactive({
       }else{
         ElMessage({
         type: 'error',
-        message : '请输入9位数字设备编号'
+        message : '请填写完整信息'
       })
       }
     })
