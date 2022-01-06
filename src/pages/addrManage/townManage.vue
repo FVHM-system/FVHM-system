@@ -21,7 +21,7 @@
           color:'#219DEDF2',fontWeight:500,'text-align':'center'}"
                 :cell-style="{'text-align':'center'}"
                 :row-style="{fontSize:'16px',color:'#606266',fontFamily:'Helvetica,Arial,sans-serif'}"
-                style="margin-top:10px;width: 100%" size="medium" :height="tableHeight" empty-text=" " stripe>
+                style="margin-top:10px;width: 100%" size="medium" :sort-method="sortDevName" :height="tableHeight" empty-text=" " stripe>
         <el-table-column prop="town" label="乡镇名" min-width="150"></el-table-column>
         <el-table-column prop="district" sortable label="所属区县" min-width="150"></el-table-column>
         <el-table-column prop="city" sortable label="所属城市" min-width="150"></el-table-column>
@@ -70,7 +70,53 @@ import {
   fetchAuthority ,
   fetchUsername
 } from '../../utils/mrWang'
-
+let sortDevName=(str1, str2)=>{
+  let res = 0
+       for (let i = 0; ;i++) {
+  if (!str1[i] || !str2[i]) {
+   res = str1.length - str2.length
+   break
+  }
+  const char1 = str1[i]
+  const char1Type = this.getChartType(char1)
+  const char2 = str2[i]
+  const char2Type = this.getChartType(char2)
+  // 类型相同的逐个比较字符
+  if (char1Type[0] === char2Type[0]) {
+   if (char1 === char2) {
+   continue
+   } else {
+   if (char1Type[0] === 'zh') {
+    res = char1.localeCompare(char2)
+   } else if (char1Type[0] === 'en') {
+    res = char1.charCodeAt(0) - char2.charCodeAt(0)
+   } else {
+    res = char1 - char2
+   }
+   break
+   }
+  } else {
+  // 类型不同的，直接用返回的数字相减
+   res = char1Type[1] - char2Type[1]
+   break
+  }
+   }
+   return res
+}
+let getChartType=(char)=>{
+  // 数字可按照排序的要求进行自定义，我这边产品的要求是
+  // 数字（0->9）->大写字母（A->Z）->小写字母（a->z）->中文拼音（a->z）
+   if (/^[\u4e00-\u9fa5]$/.test(char)) {
+  return ['zh', 300]
+   }
+   if (/^[a-zA-Z]$/.test(char)) {
+  return ['en', 200]
+   }
+   if (/^[0-9]$/.test(char)) {
+  return ['number', 100]
+   }
+   return ['others', 999]
+}
 let authority=ref('')
 let buttonState=ref(false)//禁用按钮
 let townList = ref([])
