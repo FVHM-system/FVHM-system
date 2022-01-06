@@ -59,35 +59,33 @@
       </div>
     </div>
 
-
-
     <el-dialog  v-model="addModal.show" title="新增部门">
       <el-form :rules="addRule" ref="addCheck" :model="addModal.data" :inline="true">
         <div>
-        <el-form-item label="单位名称" required>
+        <el-form-item label="单位名称" prop="applicantName">
           <el-input style="position:relative; left:6%; width:108%" v-model="addModal.data.applicantName">
           </el-input>
         </el-form-item>
-        <el-form-item style="position:relative; left:5%;" label="法定代表人" required>
+        <el-form-item style="position:relative; left:5%;" label="法定代表人" prop="legalPerson">
           <el-input style="position:relative; left:6%; width:108%" v-model="addModal.data.legalPerson" />
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="单位地址" required>
+        <el-form-item label="单位地址" prop="address">
             <el-input style="position:relative; left:6%; width:150%" v-model="addModal.data.address">
           </el-input>
         </el-form-item>
-        <el-form-item prop="code" style="position:relative; left:16%;"  label="邮编" required>
+        <el-form-item prop="code" style="position:relative; left:16%;"  label="邮编">
             <el-input style="position:relative; width:86%" v-model="addModal.data.code">
           </el-input>
         </el-form-item>
         </div>
         <div>
-          <el-form-item label="联系人" required>
+          <el-form-item label="联系人" prop="contactPerson">
           <el-input style="position:relative; left:6%; width:108%" v-model="addModal.data.contactPerson">
           </el-input>
           </el-form-item>
-          <el-form-item prop="phone" style="position:relative; left:8%;" label="电话号码" required>
+          <el-form-item prop="phone" style="position:relative; left:8%;" label="电话号码">
           <el-input style="position:relative; left:6%; width:108%" v-model="addModal.data.phone" />
           </el-form-item>
         </div>
@@ -99,30 +97,30 @@
       <el-form :rules="addRule" ref="editCheck" :model="editModal.data" :inline="true">
 
         <div>
-        <el-form-item label="单位名称" required>
+        <el-form-item label="单位名称" prop="applicantName">
           <el-input style="position:relative; left:6%; width:108%" v-model="editModal.data.applicantName">
           </el-input>
         </el-form-item>
-        <el-form-item style="position:relative; left:5%;" label="法定代表人" required>
+        <el-form-item style="position:relative; left:5%;" label="法定代表人" prop="legalPerson">
           <el-input style="position:relative; left:6%; width:108%" v-model="editModal.data.legalPerson" />
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="单位地址" required>
+        <el-form-item label="单位地址" prop="address">
             <el-input style="position:relative; left:6%; width:150%" v-model="editModal.data.address">
           </el-input>
         </el-form-item>
-        <el-form-item prop="code" style="position:relative; left:16%;"  label="邮编" required>
+        <el-form-item prop="code" style="position:relative; left:16%;"  label="邮编" >
             <el-input style="position:relative; width:86%" v-model="editModal.data.code">
           </el-input>
         </el-form-item>
         </div>
         <div>
-          <el-form-item label="联系人" required>
+          <el-form-item label="联系人" required prop="contactPerson">
           <el-input style="position:relative; left:6%; width:108%" v-model="editModal.data.contactPerson">
           </el-input>
           </el-form-item>
-          <el-form-item prop="phone" style="position:relative; left:8%;" label="电话号码" required>
+          <el-form-item prop="phone" style="position:relative; left:8%;" label="电话号码">
           <el-input style="position:relative; left:6%; width:108%" v-model="editModal.data.phone" />
           </el-form-item>
         </div>
@@ -166,11 +164,39 @@ const addRule=reactive({
   phone:[
     {
       required: true,
-      message: '请输入固定电话号码(XXXX-XXXXXXX，XXXX-XXXXXXXX，XXX-XXXXXXX，XXX-XXXXXXXX，XXXXXXX，XXXXXXXX)',
+      message: '请输入固定电话号码!',
       trigger: 'blur',
       type: 'string',
       pattern: /^(\d3,4\d3,4|\d{3,4}-)?\d{7,8}$/,
       //pattern: /^[\u4e00-\u9fa5]+$/,
+    }
+  ],
+  contactPerson:[
+    {
+      required: true,
+      message: '请输入法定代表人!',
+      trigger: 'blur',
+    }
+  ],
+  address:[
+    {
+      required: true,
+      message: '请输入单位地址',
+      trigger: 'blur',
+    }
+  ],
+  legalPerson:[
+    {
+      required: true,
+      message: '请输入联系人',
+      trigger: 'blur',
+    }
+  ],
+  applicantName:[
+    {
+      required: true,
+      message: '请输入单位名称',
+      trigger: 'blur',
     }
   ],
 })
@@ -244,6 +270,10 @@ const addModal = reactive({
     phone:'',
   },
   open(){
+    if(addCheck.value) {
+      addCheck.value.resetFields()
+      addCheck.value.clearValidate()
+    }
     this.show = true;
   },
   async submit(){
