@@ -834,7 +834,7 @@ onUnmounted(async()=>{
   top: 80px;
   left: 200px;
   width: 280px;
-}
+}//
 
 #panel .amap-call {
   background-color: #009cf9;
