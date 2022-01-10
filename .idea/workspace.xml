@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6bd22d39-3be7-4edc-a1a6-9407debf2133" name="更改" comment="添加设备类型">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/AlarmMgmt/alarmMgmt.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/AlarmMgmt/alarmMgmt.vue" afterDir="false" />
-    </list>
+    <list default="true" id="6bd22d39-3be7-4edc-a1a6-9407debf2133" name="更改" comment="添加设备类型" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -80,6 +77,7 @@
       <workItem from="1641040134531" duration="947000" />
       <workItem from="1641047339736" duration="1451000" />
       <workItem from="1641053323818" duration="48561000" />
+      <workItem from="1641494750912" duration="77000" />
     </task>
     <task id="LOCAL-00001" summary="修复近三年用水趋势bug">
       <created>1640898499694</created>
