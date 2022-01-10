@@ -72,14 +72,14 @@
     </div>
     </div>
     <el-dialog  v-model="addModal.show" title="新增许可证">
-      <el-form :inline="true">
+      <el-form :model="addModal.data" :rules="addRules" ref="addForm" :inline="true">
         <div>
-        <el-form-item label="许可证编号" required>
+        <el-form-item label="许可证编号" prop="license">
           <el-input style="width:110%" v-model="addModal.data.license" />
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="对应阀栓" required>
+        <el-form-item label="对应阀栓" prop="valveId">
           <el-select style="position:relative; left:6%; width:101%" v-model="addModal.data.valveId" placeholder="请选择">
           <el-option
               v-for="item in valvePlugInformation"
@@ -91,7 +91,7 @@
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="颁发时间" required>
+        <el-form-item label="颁发时间" prop="startTime">
           <el-date-picker
           style="position:relative; left:6%"
           type="date"
@@ -102,10 +102,10 @@
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="许可用水量" required>
-          <el-input type="number" style="width:110%" v-model.number="addModal.data.licenseVolume" />
+        <el-form-item label="许可用水量" prop="licenseVolume">
+          <el-input  style="width:110%" v-model="addModal.data.licenseVolume" />
         </el-form-item>
-        <el-form-item style="position:relative; left:8%" label="可用性" required>
+        <el-form-item style="position:relative; left:8%" label="可用性" prop="available">
             <el-select style="position:relative; left:8%" v-model="addModal.data.available" placeholder="请选择">
             <el-option
               v-for="item in availableoption"
@@ -117,7 +117,7 @@
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="颁发部门" required>
+        <el-form-item label="颁发部门" prop="departmentId">
             <el-select style="position:relative; left:6%; width:103%" v-model="addModal.data.departmentId" placeholder="请选择">
             <el-option
               v-for="item in deptoption"
@@ -133,14 +133,14 @@
     </el-dialog>
 
     <el-dialog  v-model="editModal.show" title="编辑许可证">
-      <el-form :inline="true">
+      <el-form :model="editModal.data" :rules="addRules2" ref="editForm" :inline="true">
         <div>
-        <el-form-item label="许可证编号" required>
+        <el-form-item label="许可证编号" prop="license">
           <el-input style="width:110%" v-model="editModal.data.license" />
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="对应阀栓" required>
+        <el-form-item label="对应阀栓" prop="valveId">
           <el-select style="position:relative; left:6%; width:101%" v-model="editModal.data.valveId" placeholder="请选择">
           <el-option
               v-for="item in valvePlugInformation"
@@ -152,7 +152,7 @@
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="颁发时间" required>
+        <el-form-item label="颁发时间" prop="startTime">
           <el-date-picker
           style="position:relative; left:6%"
           type="date"
@@ -163,10 +163,10 @@
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="许可用水量" required>
+        <el-form-item label="许可用水量" prop="licenseVolume">
           <el-input type="number" style="width:110%" v-model.number="editModal.data.licenseVolume" />
         </el-form-item>
-        <el-form-item style="position:relative; left:8%" label="可用性" required>
+        <el-form-item style="position:relative; left:8%" label="可用性" prop="available">
             <el-select style="position:relative; left:8%" v-model="editModal.data.available" placeholder="请选择">
             <el-option
               v-for="item in availableoption"
@@ -178,7 +178,7 @@
         </el-form-item>
         </div>
         <div>
-        <el-form-item label="颁发部门" required>
+        <el-form-item label="颁发部门" prop="departmentId">
             <el-select style="position:relative; left:6%; width:103%" v-model="editModal.data.departmentId" placeholder="请选择">
             <el-option
               v-for="item in deptoption"
@@ -207,6 +207,8 @@ import { licenseStates } from "../../utils/transform";
 let showpagination = ref(true)
 const store= useStore()
 let date=ref()
+let addForm = ref()
+let editForm = ref()
 let valvePlugInformation=ref()
 let input = ref('')
 let options = ref([])
@@ -215,6 +217,7 @@ let currentPage = 1
 let pageSize = 10
 let currentData = ref([])
 let tableHeight = window.innerHeight - 310
+let valveCodee = ref({})
 let availableoption = ref([
   {
     value: 1,
@@ -225,6 +228,128 @@ let availableoption = ref([
     label: '不可用'
   }
 ])
+const valveCodeCheck = (rule, value, callback) => {
+  const nameCheck = /^[\u4e00-\u9fa5]+$/
+  if (!value) {
+    return callback(new Error('数值不能为空'))
+  }else if(nameCheck.test(value)){
+    return callback(new Error('输入的编号格式的错误！'))
+  }
+  else if (valveCodee.find(i => i.value === value)) {
+    return callback(new Error('许可证编号重复'))
+  } else {
+    callback()
+  }
+}
+const valveCodeCheck2 = (rule, value, callback) => {
+  const nameCheck = /^[\u4e00-\u9fa5]+$/
+  if (!value) {
+    return callback(new Error('数值不能为空'))
+  }else if(nameCheck.test(value)){
+    return callback(new Error('输入的编号格式的错误！'))
+  }
+ else {
+    callback()
+  }
+}
+const validateFloat = (rule, value, callback) => {
+  const age = /^[0-9]*$/
+  if (!value) {
+    return callback(new Error('数值不能为空'))
+  } else if (!age.test(value)) {
+    return callback(new Error('输入格式错误'))
+  } else {
+    callback();
+  }
+}
+let addRules = reactive({
+  license: [
+    {
+      required: true,
+      validator: valveCodeCheck,
+      trigger: 'blur',
+    }
+  ],
+  valveId: [
+    {
+      required: true,
+      message: '请选择阀栓',
+      trigger: 'blur',
+    }
+  ],
+  startTime: [
+    {
+      required: true,
+      message: '请选择开始时间',
+      trigger: 'blur',
+    }
+  ],
+  licenseVolume: [
+    {
+      required: true,
+      validator: validateFloat,
+      trigger: 'blur',
+    }
+  ],
+  departmentId: [
+    {
+      required: true,
+      message: '请选择部门编号',
+      trigger: 'blur',
+    }
+  ],
+  available: [
+    {
+      required: true,
+      message: '请选择是否可用',
+      trigger: 'blur',
+    }
+  ],
+})
+let addRules2 = reactive({
+  license: [
+    {
+      required: true,
+      validator: valveCodeCheck2,
+      trigger: 'blur',
+    }
+  ],
+  valveId: [
+    {
+      required: true,
+      message: '请选择阀栓',
+      trigger: 'blur',
+    }
+  ],
+  startTime: [
+    {
+      required: true,
+      message: '请选择开始时间',
+      trigger: 'blur',
+    }
+  ],
+  licenseVolume: [
+    {
+      required: true,
+      validator: validateFloat,
+      trigger: 'blur',
+    }
+  ],
+  departmentId: [
+    {
+      required: true,
+      message: '请选择部门编号',
+      trigger: 'blur',
+    }
+  ],
+  available: [
+    {
+      required: true,
+      message: '请选择是否可用',
+      trigger: 'blur',
+    }
+  ],
+})
 let deptoption = ref()
 
 function handleCurrentChange(val) {
@@ -296,9 +421,14 @@ const addModal = reactive({
     departmentId:'',
   },
   open(){
+      if(addForm.value!==undefined) {
+    addForm.value.resetFields()
+  }
     this.show = true;
   },
   async submit(){
+      addForm.value.validate(async (valid) => {
+    if (valid) {
     let res = await addLicense(this.data)
     //console.log(res)
     if (res.code == '200'){
@@ -324,6 +454,9 @@ const addModal = reactive({
         type: 'error',
         message : '添加失败'
       })}
+
+  }
+  })
   }
 })
 
@@ -339,6 +472,9 @@ const editModal = reactive({
     departmentId:'',
   },
   open(row){
+      if(addForm.value!==undefined) {
+    addForm.value.resetFields()
+  }
     this.data.id=row.id
     this.data.valveId=row.valveId
     this.data.license=row.license
@@ -350,6 +486,8 @@ const editModal = reactive({
   },
   async submit(){
     //console.log(this.data)
+    editForm.value.validate(async (valid) => {
+    if (valid) {
     let res = await editLicense(this.data)
     //console.log(res)
     if (res.code == '200'){
@@ -370,6 +508,9 @@ const editModal = reactive({
         type: 'error',
         message : '修改失败'
       })}
+        }
+  })
+  
   }
 })
 
@@ -400,6 +541,11 @@ onMounted(async () => {
   let res = await fetchLicense()
   if (res.code === '200') {
     tableData.value = res.data;
+    valveCodee = res.data.map(item => {
+      return {
+        value: item.license
+      }
+    })
   }
   if (tableData.value.length < pageSize) {
     currentData.value = tableData.value
